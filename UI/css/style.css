@@ -1,3 +1,9 @@
+* {
+    margin: 0;
+    padding: 0;
+    user-select: none;
+}
+
 body{
     background-color: #ffffff;
     margin: 0;
@@ -95,7 +101,7 @@ h1 {
 
 #showcase {
     min-height: 400px;
-    background-image: url('images/automart4.jpg');
+    background-image: url('../images/automart4.jpg');
     text-align: center;
     color: #ededed;
 }
@@ -145,7 +151,6 @@ h1 {
     width: 90px;
 }
 
-
 .footer {
     background-color: #06805b;
     bottom: 0;
@@ -162,6 +167,12 @@ h1 {
 
 
 @media only screen and (max-width: 768px) {
+    * {
+        margin: 0;
+        padding: 0;
+        user-select: none;
+    }
+
     body {
       background-color: #ffffff;
       margin: 0;
@@ -235,7 +246,7 @@ h1 {
 
     #showcase {
         min-height: 400px;
-        background-image: url('images/automart4.jpg');
+        background-image: url('../images/automart4.jpg');
         text-align: center;
         color: #ededed;
     }
@@ -251,7 +262,6 @@ h1 {
     }
     
     #newsletter form {
-        /* float: right; */
         margin-top: 15px;
     }
     
@@ -261,8 +271,40 @@ h1 {
         width: 250px;
     }
 
+    .form {
+        background-color: #35424a;
+        height: 400px;
+        padding: 10px;
+        margin: 70px auto;
+    }
+
+    .signup, 
+    .login {
+        background: #35424a;
+        height: 0;
+        text-transform: uppercase;
+        margin: 20px;
+
+    }
+
     .button_1{
         height: 38px;
+        background: #06805b;
+        border: 0;
+        padding: 0 20px;
+        color: #ffffff;
+    }
+    .input {
+        width: 80%;
+        padding: 0 20px;
+        margin: 10px;
+        height: 30px;
+    }
+
+    .button_2{
+        height: 38px;
+        width: 86.5%;
+        margin: 10px;
         background: #06805b;
         border: 0;
         padding: 0 20px;
@@ -282,6 +324,10 @@ h1 {
     
     #boxes .box img {
         width: 90px;
+    }
+
+    .display {
+        display: none;
     }
 
     .footer {
