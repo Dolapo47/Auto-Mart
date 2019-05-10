@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Dosis');
-@media only screen and (max-width: 768px) {
+
 * {
     margin: 0;
     padding: 0;
@@ -24,6 +24,123 @@ body {
 
 h1 {
     font-weight: lighter;
+}
+
+.signup-container {
+    width: 40%;
+    padding: 20px;
+    color: #ededed;
+    height: 550px;
+    background-color: #35424a;
+    float: right;
+}
+
+.signup {
+    width: 50%;
+    background: #ffffff;
+    height: 60px;
+    float: left;
+    text-align: center;
+    line-height: 60px;
+    color: #06805b;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+.login {
+    width: 50%;
+    background: #ffffff;
+    height: 60px;
+    float: left;
+    text-align: center;
+    line-height: 60px;
+    color: #06805b;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.signup-form {
+    background: #ffffff;
+    box-sizing: border-box;
+    padding: 40px;
+    clear: both;
+    width: 100%;
+    height: 480px;
+}
+
+.input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 15px;
+    margin-bottom: 25px;
+    border: 2px solid #e9eaea;
+    color: #3e3e40;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.5 ease;
+}
+
+.input:focus {
+    border: 2px solid #06805b;
+}
+
+.btn {
+    width: 100%;
+    background: #06805b;
+    height: 60px;
+    text-align: center;
+    line-height: 60px;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 1px;
+    cursor: pointer;
+    margin-bottom: 30px;
+    
+}
+
+span a {
+    text-decoration: none;
+    color: #000;
+    cursor: pointer;
+}
+
+.footer {
+    background-color: #06805b;
+    width: 100%;
+    min-height: 40px;
+    padding: 20px;
+    color: #ededed;
+    clear: both;
+    position: relative;
+}
+
+@media only screen and (max-width: 768px) {
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Dosis', sans-serif;
+}
+
+.header-container {
+    background-color: #06805b;
+    width: 100%;
+    min-height: 40px;
+    padding: 20px;
+    color: #ededed;
+}
+
+.header {
+    float: left;
+}
+
+h1 {
+    font-weight: lighter;
+}
+
+.sidebar {
+    display: none;
 }
 
 .signup-container {
@@ -100,6 +217,17 @@ span a {
     text-decoration: none;
     color: #000;
     cursor: pointer;
+}
+
+.footer {
+    background-color: #06805b;
+    width: 100%;
+    min-height: 40px;
+    padding: 20px;
+    color: #ededed;
+    clear: both;
+    position: relative;
+    text-align: center;
 }
 
 }
