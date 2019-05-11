@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css?family=Dosis');
 * {
     margin: 0;
     padding: 0;
@@ -8,7 +9,7 @@ body{
     background-color: #ffffff;
     margin: 0;
     padding: 0;
-    font-family: "Montserrat", Helvetica !important;
+    font-family: 'Dosis', sans-serif;
     line-height: 1.5;
     font-size: 15px;
     color: #ededed;
@@ -69,7 +70,7 @@ h1 {
     color: #ededed;
     font-size: 2em;
     line-height: 1.4;
-    font-family: "Montserrat", Helvetica !important;
+    font-family: 'Dosis', sans-serif;
     text-align: left;
     font-weight: lighter;
     margin: 0;
@@ -83,7 +84,7 @@ h1 {
     color: #ededed;
     font-size: 2em;
     line-height: 1.4;
-    font-family: "Montserrat", Helvetica !important;
+    font-family: 'Dosis', sans-serif;
     text-align: left;
     font-weight: lighter;
     margin: 0;
@@ -177,7 +178,7 @@ h1 {
       background-color: #ffffff;
       margin: 0;
       padding: 0;
-      font-family: "Montserrat", Helvetica !important;
+      font-family: 'Dosis', sans-serif;
       line-height: 1.5;
       font-size: 15px;
       color: #ededed;
@@ -222,7 +223,7 @@ h1 {
         color: #ededed;
         font-size: 2em;
         line-height: 1.4;
-        font-family: "Montserrat", Helvetica !important;
+        font-family: 'Dosis', sans-serif;
         text-align: left;
         font-weight: lighter;
         margin: 0;
