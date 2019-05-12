@@ -32,27 +32,28 @@ h1 {
 }
 
 .signup-container {
-    width: 40%;
+    width: 100%;
     padding: 20px;
     color: #ededed;
-    height: 550px;
+    height: 600px;
     background-color: #35424a;
-    float: right;
+    background-image: url("../images/bg-image3(new).jpeg");
 }
 
 .signup {
-    width: 50%;
+    width: 40%;
     background: #ffffff;
-    height: 60px;
-    float: left;
+    height: 60px; 
     text-align: center;
     line-height: 60px;
     color: #06805b;
     cursor: pointer;
     text-transform: uppercase;
+    float: right;
+    font-size: 2em
 }
 .login {
-    width: 50%;
+    width: 40%;
     background: #ffffff;
     height: 60px;
     float: left;
@@ -66,10 +67,11 @@ h1 {
 .signup-form {
     background: #ffffff;
     box-sizing: border-box;
-    padding: 40px;
+    padding: 20px;
     clear: both;
-    width: 100%;
-    height: 480px;
+    width: 40%;
+    height: 535px;
+    float: right;
 }
 
 .input {
@@ -117,6 +119,7 @@ span a {
     clear: both;
     position: relative;
     text-align: center;
+    bottom: 0;
 }
 
 @media only screen and (max-width: 768px) {
@@ -162,7 +165,7 @@ h1 {
 }
 
 .signup {
-    width: 50%;
+    width: 100%;
     background: #ffffff;
     height: 60px;
     float: left;
@@ -228,6 +231,8 @@ span a {
     color: #000;
     cursor: pointer;
 }
+
+
 
 .footer {
     background-color: #06805b;
