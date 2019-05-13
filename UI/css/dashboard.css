@@ -137,4 +137,12 @@ label {
     #toggle:checked + .menu {
         display: block;
     }
+
+    .car-images .box {
+        width: 80%;
+        padding: 10px;
+        text-align: center;
+        color: #06805b;
+        margin-top: 20px;
+    }
 }
