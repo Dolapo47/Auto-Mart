@@ -20,6 +20,7 @@ html, body {
     line-height: 70px;
     width: 100%;
     background-color: #06805b;
+    padding: 20px;
 }
 
 .menu {
@@ -52,6 +53,65 @@ label {
     display: none;
 }
 
+.content {
+    width: 100%;
+    height: 900px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.car-images {
+    margin-left: auto;
+    margin-right: auto;
+    width: 85%;
+    height: 100%;
+    margin-top: 20px;
+    background-color:#ffffff;
+    height: 900px;
+    overflow: scroll;
+}
+
+.car-images .box {
+    float: left;
+    width: 30%;
+    padding: 10px;
+    text-align: center;
+    color: #06805b;
+    margin-top: 20px;
+}
+
+.car-images .box img {
+    width: 180px;
+    cursor: pointer;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #888; 
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
+
+.footer {
+    background-color: #06805b;
+    width: 100%;
+    min-height: 70px;
+    padding: 20px;
+    color: #ededed;
+    position: relative;
+    text-align: center;
+    bottom: 0;
+}
+
 @media only screen and (max-width: 768px) {
     
 
@@ -76,5 +136,13 @@ label {
 
     #toggle:checked + .menu {
         display: block;
+    }
+
+    .car-images .box {
+        width: 80%;
+        padding: 10px;
+        text-align: center;
+        color: #06805b;
+        margin-top: 20px;
     }
 }
