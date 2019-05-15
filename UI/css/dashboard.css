@@ -72,6 +72,33 @@ label {
     overflow: scroll;
 }
 
+.view-images {
+    margin-left: auto;
+    margin-right: auto;
+    width: 85%;
+    height: 100%;
+    margin-top: 20px;
+    background-color:#ffffff;
+    height: 900px;
+    overflow: scroll;
+    display: flex;
+}
+
+.image {
+    margin: 10px 10px;
+    flex: 1;
+    height: 50%;
+    justify-content: space-between;
+    border-bottom: 1px solid #888;
+}
+
+.details {
+    margin: 10px 10px;
+    flex: 1;
+    height: 50%;
+    border-bottom: 1px solid #888;
+}
+
 .car-images .box {
     float: left;
     width: 30%;
@@ -84,6 +111,36 @@ label {
 .car-images .box img {
     width: 180px;
     cursor: pointer;
+}
+
+.image img {
+    width: 80%;
+    height: 90%;
+}
+
+.details li {
+    font-size: 1.5em;
+    color: #06805b;
+    list-style: none;
+}
+
+button {
+    width: 50.6%;
+    color: #ffffff;
+    background-color: #06805b;
+    height: 35px;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+#pOrder {
+    margin-top: 30px;
+    font-size: 1.5em;
+    width: 50%;
+    height: 35px;
+    border-radius: 5px;
 }
 
 ::-webkit-scrollbar-track {
