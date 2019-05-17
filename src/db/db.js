@@ -16,7 +16,7 @@ const users = [
     email: 'ayo@andela.com',
     first_name: 'ayo',
     last_name: 'adeleye',
-    password: bcrypt.hash('ayo', 8),
+    password: bcrypt.hash('ayomide2018@@', 10),
     address: '12 epic tower road lagos',
     isAdmin: true,
   },
