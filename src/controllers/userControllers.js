@@ -70,7 +70,7 @@ class userController {
     bcrypt.compare(password, loginUser[0].password, (err, result) => {
       if (err) {
         return res.status(401).json({
-          error: 'Error only God knows where'
+          error: 'Auth Failed'
         });
       }
       if (result) {
