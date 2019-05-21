@@ -27,6 +27,15 @@ class carController {
       data: vehicle,
     });
   }
+
+  static getAllCars(req, res) {
+    const available = vehicles.filter(vehicle => vehicle.status === 'available');
+    res.status(200).json({
+      status: 200,
+      message: 'Vehicles retrieved successfully',
+      data: available,
+    });
+  }
 }
 
 export default carController;
