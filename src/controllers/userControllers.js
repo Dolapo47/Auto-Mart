@@ -2,7 +2,7 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
-import users from '../db/db';
+import users from '../db/userDb';
 import validateRegisterInput from '../helper/validations/validateRegeisterInput';
 import validateLogin from '../helper/validations/validateLogin';
 
