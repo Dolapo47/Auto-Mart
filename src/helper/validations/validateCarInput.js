@@ -1,3 +1,4 @@
+/* eslint-disable require-jsdoc */
 import Validator from 'validator';
 import isEmpty from '../isEmpty';
 
@@ -14,7 +15,7 @@ const validateCarInput = (data) => {
   data.price = isEmpty(data.price) === true ? '' : data.price;
   data.manufacturer = isEmpty(data.manufacturer) === true ? '' : data.manufacturer;
   data.model = isEmpty(data.model) === true ? '' : data.model;
-  data.body_type = isEmpty(data.body_type) === true ? '' : data.body_type;
+  data.bodyType = isEmpty(data.bodyType) === true ? '' : data.bodyType;
 
   if (!Validator.isAlpha(data.state)) {
     errors.state = 'State must be in alphabet';
@@ -22,14 +23,6 @@ const validateCarInput = (data) => {
 
   if (Validator.isEmpty(data.state)) {
     errors.state = 'State of vehicle is required';
-  }
-
-  if (!Validator.isAlpha(data.status)) {
-    errors.state = 'Status must be in alphabets';
-  }
-
-  if (Validator.isEmpty(data.status)) {
-    errors.status = 'Status of vehicle is required';
   }
 
   if (!Validator.isFloat(data.price)) {
@@ -56,17 +49,17 @@ const validateCarInput = (data) => {
     errors.model = 'Model of vehicle is required';
   }
 
-  if (!Validator.isAlpha(data.body_type)) {
-    errors.body_type = 'Body-type must be alphabets';
+  if (!Validator.isAlpha(data.bodyType)) {
+    errors.bodyType = 'Body-type must be alphabets';
   }
 
-  if (Validator.body_type.isEmpty(data.body_type)) {
-    errors.body_type = 'Body-type of vehicle is required';
+  if (Validator.bodyType.isEmpty(data.bodyType)) {
+    errors.bodyType = 'Body-type of vehicle is required';
   }
 
   return {
     errors,
-    isValid: isEmpty(errors)
+    isValid: isEmpty(errors),
   };
 };
 
