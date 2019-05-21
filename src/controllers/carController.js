@@ -94,7 +94,26 @@ class carController {
       return res.status(200).json({
         status: 200,
         message: 'Vehicle price updated',
-        data: vehicles,
+        data: item,
+      });
+    }
+  }
+
+  static updateStatus(req, res) {
+    const id = parseInt(req.params.car_id, 10);
+    const { status } = req.body;
+    const item = vehicles.filter(vehicle => vehicle.id === id);
+    item[0].status = status;
+    if (item.length === 0) {
+      res.status(404).json({
+        status: 404,
+        message: 'No vehicle matched the specified criteria',
+      });
+    } else {
+      return res.status(200).json({
+        status: 200,
+        message: 'Vehicle status updated',
+        data: item,
       });
     }
   }
