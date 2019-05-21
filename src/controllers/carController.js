@@ -30,11 +30,35 @@ class carController {
 
   static getAllCars(req, res) {
     const available = vehicles.filter(vehicle => vehicle.status === 'available');
-    res.status(200).json({
-      status: 200,
-      message: 'Vehicles retrieved successfully',
-      data: available,
-    });
+    if (available.length === 0) {
+      res.status(404).json({
+        status: 404,
+        message: 'No vehicle matched the specified criteria',
+      });
+    } else {
+      res.status(200).json({
+        status: 200,
+        message: 'Vehicles retrieved successfully',
+        data: available,
+      });
+    }
+  }
+
+  static getOneCar(req, res) {
+    const id = parseInt(req.params.car_id, 10);
+    const item = vehicles.filter(vehicle => vehicle.id === id);
+    if (item.length === 0) {
+      res.status(404).json({
+        status: 404,
+        message: 'No vehicle matched the specified criteria',
+      });
+    } else {
+      res.status(200).json({
+        status: 200,
+        message: 'Vehicle retrieved successfully',
+        data: item,
+      });
+    }
   }
 }
 
