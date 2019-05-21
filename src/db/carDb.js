@@ -13,7 +13,7 @@ const vehicles = [
   },
 
   {
-    id: 1,
+    id: 2,
     userId: 1,
     createdOn: new Date(),
     state: 'new',
@@ -25,7 +25,7 @@ const vehicles = [
   },
 
   {
-    id: 1,
+    id: 3,
     userId: 1,
     createdOn: new Date(),
     state: 'new',
