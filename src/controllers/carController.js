@@ -60,6 +60,25 @@ class carController {
       });
     }
   }
+
+  static deleteCar(req, res) {
+    const id = parseInt(req.params.car_id, 10);
+    // eslint-disable-next-line array-callback-return
+    vehicles.map((vehicle, index) => {
+      if (vehicle.id === id) {
+        vehicles.splice(index, 1);
+        return res.status(200).json({
+          status: 200,
+          message: 'Vehicle successfully deleted',
+          data: vehicles,
+        });
+      }
+    });
+    return res.status(404).json({
+      status: 404,
+      message: 'vehicle not found',
+    });
+  }
 }
 
 export default carController;
