@@ -79,6 +79,25 @@ class carController {
       message: 'vehicle not found',
     });
   }
+
+  static updatePrice(req, res) {
+    const id = parseInt(req.params.car_id, 10);
+    const { price } = req.body;
+    const item = vehicles.filter(vehicle => vehicle.id === id);
+    item[0].price = price;
+    if (item.length === 0) {
+      res.status(404).json({
+        status: 404,
+        message: 'No vehicle matched the specified criteria',
+      });
+    } else {
+      return res.status(200).json({
+        status: 200,
+        message: 'Vehicle price updated',
+        data: vehicles,
+      });
+    }
+  }
 }
 
 export default carController;
