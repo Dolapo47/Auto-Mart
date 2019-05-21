@@ -5,12 +5,22 @@ import user from './routes/user';
 import vehicle from './routes/vehicle';
 
 const app = express();
-morgan('dev');
+app.use(morgan('dev'));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: false,
 }));
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  if (req.method === 'OPTIONS') {
+    res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET');
+    return res.status(200).json({});
+  }
+  next();
+});
 
 app.use('/api/v1', user);
 app.use('/api/v1', vehicle);
@@ -19,10 +29,19 @@ app.get('/', (req, res) => {
   res.send('Welcome to AutoMart');
 });
 
-
-app.get('*', (req, res) => {
-  res.send('Route not found');
+app.use((req, res, next) => {
+  const error = new Error('Not Found');
+  error.status = 404;
+  next(error);
 });
 
+app.use((error, req, res) => {
+  res.status(error.status || 500);
+  res.json({
+    error: {
+      message: error.message,
+    }
+  });
+});
 
 export default app;
