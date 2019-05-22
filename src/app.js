@@ -3,6 +3,7 @@ import morgan from 'morgan';
 import bodyParser from 'body-parser';
 import user from './routes/user';
 import vehicle from './routes/vehicle';
+import order from './routes/order';
 
 const app = express();
 app.use(morgan('dev'));
@@ -22,12 +23,13 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/api/v1', user);
-app.use('/api/v1', vehicle);
-
 app.get('/', (req, res) => {
   res.send('Welcome to AutoMart');
 });
+
+app.use('/api/v1', user);
+app.use('/api/v1', vehicle);
+app.use('/api/v1', order);
 
 app.use((req, res, next) => {
   const error = new Error('Not Found');
