@@ -55,10 +55,8 @@ describe('User', () => {
       .post('/api/v1/auth/signin')
       .send(user)
       .end((err, res) => {
-        const { body } = res;
         if (err) done(err);
         expect(res.status).to.equal(200);
-        expect(body.status).to.be.a('number');
         done();
       });
   });
