@@ -38,13 +38,24 @@ describe('Car', () => {
       });
   });
 
-  it('should get all cars in the app', (done) => {
+  it('should get specific car in the app', (done) => {
     chai.request(app)
       .get('/api/v1/car/1')
       .end((err, res) => {
         const { body } = res;
         if (err) done(err);
         expect(body).to.be.an('object');
+        expect(body.status).to.equal(200);
+        done();
+      });
+  });
+
+  it('should delete a specific vehicle in the app', (done) => {
+    chai.request(app)
+      .delete('/api/v1/car/1')
+      .end((err, res) => {
+        const { body } = res;
+        if (err) done(err);
         expect(body.status).to.equal(200);
         done();
       });
