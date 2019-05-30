@@ -26,4 +26,15 @@ describe('Car', () => {
         done();
       });
   });
+  it('should get all cars in the app', (done) => {
+    chai.request(app)
+      .get('/api/v1/car')
+      .end((err, res) => {
+        const { body } = res;
+        if (err) done(err);
+        expect(body).to.be.an('object');
+        expect(body.status).to.equal(200);
+        done();
+      });
+  });
 });
