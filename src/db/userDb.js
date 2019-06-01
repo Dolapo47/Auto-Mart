@@ -1,4 +1,3 @@
-import bcrypt from 'bcrypt';
 
 const users = [
   {
@@ -6,7 +5,7 @@ const users = [
     email: 'Dolapo@andela.com',
     first_name: 'dolapo',
     last_name: 'adeleye',
-    password: bcrypt.hash('dolapo', 8),
+    password: 'Dolapo2018@@',
     address: '12 epic tower road lagos',
     isAdmin: true,
   },
@@ -16,7 +15,7 @@ const users = [
     email: 'ayo@andela.com',
     first_name: 'ayo',
     last_name: 'adeleye',
-    password: bcrypt.hash('ayomide2018@@', 10),
+    password: 'ayomide2018@@',
     address: '12 epic tower road lagos',
     isAdmin: true,
   },

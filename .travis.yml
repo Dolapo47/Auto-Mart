@@ -1,16 +1,33 @@
+sudo: required
+
 language: node_js
 node_js:
   - stable
-  
+
+env: 
+  - CXX=g++-4.8   
+
+packages: 
+  - g++-4.8
+  - gcc-4.8
+
 cache:
 directories:
-  - "node_modules"
+  - node_modules
+
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+
+before_install:
+  - npm install -g node-gyp
 
 install:
-  -npm install
+  - npm install
 script:
-  -npm run test
+  - npm run test
 
 
 after_success:
-  -npm run coverage
+  - npm run coverage
