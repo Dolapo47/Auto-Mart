@@ -1,6 +1,6 @@
 /* eslint-disable require-jsdoc */
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
 import users from '../db/userDb';
 import validateRegisterInput from '../helper/validations/validateRegeisterInput';
@@ -22,33 +22,35 @@ class userController {
         error: 'The user already exist.',
       });
     } else {
-      bcrypt.hash(password, 10, (err, hash) => {
-        if (err) {
-          return res.status(400).json({
-            error: 'Password could not be hashed',
+      bcrypt.genSalt(10, (err, salt) => {
+        bcrypt.hash(password, salt, (err, hash) => {
+          if (err) {
+            return res.status(400).json({
+              error: 'Password could not be hashed',
+            });
+          }
+          const user = {
+            id: users.length + 1,
+            email: req.body.email,
+            first_name: req.body.first_name,
+            last_name: req.body.last_name,
+            password: hash,
+            address: req.body.address,
+            admin: false,
+          };
+          users.push(user);
+          const token = jwt.sign({
+            email: user.email,
+            userId: user.id
+          }, process.env.SECRET,
+          {
+            expiresIn: '1h',
           });
-        }
-        const user = {
-          id: users.length + 1,
-          email: req.body.email,
-          first_name: req.body.first_name,
-          last_name: req.body.last_name,
-          password: hash,
-          address: req.body.address,
-          admin: false,
-        };
-        users.push(user);
-        const token = jwt.sign({
-          email: user.email,
-          userId: user.id
-        }, process.env.SECRET,
-        {
-          expiresIn: '1h',
-        });
-        res.status(201).json({
-          status: 201,
-          success: 'user registered',
-          data: [{ token, user }],
+          res.status(201).json({
+            status: 201,
+            success: 'user registered',
+            data: [{ token, user }],
+          });
         });
       });
     }
