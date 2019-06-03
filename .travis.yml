@@ -1,22 +1,33 @@
+sudo: required
+
 language: node_js
 node_js:
   - stable
-  - "10.15.1"
 
-env:
-  global: 
-  -CODECLIMATE_REPO_TOKEN=1e51a0bb707338df05c8a2de305dc78bbb864b9dc967fed81809009b37c13348
-  -secret=LBpc4a4KRRZfbHYmcGw5kKRYt4AmVeILP
+env: 
+  - CXX=g++-4.8   
 
-before_script:
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-  - chmod +x ./cc-test-reporter
-  - ./cc-test-reporter before-build
+packages: 
+  - g++-4.8
+  - gcc-4.8
+
+cache:
+directories:
+  - node_modules
+
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+
+before_install:
+  - npm install -g node-gyp
+
+install:
+  - npm install
 script:
-  - npm run coverage
+  - npm run test
+
+
 after_success:
   - npm run coverage
-  - npm install codeclimate-test-reporter
-  - codeclimate-test-reporter < coverage/lcov.info
-after_script:
-  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
