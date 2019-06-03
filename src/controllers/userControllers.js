@@ -1,6 +1,5 @@
 /* eslint-disable require-jsdoc */
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 import users from '../db/db';
 import validateRegisterInput from '../helper/validations/validateRegeisterInput';
