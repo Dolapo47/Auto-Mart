@@ -25,27 +25,36 @@ app.use(bodyParser.urlencoded({
 // });
 
 app.get('/', (req, res) => {
-  res.send('Welcome to AutoMart');
+  res.status(200).json({
+    status: 200,
+    data: [
+      {
+        message: 'welcome to automart',
+      }
+    ]
+  });
 });
 
 app.use('/api/v1', user);
 app.use('/api/v1', vehicle);
 app.use('/api/v1', order);
 
-app.use((req, res, next) => {
-  const error = new Error('Not Found');
-  error.status = 404;
-  next(error);
+
+app.use((err, req, res, next) => {
+  if (err) {
+    return res.status(500).json({
+      status: 500,
+      error: 'internal server error'
+    });
+  }
+  return next();
 });
 
-app.use((error, req, res) => {
-  res.status(error.status || 500);
-  res.json({
-    error: {
-      message: error.message,
-    }
-  });
-});
+app.all('*', (req, res) => res.status(404).json({
+  status: 404,
+  error: 'Route does not exist'
+}));
+
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
