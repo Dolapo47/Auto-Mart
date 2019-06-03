@@ -19,7 +19,7 @@ class userController {
     if (checkedEmail.length > 0) {
       res.status(409).json({
         status: 409,
-        error: 'The user already exist.',
+        error: 'The user already exist',
       });
     } else {
       bcrypt.genSalt(10, (err, salt) => {
@@ -66,7 +66,7 @@ class userController {
     const loginUser = users.filter(user => user.email === email);
     if (loginUser.length < 1) {
       return res.status(404).json({
-        message: 'Email does not exist',
+        message: 'Auth Failed',
       });
     }
     bcrypt.compare(password, loginUser[0].password, (err, result) => {
