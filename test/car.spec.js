@@ -50,16 +50,6 @@ describe('Car', () => {
       });
   });
 
-//   it('should delete a specific vehicle in the app', (done) => {
-//     chai.request(app)
-//       .delete('/api/v1/car/1')
-//       .end((err, res) => {
-//         const { body } = res;
-//         if (err) done(err);
-//         expect(body.status).to.equal(200);
-//         done();
-//       });
-//   });
   it('should update the price of vehicle in the app', (done) => {
     chai.request(app)
       .patch('/api/v1/car/1/price')
