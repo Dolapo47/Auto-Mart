@@ -128,4 +128,42 @@ describe('Car', () => {
         done();
       });
   });
+
+  it('should return an error if get item not found', (done) => {
+    const vehicle = {
+      state: 'new',
+      status: 'available',
+      price: 1200000,
+      manufacturer: 'honda',
+      model: 'accord',
+      bodyType: 'car',
+    };
+    vehicles.push((vehicle));
+    chai.request(app)
+      .get('/api/v1/car/5')
+      .end((err, res) => {
+        expect(res.body.status).to.equal(404);
+        expect(res.body.message).to.be.equal('No vehicle matched the specified criteria');
+        done();
+      });
+  });
+
+  it('should return an error if patch item not found', (done) => {
+    const vehicle = {
+      state: 'new',
+      status: 'available',
+      price: 1200000,
+      manufacturer: 'honda',
+      model: 'accord',
+      bodyType: 'car',
+    };
+    vehicles.push((vehicle));
+    chai.request(app)
+      .patch('/api/v1/car/6/price')
+      .end((err, res) => {
+        expect(res.body.status).to.equal(500);
+        expect(res.body.error).to.be.equal('internal server error');
+        done();
+      });
+  });
 });
