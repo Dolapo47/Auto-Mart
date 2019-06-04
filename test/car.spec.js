@@ -1,6 +1,7 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../src/app';
+import vehicles from '../src/db/carDb';
 
 const { expect } = chai;
 chai.use(chaiHttp);
@@ -86,6 +87,44 @@ describe('Car', () => {
         expect(res.body.message).to.be.an('string');
         expect(res.body).to.be.an('object');
         expect(res.body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('should return an error if item not found', (done) => {
+    const vehicle = {
+      state: 'new',
+      status: 'available',
+      price: 1200000,
+      manufacturer: 'honda',
+      model: 'accord',
+      bodyType: 'car',
+    };
+    vehicles.push((vehicle));
+    chai.request(app)
+      .delete('/api/v1/car/5')
+      .end((err, res) => {
+        expect(res.body.status).to.equal(404);
+        expect(res.body.message).to.be.equal('vehicle not found');
+        done();
+      });
+  });
+
+  it('should delete a vehicle from the app', (done) => {
+    const vehicle = {
+      state: 'new',
+      status: 'available',
+      price: 1200000,
+      manufacturer: 'honda',
+      model: 'accord',
+      bodyType: 'car',
+    };
+    vehicles.push((vehicle));
+    chai.request(app)
+      .delete('/api/v1/car/3')
+      .end((err, res) => {
+        expect(res.body.status).to.equal(200);
+        expect(res.body.message).to.be.equal('Vehicle successfully deleted');
         done();
       });
   });
