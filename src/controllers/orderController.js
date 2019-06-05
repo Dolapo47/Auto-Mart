@@ -1,8 +1,16 @@
 /* eslint-disable require-jsdoc */
 import orders from '../db/orderDb';
+import validation from '../helper/validations/validateOrderInput';
 
 class orderController {
   static createOrder(req, res) {
+    // const { error } = validation.validateOrder(req.body);
+    // if (error) {
+    //   return res.status(422).json({
+    //     status: 422,
+    //     message: error.details[0].message
+    //   });
+    // }
     const order = {
       id: orders.length + 1,
       userId: 2,
@@ -28,7 +36,7 @@ class orderController {
     if (item.length === 0) {
       return res.status(404).json({
         status: 404,
-        message: 'No vehicle matched the specified criteria',
+        message: 'No order matched the specified criteria',
       });
     } if (item[0].status !== 'pending') {
       return res.status(404).json({
