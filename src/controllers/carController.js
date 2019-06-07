@@ -1,14 +1,13 @@
 /* eslint-disable require-jsdoc */
 import vehicles from '../db/carDb';
-// import validateCarInput from '../helper/validations/validateCarInput';
+import validateCarInput from '../helper/validations/validateCarInput';
 
 class carController {
   static createCar(req, res) {
-    // const { errors, isValid } = validateCarInput(req.body);
-    // if (!isValid) {
-    //   return res.status(400).json({ errors });
-    // }
-
+    const { errors, isValid } = validateCarInput(req.body);
+    if (!isValid) {
+      return res.status(400).json({ errors });
+    }
     const vehicle = {
       id: vehicles.length + 1,
       userId: 3,
@@ -17,7 +16,7 @@ class carController {
       price: req.body.price,
       manufacturer: req.body.manufacturer,
       model: req.body.model,
-      body_type: req.body.bodyType
+      bodyType: req.body.bodyType
     };
 
     vehicles.push(vehicle);
