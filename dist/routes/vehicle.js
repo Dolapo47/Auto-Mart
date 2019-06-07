@@ -19,6 +19,5 @@ router.post('/car', _carController["default"].createCar);
 router.patch('/car/:car_id/status', _carController["default"].updateStatus);
 router.patch('/car/:car_id/price', _carController["default"].updatePrice);
 router["delete"]('/car/:car_id', _carController["default"].deleteCar);
-router.get('/car?:status=available', _carController["default"].getAvailableCars);
 var _default = router;
 exports["default"] = _default;
