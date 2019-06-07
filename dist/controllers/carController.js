@@ -7,6 +7,8 @@ exports["default"] = void 0;
 
 var _carDb = _interopRequireDefault(require("../db/carDb"));
 
+var _validateCarInput2 = _interopRequireDefault(require("../helper/validations/validateCarInput"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -15,7 +17,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-// import validateCarInput from '../helper/validations/validateCarInput';
 var carController =
 /*#__PURE__*/
 function () {
@@ -26,10 +27,16 @@ function () {
   _createClass(carController, null, [{
     key: "createCar",
     value: function createCar(req, res) {
-      // const { errors, isValid } = validateCarInput(req.body);
-      // if (!isValid) {
-      //   return res.status(400).json({ errors });
-      // }
+      var _validateCarInput = (0, _validateCarInput2["default"])(req.body),
+          errors = _validateCarInput.errors,
+          isValid = _validateCarInput.isValid;
+
+      if (!isValid) {
+        return res.status(400).json({
+          errors: errors
+        });
+      }
+
       var vehicle = {
         id: _carDb["default"].length + 1,
         userId: 3,
@@ -38,7 +45,7 @@ function () {
         price: req.body.price,
         manufacturer: req.body.manufacturer,
         model: req.body.model,
-        body_type: req.body.bodyType
+        bodyType: req.body.bodyType
       };
 
       _carDb["default"].push(vehicle);

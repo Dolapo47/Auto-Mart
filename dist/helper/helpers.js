@@ -1,13 +1,23 @@
 "use strict";
 
-var _joi = _interopRequireDefault(require("joi"));
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+
+var _cloudinary = _interopRequireDefault(require("cloudinary"));
+
+var _dotenv = _interopRequireDefault(require("dotenv"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-exports.validateRegisterUserSchema = {
-  email: _joi["default"].string().email().max(35).required(),
-  first_name: _joi["default"].string().max(15).regex(/^[a-zA-Z]+$/).required(),
-  last_name: _joi["default"].string().max(15).regex(/^[a-zA-Z]+$/).required(),
-  password: _joi["default"].string().min(6).max(15).required(),
-  address: _joi["default"].string().max(40).required()
-};
+_dotenv["default"].config();
+
+var cloudinary = _cloudinary["default"].v2;
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_name,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
+var _default = cloudinary;
+exports["default"] = _default;

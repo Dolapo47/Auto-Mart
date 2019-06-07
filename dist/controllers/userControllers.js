@@ -7,7 +7,7 @@ exports["default"] = void 0;
 
 var _jsonwebtoken = _interopRequireDefault(require("jsonwebtoken"));
 
-var _bcrypt = _interopRequireDefault(require("bcrypt"));
+var _bcryptjs = _interopRequireDefault(require("bcryptjs"));
 
 var _dotenv = _interopRequireDefault(require("dotenv"));
 
@@ -58,42 +58,44 @@ function () {
       if (checkedEmail.length > 0) {
         res.status(409).json({
           status: 409,
-          error: 'The user already exist.'
+          error: 'The user already exist'
         });
       } else {
-        _bcrypt["default"].hash(password, 10, function (err, hash) {
-          if (err) {
-            return res.status(400).json({
-              error: 'Password could not be hashed'
+        _bcryptjs["default"].genSalt(10, function (err, salt) {
+          _bcryptjs["default"].hash(password, salt, function (err, hash) {
+            if (err) {
+              return res.status(400).json({
+                error: 'Password could not be hashed'
+              });
+            }
+
+            var user = {
+              id: _userDb["default"].length + 1,
+              email: req.body.email,
+              first_name: req.body.first_name,
+              last_name: req.body.last_name,
+              password: hash,
+              address: req.body.address,
+              admin: false
+            };
+
+            _userDb["default"].push(user);
+
+            var token = _jsonwebtoken["default"].sign({
+              email: user.email,
+              userId: user.id
+            }, process.env.SECRET, {
+              expiresIn: '1h'
             });
-          }
 
-          var user = {
-            id: _userDb["default"].length + 1,
-            email: req.body.email,
-            first_name: req.body.first_name,
-            last_name: req.body.last_name,
-            password: hash,
-            address: req.body.address,
-            admin: false
-          };
-
-          _userDb["default"].push(user);
-
-          var token = _jsonwebtoken["default"].sign({
-            email: user.email,
-            userId: user.id
-          }, process.env.SECRET, {
-            expiresIn: '1h'
-          });
-
-          res.status(201).json({
-            status: 201,
-            success: 'user registered',
-            data: [{
-              token: token,
-              user: user
-            }]
+            res.status(201).json({
+              status: 201,
+              success: 'user registered',
+              data: [{
+                token: token,
+                user: user
+              }]
+            });
           });
         });
       }
@@ -121,11 +123,11 @@ function () {
 
       if (loginUser.length < 1) {
         return res.status(404).json({
-          message: 'Email does not exist'
+          message: 'Auth Failed'
         });
       }
 
-      _bcrypt["default"].compare(password, loginUser[0].password, function (err, result) {
+      _bcryptjs["default"].compare(password, loginUser[0].password, function (err, result) {
         if (err) {
           return res.status(401).json({
             error: 'Auth Failed'

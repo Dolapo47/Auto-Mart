@@ -20,40 +20,41 @@ var _order = _interopRequireDefault(require("./routes/order"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var app = (0, _express["default"])();
+var port = process.env.PORT || 3000;
 app.use((0, _morgan["default"])('dev'));
 app.use(_bodyParser["default"].json());
 app.use(_bodyParser["default"].urlencoded({
   extended: false
 }));
-app.use(function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-
-  if (req.method === 'OPTIONS') {
-    res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET');
-    return res.status(200).json({});
-  }
-
-  next();
-});
 app.get('/', function (req, res) {
-  res.send('Welcome to AutoMart');
+  res.status(200).json({
+    status: 200,
+    data: [{
+      message: 'welcome to automart'
+    }]
+  });
 });
 app.use('/api/v1', _user["default"]);
 app.use('/api/v1', _vehicle["default"]);
 app.use('/api/v1', _order["default"]);
-app.use(function (req, res, next) {
-  var error = new Error('Not Found');
-  error.status = 404;
-  next(error);
+app.use(function (err, req, res, next) {
+  if (err) {
+    return res.status(500).json({
+      status: 500,
+      error: 'internal server error'
+    });
+  }
+
+  return next();
 });
-app.use(function (error, req, res) {
-  res.status(error.status || 500);
-  res.json({
-    error: {
-      message: error.message
-    }
+app.all('*', function (req, res) {
+  return res.status(404).json({
+    status: 404,
+    error: 'Route does not exist'
   });
+});
+app.listen(port, function () {
+  console.log("Server is running on port ".concat(port));
 });
 var _default = app;
 exports["default"] = _default;

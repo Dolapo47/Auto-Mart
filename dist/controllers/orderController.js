@@ -7,6 +7,8 @@ exports["default"] = void 0;
 
 var _orderDb = _interopRequireDefault(require("../db/orderDb"));
 
+var _validateOrderInput2 = _interopRequireDefault(require("../helper/validations/validateOrderInput"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -25,54 +27,46 @@ function () {
   _createClass(orderController, null, [{
     key: "createOrder",
     value: function createOrder(req, res) {
-      var order = {
-        id: _orderDb["default"].length + 1,
-        userId: 2,
-        carId: 1,
-        status: 'pending',
-        amount: 1200000,
-        amount_offered: req.body.amount_offered
-      };
+      var _validateOrderInput = (0, _validateOrderInput2["default"])(req.body),
+          errors = _validateOrderInput.errors,
+          isValid = _validateOrderInput.isValid;
 
-      _orderDb["default"].push(order);
-
-      return res.status(201).json({
-        status: 201,
-        message: 'order successfully created',
-        data: order
-      });
-    }
-  }, {
-    key: "updateOrder",
-    value: function updateOrder(req, res) {
-      var id = parseInt(req.params.orderId, 10);
-      var amountOffered = req.body.amount_offered;
-
-      var item = _orderDb["default"].filter(function (order) {
-        return order.id === id;
-      });
-
-      item[0].amount_offered = amountOffered;
-
-      if (item.length === 0) {
-        return res.status(404).json({
-          status: 404,
-          message: 'No vehicle matched the specified criteria'
+      if (!isValid) {
+        return res.status(400).json({
+          errors: errors
         });
       }
 
-      if (item[0].status !== 'pending') {
-        return res.status(404).json({
-          status: 404,
-          message: 'No vehicle matched'
+      var userId = parseInt(req.body.userId, 10);
+      var carId = parseInt(req.body.carId, 10);
+
+      var checkOrder = _orderDb["default"].filter(function (order) {
+        return order.userId === userId && order.carId === carId;
+      });
+
+      if (checkOrder.length > 0) {
+        res.status(409).json({
+          status: 409,
+          message: 'The order already exist'
+        });
+      } else {
+        var order = {
+          id: _orderDb["default"].length + 1,
+          userId: userId,
+          carId: carId,
+          status: 'pending',
+          amount: 1200000,
+          amount_offered: req.body.amount_offered
+        };
+
+        _orderDb["default"].push(order);
+
+        return res.status(201).json({
+          status: 201,
+          message: 'order successfully created',
+          data: order
         });
       }
-
-      return res.status(200).json({
-        status: 200,
-        message: 'Order price updated',
-        data: item
-      });
     }
   }]);
 

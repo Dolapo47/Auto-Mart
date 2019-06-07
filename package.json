@@ -6,7 +6,7 @@
   "scripts": {
     "dev-start": "npm run start",
     "clean": "rm -rf dist && mkdir dist",
-    "build": "npm run clean && npm run babel-build && node dist/app",
+    "build": "npm run clean && npm run babel-build",
     "coverage": "nyc npm run test && npm run generate-lcov && npm run coveralls-coverage && npm run codeclimate-coverage",
     "test": "mocha --require @babel/register --exit",
     "start": "nodemon --exec babel-node src/app.js",

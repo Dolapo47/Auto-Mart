@@ -33,7 +33,7 @@ var validateCarInput = function validateCarInput(data) {
     errors.state = 'State of vehicle is required';
   }
 
-  if (!_validator["default"].isFloat(data.price)) {
+  if (!_validator["default"].isNumeric(data.price)) {
     errors.price = 'price should be number and in this format (0.00)';
   }
 
@@ -61,7 +61,7 @@ var validateCarInput = function validateCarInput(data) {
     errors.bodyType = 'Body-type must be alphabets';
   }
 
-  if (_validator["default"].bodyType.isEmpty(data.bodyType)) {
+  if (_validator["default"].isEmpty(data.bodyType)) {
     errors.bodyType = 'Body-type of vehicle is required';
   }
 
