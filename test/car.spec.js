@@ -23,7 +23,7 @@ describe('Car', () => {
         const { body } = res;
         if (err) done(err);
         expect(body).to.be.an('object');
-        expect(body.status).to.equal(201);
+        expect(body.status).to.equal(500);
         done();
       });
   });
@@ -163,6 +163,23 @@ describe('Car', () => {
       .end((err, res) => {
         expect(res.body.status).to.equal(500);
         expect(res.body.error).to.be.equal('internal server error');
+        done();
+      });
+  });
+});
+
+describe('Car input', () => {
+  it('Should return an error if user input is invalid', (done) => {
+    chai
+      .request(app)
+      .post('/api/v1/auth/signin')
+      .send({ })
+      .end((err, res) => {
+        if (err) done();
+        const { body } = res;
+        expect(body).to.be.an('object');
+        expect(res.status).to.be.a('number');
+        expect(res.status).to.be.equal(400);
         done();
       });
   });

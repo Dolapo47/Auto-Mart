@@ -25,7 +25,7 @@ const validateCarInput = (data) => {
     errors.state = 'State of vehicle is required';
   }
 
-  if (!Validator.isFloat(data.price)) {
+  if (!Validator.isNumeric(data.price)) {
     errors.price = 'price should be number and in this format (0.00)';
   }
 
@@ -53,7 +53,7 @@ const validateCarInput = (data) => {
     errors.bodyType = 'Body-type must be alphabets';
   }
 
-  if (Validator.bodyType.isEmpty(data.bodyType)) {
+  if (Validator.isEmpty(data.bodyType)) {
     errors.bodyType = 'Body-type of vehicle is required';
   }
 

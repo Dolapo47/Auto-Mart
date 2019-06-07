@@ -12,7 +12,7 @@ describe("POST api/v1/auth/signup", () => {
   it("Should throw an error if email already exists", (done) => {
     chai
       .request(app)
-      .post("/api/v1/auth/signup")
+      .post('/api/v1/auth/signup')
       .send({
         email: 'Dolapo@andela.com',
         first_name: 'dolapo',
