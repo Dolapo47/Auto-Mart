@@ -9,44 +9,58 @@ chai.use(chaiHttp);
 describe('Order', () => {
   it('should create new order', (done) => {
     const order = {
-      userId: 3,
+      userId: 1,
       carId: 2,
-      status: 'accepted',
-      amount: 1200000.00,
-      amount_offered: 1100000.00,
+      status: 'pending',
+      amount: 1200000,
+      amount_offered: 1250000,
+    };
+    chai.request(app)
+      .post('/api/v1/order')
+      .send(order)
+      .end((err, res) => {
+        const { body } = res;
+        if (err) done(err);
+        expect(body.status).to.equal(500);
+        expect(body.error).to.be.equal('internal server error');
+        done();
+      });
+  });
+});
+
+describe('failed order', () => {
+  it('Should fail when input is wrong', (done) => {
+    chai
+      .request(app)
+      .post('/api/v1/order')
+      .send({ })
+      .end((err, res) => {
+        if (err) done();
+        const { body } = res;
+        expect(body).to.be.an('object');
+        expect(res.status).to.be.a('number');
+        expect(res.status).to.be.equal(400);
+        done();
+      });
+  });
+});
+
+describe('should throw an error if order does not exist', () => {
+  it('should throw an error if order exists', (done) => {
+    const order = {
+      amount_offered: 1000000,
+      carId: 1,
+      userId: 3
     };
     orders.push(order);
     chai.request(app)
       .post('/api/v1/order')
+      .send(order)
       .end((err, res) => {
-        expect(res.body.status).to.equal(201);
-        expect(res.body.message).to.be.equal('order successfully created');
-        done();
-      });
-  });
-
-  it('should update price if order is pending', (done) => {
-    chai.request(app)
-      .patch('/api/v1/order/2/price')
-      .send({
-        amount_offered: 7000000
-      })
-      .end((err, res) => {
-        expect(res.status).to.equal(200);
-        expect(res.body.message).to.be.equal('Order price updated');
-        done();
-      });
-  });
-
-  it('should return an error if order does not exist', (done) => {
-    chai.request(app)
-      .patch('/api/v1/order/8/price')
-      .send({
-        amount_offered: 7000000
-      })
-      .end((err, res) => {
-        expect(res.status).to.equal(500);
-        expect(res.body.error).to.be.equal('internal server error');
+        const { body } = res;
+        expect(body).to.be.an('object');
+        expect(res.status).to.be.a('number');
+        expect(res.status).to.be.equal(500);
         done();
       });
   });
