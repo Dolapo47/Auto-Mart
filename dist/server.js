@@ -11,5 +11,5 @@ var port = process.env.PORT || 3000;
 var server = _http["default"].createServer(_app["default"]);
 
 server.listen(port, function () {
-  return console.log('server is running on port', port);
+  return console.log('my own server is running on port', port);
 });
