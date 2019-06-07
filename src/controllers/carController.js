@@ -18,7 +18,7 @@ class carController {
       model: req.body.model,
       bodyType: req.body.bodyType
     };
-
+    console.log(vehicle);
     vehicles.push(vehicle);
     return res.status(201).json({
       status: 201,
@@ -118,19 +118,22 @@ class carController {
 
   // this function has issues
   static getAvailableCars(req, res) {
-    const { query } = JSON.parse(req);
-    const available = vehicles.filter(vehicle => vehicle.status === query.status);
-    if (available.length === 0) {
-      return res.status(404).json({
-        status: 404,
-        message: 'No available vehicle was found',
+    const { status } = req.query;
+    if (status === 'available') {
+      const available = JSON.parse(status);
+      const availableCars = vehicles.filter(vehicle => vehicle.status === 'available');
+      if (availableCars.length === 0) {
+        return res.status(404).json({
+          status: 404,
+          message: 'No vehicles available',
+        });
+      }
+      return res.status(200).json({
+        status: 200,
+        message: 'Request successful',
+        data: availableCars,
       });
     }
-    res.status(200).json({
-      status: 200,
-      message: 'Available cars displayed',
-      data: available,
-    });
   }
 }
 
