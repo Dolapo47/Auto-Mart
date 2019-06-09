@@ -3,12 +3,10 @@
 # Auto-Mart
 Auto Mart is an online marketplace for automobiles of diverse makes, model or body type. With Auto Mart, users can sell their cars or buy from trusted dealerships or private sellers.
 
----
  
 #Getting started
 These instructions will get you a copy of the project up and running on your local machine
 
----
 ##Prerequisites
 - Internet Connection
 - A computer with 4gb RAM and 500mb storage space
@@ -17,7 +15,6 @@ These instructions will get you a copy of the project up and running on your loc
 - Git
 - Postman
 
----
 ## Testing
 run 'npm test' on the terminal
 
@@ -30,7 +27,6 @@ run 'npm test' on the terminal
 - Install the dependencies using __npm install__
 - Run the app using __npm start__
 
----
 ## Built With
 1. HTML
 1. CSS
@@ -38,7 +34,6 @@ run 'npm test' on the terminal
 1. Nodejs
 1. Expressjs
 
----
 ## Contributors
 - Adedolapo Adeleye
 
