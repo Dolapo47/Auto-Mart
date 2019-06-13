@@ -13,37 +13,29 @@ const validateRegisterInput = (data) => {
   if (!Validator.isAlpha(data.last_name)) {
     errors.last_name = 'Last name must be only alphabets';
   }
-
   if (Validator.isEmpty(data.last_name)
   || !Validator.isLength(data.last_name, { min: 2, max: 30 })) {
     errors.last_name = 'Last name must be between 2 and 30 characters';
   }
-
   if (!Validator.isAlpha(data.first_name)) {
     errors.first_name = 'First name must be only alphabets';
   }
-
   if (Validator.isEmpty(data.first_name)
   || !Validator.isLength(data.first_name, { min: 2, max: 30 })) {
     errors.first_name = 'First name must be between 2 and 30 characters';
   }
-
   if (!Validator.isEmail(data.email)) {
     errors.email = 'The Email is invalid';
   }
-
   if (Validator.isEmpty(data.password)) {
     errors.password = 'The Password field is required';
   }
-
   if (!Validator.isLength(data.password, { min: 8, max: 60 })) {
     errors.password = 'Password must be between 8 and 30 characters';
   }
-
   if (Validator.isEmpty(data.address)) {
     errors.address = 'The address field is required';
   }
-
   return {
     errors,
     isValid: isEmpty(errors)
