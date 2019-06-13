@@ -1,13 +1,13 @@
 /* eslint-disable require-jsdoc */
 import vehicles from '../db/carDb';
-import validateCarInput from '../helper/validations/validateCarInput';
+import { validateNewCar } from '../helper/validations/validateCarInput';
 
 class carController {
   static createCar(req, res) {
-    const { errors, isValid } = validateCarInput(req.body);
-    if (!isValid) {
-      return res.status(400).json({ errors });
-    }
+    // const { errors, isValid } = validateNewCar(req.body);
+    // if (!isValid) {
+    //   return res.status(400).json({ errors });
+    // }
     const vehicle = {
       id: vehicles.length + 1,
       userId: 3,
@@ -117,21 +117,21 @@ class carController {
   }
 
   // this function has issues
-  static getAvailableCars(req, res) {
-    const { query } = JSON.parse(req);
-    const available = vehicles.filter(vehicle => vehicle.status === query.status);
-    if (available.length === 0) {
-      return res.status(404).json({
-        status: 404,
-        message: 'No available vehicle was found',
-      });
-    }
-    res.status(200).json({
-      status: 200,
-      message: 'Available cars displayed',
-      data: available,
-    });
-  }
+  // static getAvailableCars(req, res) {
+  //   const { query } = JSON.parse(req);
+  //   const available = vehicles.filter(vehicle => vehicle.status === query.status);
+  //   if (available.length === 0) {
+  //     return res.status(404).json({
+  //       status: 404,
+  //       message: 'No available vehicle was found',
+  //     });
+  //   }
+  //   res.status(200).json({
+  //     status: 200,
+  //     message: 'Available cars displayed',
+  //     data: available,
+  //   });
+  // }
 }
 
 export default carController;
