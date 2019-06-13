@@ -27,9 +27,6 @@ const validateRegisterInput = (data) => {
   if (!Validator.isEmail(data.email)) {
     errors.email = 'The Email is invalid';
   }
-  if (Validator.isEmpty(data.password)) {
-    errors.password = 'The Password field is required';
-  }
   if (!Validator.isLength(data.password, { min: 8, max: 60 })) {
     errors.password = 'Password must be between 8 and 30 characters';
   }
