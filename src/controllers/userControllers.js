@@ -17,25 +17,24 @@ class userController {
     }
     const checkedEmail = users.filter(user => user.email === email);
     if (checkedEmail.length > 0) {
-      res.status(409).json({ status: 409, error: 'The user already exist', });
-    } else {
-      bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(password, salt, (err, hash) => {
-          const user = {
-            id: users.length + 1,
-            email: req.body.email,
-            first_name: req.body.first_name,
-            last_name: req.body.last_name,
-            password: hash,
-            address: req.body.address,
-            admin: false,
-          };
-          users.push(user);
-          const token = jwt.sign({ email: user.email, userId: user.id }, process.env.SECRET, { expiresIn: '1h', });
-          res.status(201).json({ status: 201, success: 'user registered', data: [{ token, user }], });
-        });
-      });
+      return res.status(409).json({ status: 409, error: 'The user already exist', });
     }
+    bcrypt.genSalt(10, (err, salt) => {
+      bcrypt.hash(password, salt, (err, hash) => {
+        const user = {
+          id: users.length + 1,
+          email: req.body.email,
+          first_name: req.body.first_name,
+          last_name: req.body.last_name,
+          password: hash,
+          address: req.body.address,
+          admin: false,
+        };
+        users.push(user);
+        const token = jwt.sign({ email: user.email, userId: user.id }, process.env.SECRET, { expiresIn: '1h', });
+        res.status(201).json({ status: 201, success: 'user registered', data: [{ token, user }], });
+      });
+    });
   }
 
   static loginUser(req, res) {
