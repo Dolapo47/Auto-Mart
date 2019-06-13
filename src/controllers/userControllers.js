@@ -21,9 +21,6 @@ class userController {
     } else {
       bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(password, salt, (err, hash) => {
-          if (err) {
-            return res.status(400).json({ error: 'Password could not be hashed', });
-          }
           const user = {
             id: users.length + 1,
             email: req.body.email,
@@ -34,8 +31,7 @@ class userController {
             admin: false,
           };
           users.push(user);
-          const token = jwt.sign({ email: user.email, userId: user.id }, process.env.SECRET,
-            { expiresIn: '1h', });
+          const token = jwt.sign({ email: user.email, userId: user.id }, process.env.SECRET, { expiresIn: '1h', });
           res.status(201).json({ status: 201, success: 'user registered', data: [{ token, user }], });
         });
       });
@@ -53,9 +49,6 @@ class userController {
       return res.status(404).json({ message: 'Auth Failed', });
     }
     bcrypt.compare(password, loginUser[0].password, (err, result) => {
-      if (err) {
-        return res.status(401).json({ error: 'Auth Failed' });
-      }
       if (result) {
         const token = jwt.sign({ email: loginUser[0].email, id: loginUser[0].id, },
           process.env.SECRET,
