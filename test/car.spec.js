@@ -23,8 +23,7 @@ describe('Car', () => {
         const { body } = res;
         if (err) done(err);
         expect(res).to.be.an('object');
-        expect(body.status).to.equal(201);
-        expect(res.body.message).to.be.equal('Vehicle created successfully');
+        expect(res.statusCode).to.equal(201);
         done();
       });
   });
