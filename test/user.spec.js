@@ -106,6 +106,21 @@ describe('User', () => {
       });
   });
 
+  it('should throw error if users info is wrong', (done) => {
+    const user = {
+      email: 'dolapo@andela.com',
+      password: 'dolapo2018!!',
+    };
+    chai.request(app)
+      .post('/api/v1/auth/signin')
+      .send(user)
+      .end((err, res) => {
+        if (err) done(err);
+        expect(res.status).to.equal(401);
+        done();
+      });
+  });
+
   it('should return an error if sign in details doesnt exist', (done) => {
     const user = {
       email: 'dol@andela.com',
