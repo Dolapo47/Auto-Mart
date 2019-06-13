@@ -72,13 +72,9 @@ class userController {
         });
       }
       if (result) {
-        const token = jwt.sign({
-          email: loginUser[0].email,
-          id: loginUser[0].id,
-        }, process.env.SECRET,
-        {
-          expiresIn: '1h',
-        });
+        const token = jwt.sign({ email: loginUser[0].email, id: loginUser[0].id, },
+          process.env.SECRET,
+          { expiresIn: '1h', });
         return res.status(200).json({
           message: 'Auth Successful',
           user: loginUser[0],
