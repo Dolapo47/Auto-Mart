@@ -17,17 +17,12 @@ class userController {
     }
     const checkedEmail = users.filter(user => user.email === email);
     if (checkedEmail.length > 0) {
-      res.status(409).json({
-        status: 409,
-        error: 'The user already exist',
-      });
+      res.status(409).json({ status: 409, error: 'The user already exist', });
     } else {
       bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(password, salt, (err, hash) => {
           if (err) {
-            return res.status(400).json({
-              error: 'Password could not be hashed',
-            });
+            return res.status(400).json({ error: 'Password could not be hashed', });
           }
           const user = {
             id: users.length + 1,
@@ -39,18 +34,9 @@ class userController {
             admin: false,
           };
           users.push(user);
-          const token = jwt.sign({
-            email: user.email,
-            userId: user.id
-          }, process.env.SECRET,
-          {
-            expiresIn: '1h',
-          });
-          res.status(201).json({
-            status: 201,
-            success: 'user registered',
-            data: [{ token, user }],
-          });
+          const token = jwt.sign({ email: user.email, userId: user.id }, process.env.SECRET,
+            { expiresIn: '1h', });
+          res.status(201).json({ status: 201, success: 'user registered', data: [{ token, user }], });
         });
       });
     }
@@ -59,39 +45,24 @@ class userController {
   static loginUser(req, res) {
     const { errors, isValid } = validateLogin(req.body);
     const { email, password } = req.body;
-
     if (!isValid) {
       return res.status(400).json({ errors });
     }
     const loginUser = users.filter(user => user.email === email);
     if (loginUser.length < 1) {
-      return res.status(404).json({
-        message: 'Auth Failed',
-      });
+      return res.status(404).json({ message: 'Auth Failed', });
     }
     bcrypt.compare(password, loginUser[0].password, (err, result) => {
       if (err) {
-        return res.status(401).json({
-          error: 'Auth Failed'
-        });
+        return res.status(401).json({ error: 'Auth Failed' });
       }
       if (result) {
-        const token = jwt.sign({
-          email: loginUser[0].email,
-          id: loginUser[0].id,
-        }, process.env.SECRET,
-        {
-          expiresIn: '1h',
-        });
-        return res.status(200).json({
-          message: 'Auth Successful',
-          user: loginUser[0],
-          token,
-        });
+        const token = jwt.sign({ email: loginUser[0].email, id: loginUser[0].id, },
+          process.env.SECRET,
+          { expiresIn: '1h', });
+        return res.status(200).json({ message: 'Auth Successful', user: loginUser[0], token, });
       }
-      res.status(401).json({
-        message: 'Auth Failed',
-      });
+      res.status(401).json({ message: 'Auth Failed', });
     });
   }
 }
