@@ -1,10 +1,10 @@
 /* eslint-disable require-jsdoc */
 import vehicles from '../db/carDb';
-import { validateNewCar } from '../helper/validations/validateCarInput';
+import validateCarInput from '../helper/validations/validateCarInput';
 
 class carController {
   static createCar(req, res) {
-    // const { errors, isValid } = validateNewCar(req.body);
+    // const { errors, isValid } = validateCarInput(req.body);
     // if (!isValid) {
     //   return res.status(400).json({ errors });
     // }
