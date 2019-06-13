@@ -7,23 +7,24 @@ const { expect } = chai;
 chai.use(chaiHttp);
 
 describe('Car', () => {
-  it('should create a new vehicle item', (done) => {
-    const vehicle = {
-      state: 'new',
+  it('should create new car in app', (done) => {
+    const car = {
+      state: 'used',
       status: 'available',
-      price: 1200000,
-      manufacturer: 'honda',
-      model: 'accord',
+      price: 2000000,
+      manufacturer: 'toyota',
+      model: 'camry',
       bodyType: 'car',
     };
     chai.request(app)
       .post('/api/v1/car')
-      .send(vehicle)
+      .send(car)
       .end((err, res) => {
         const { body } = res;
         if (err) done(err);
-        expect(body).to.be.an('object');
-        expect(body.status).to.equal(500);
+        expect(res).to.be.an('object');
+        expect(body.status).to.equal(201);
+        expect(res.body.message).to.be.equal('Vehicle created successfully');
         done();
       });
   });
@@ -147,39 +148,12 @@ describe('Car', () => {
         done();
       });
   });
-
-  it('should return an error if patch item not found', (done) => {
-    const vehicle = {
-      state: 'new',
-      status: 'available',
-      price: 1200000,
-      manufacturer: 'honda',
-      model: 'accord',
-      bodyType: 'car',
-    };
-    vehicles.push((vehicle));
+  it('should send a 404 if id is not available', (done) => {
     chai.request(app)
-      .patch('/api/v1/car/6/price')
+      .delete('/api/v1/car/6')
       .end((err, res) => {
-        expect(res.body.status).to.equal(500);
-        expect(res.body.error).to.be.equal('internal server error');
-        done();
-      });
-  });
-});
-
-describe('Car input', () => {
-  it('Should return an error if user input is invalid', (done) => {
-    chai
-      .request(app)
-      .post('/api/v1/auth/signin')
-      .send({ })
-      .end((err, res) => {
-        if (err) done();
-        const { body } = res;
-        expect(body).to.be.an('object');
-        expect(res.status).to.be.a('number');
-        expect(res.status).to.be.equal(400);
+        expect(res.body.status).to.equal(404);
+        expect(res.body.message).to.be.equal('vehicle not found');
         done();
       });
   });

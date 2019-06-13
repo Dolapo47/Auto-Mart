@@ -31,20 +31,19 @@ app.use('/api/v1', vehicle);
 app.use('/api/v1', order);
 
 
-app.use((err, req, res, next) => {
+app.all('*', (req, res) => res.status(404).json({
+  status: 404,
+  error: 'Route does not exist'
+}));
+
+app.use((err, req, res) => {
   if (err) {
     return res.status(500).json({
       status: 500,
       error: 'internal server error'
     });
   }
-  return next();
 });
-
-app.all('*', (req, res) => res.status(404).json({
-  status: 404,
-  error: 'Route does not exist'
-}));
 
 
 app.listen(port, () => {
