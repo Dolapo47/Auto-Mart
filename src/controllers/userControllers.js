@@ -21,39 +21,35 @@ class userController {
         status: 409,
         error: 'The user already exist',
       });
-    } else {
-      bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(password, salt, (err, hash) => {
-          if (err) {
-            return res.status(400).json({
-              error: 'Password could not be hashed',
-            });
-          }
-          const user = {
-            id: users.length + 1,
-            email: req.body.email,
-            first_name: req.body.first_name,
-            last_name: req.body.last_name,
-            password: hash,
-            address: req.body.address,
-            admin: false,
-          };
-          users.push(user);
-          const token = jwt.sign({
-            email: user.email,
-            userId: user.id
-          }, process.env.SECRET,
-          {
-            expiresIn: '1h',
+    }
+    bcrypt.genSalt(10, (err, salt) => {
+      bcrypt.hash(password, salt, (err, hash) => {
+        if (err) {
+          return res.status(400).json({
+            error: 'Password could not be hashed',
           });
-          res.status(201).json({
+        }
+        const user = {
+          id: users.length + 1,
+          email: req.body.email,
+          first_name: req.body.first_name,
+          last_name: req.body.last_name,
+          password: hash,
+          address: req.body.address,
+          admin: false,
+        };
+        users.push(user);
+        const token = jwt.sign({ email: user.email, userId: user.id }, process.env.SECRET,
+          { expiresIn: '1h', });
+        res.status(201).json(
+          {
             status: 201,
             success: 'user registered',
             data: [{ token, user }],
-          });
-        });
+          }
+        );
       });
-    }
+    });
   }
 
   static loginUser(req, res) {
