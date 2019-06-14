@@ -1,7 +1,7 @@
 /* eslint-disable require-jsdoc */
 import vehicles from '../db/carDb';
 import validateCarInput from '../helper/validations/validateCarInput';
-import { errorMessage, carMessage, retrieveCarMessage } from '../helper/validations/responseMessages';
+import { responseMessage, retrieveCarMessage } from '../helper/validations/responseMessages';
 import carQueries from '../helper/carHelpers';
 
 class carController {
@@ -25,14 +25,14 @@ class carController {
   }
 
   static getAllCars(req, res) {
-    if (vehicles.length === 0) return errorMessage(res, 404, 'No vehicle found');
+    if (vehicles.length === 0) return responseMessage(res, 404, 'No vehicle found');
     return retrieveCarMessage(res, 200, 'Vehicles successfully retrieved', vehicles);
   }
 
   static getOneCar(req, res) {
     const id = parseInt(req.params.car_id, 10);
     const item = carQueries.findOneCar(id);
-    if (!item) return errorMessage(res, 404, 'No vehicle matched the specified criteria');
+    if (!item) return responseMessage(res, 404, 'No vehicle matched the specified criteria');
     return retrieveCarMessage(res, 200, 'Vehicles successfully retrieved', item);
   }
 
@@ -50,8 +50,8 @@ class carController {
     const userId = parseInt(req.body.userId, 10);
     const item = carQueries.findCar(id, userId);
     item.status = req.body.status;
-    if (!item) return errorMessage(res, 404, 'No vehicle matched the specified criteria');
-    return carMessage(res, 200, 'Vehicle successfully updated');
+    if (!item) return responseMessage(res, 404, 'No vehicle matched the specified criteria');
+    return responseMessage(res, 200, 'Vehicle successfully updated');
   }
 
   static updatePrice(req, res) {
@@ -60,17 +60,17 @@ class carController {
     const item = carQueries.findOneCar(id, userId);
     item.price = req.body.price;
     console.log(item);
-    if (!item) return errorMessage(res, 404, 'No vehicle matched the specified criteria');
-    return carMessage(res, 200, 'Vehicle successfully updated');
+    if (!item) return responseMessage(res, 404, 'No vehicle matched the specified criteria');
+    return responseMessage(res, 200, 'Vehicle successfully updated');
   }
 
   static deleteCar(req, res) {
     const id = parseInt(req.params.car_id, 10);
     const car = carQueries.findOneCar(id);
-    if (!car) return errorMessage(res, 404, 'car not found');
+    if (!car) return responseMessage(res, 404, 'car not found');
     const carIndex = vehicles.indexOf(car);
     vehicles.splice(carIndex, 1);
-    return carMessage(res, 200, 'car successfully deleted');
+    return responseMessage(res, 200, 'car successfully deleted');
   }
 }
 
