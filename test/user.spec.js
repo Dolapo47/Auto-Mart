@@ -133,8 +133,7 @@ describe('User', () => {
         if (err) done(err);
         expect(res.status).to.equal(404);
         expect(res.status).to.be.a("number");
-        expect(res.body.message).to.be.a("string");
-        expect(res.body.message).to.be.equal("Auth Failed");
+        expect(res.body.error).to.be.equal("Auth Failed");
         expect(res.body).to.be.an("object");
         done();
       });
