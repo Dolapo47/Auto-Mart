@@ -1,10 +1,11 @@
 /* eslint-disable require-jsdoc */
-import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
 import users from '../db/userDb';
 import validateRegisterInput from '../helper/validations/validateRegeisterInput';
 import validateLogin from '../helper/validations/validateLogin';
+import { generateToken } from '../helper/userHelpers';
+import { errorMessage, userMessage } from '../helper/validations/responseMessages';
 
 dotenv.config();
 
@@ -13,14 +14,14 @@ class userController {
     const { errors, isValid } = validateRegisterInput(req.body);
     const { email, password, } = req.body;
     if (!isValid) {
-      return res.status(400).json({ errors });
+      return errorMessage(res, 400, errors);
     }
-    const checkedEmail = users.filter(user => user.email === email);
+    const checkedEmail = users.filter(user => user.email === email.trim());
     if (checkedEmail.length > 0) {
-      return res.status(409).json({ status: 409, error: 'The user already exist', });
+      return errorMessage(res, 409, 'The user already exist');
     }
     bcrypt.genSalt(10, (err, salt) => {
-      bcrypt.hash(password, salt, (err, hash) => {
+      bcrypt.hash(password.trim(), salt, (err, hash) => {
         const user = {
           id: users.length + 1,
           email: req.body.email,
@@ -31,8 +32,8 @@ class userController {
           admin: false,
         };
         users.push(user);
-        const token = jwt.sign({ email: user.email, userId: user.id }, process.env.SECRET, { expiresIn: '1h', });
-        res.status(201).json({ status: 201, success: 'user registered', data: [{ token, user }], });
+        const token = generateToken(user.email, user.id);
+        return userMessage(res, 201, 'user registered', token, user);
       });
     });
   }
@@ -41,20 +42,18 @@ class userController {
     const { errors, isValid } = validateLogin(req.body);
     const { email, password } = req.body;
     if (!isValid) {
-      return res.status(400).json({ errors });
+      return errorMessage(res, 400, errors);
     }
-    const loginUser = users.filter(user => user.email === email);
+    const loginUser = users.filter(user => user.email === email.trim());
     if (loginUser.length < 1) {
-      return res.status(404).json({ message: 'Auth Failed', });
+      return errorMessage(res, 404, 'Auth Failed');
     }
-    bcrypt.compare(password, loginUser[0].password, (err, result) => {
+    bcrypt.compare(password.trim(), loginUser[0].password, (err, result) => {
       if (result) {
-        const token = jwt.sign({ email: loginUser[0].email, id: loginUser[0].id, },
-          process.env.SECRET,
-          { expiresIn: '1h', });
-        return res.status(200).json({ message: 'Auth Successful', user: loginUser[0], token, });
+        const token = generateToken(loginUser[0].email, loginUser[0].id);
+        return userMessage(res, 200, 'Auth Successful', token, loginUser[0]);
       }
-      res.status(401).json({ message: 'Auth Failed', });
+      return errorMessage(res, 401, 'Auth Failed');
     });
   }
 }
