@@ -1,9 +1,14 @@
-import Joi from 'joi';
+import Cloudinary from 'cloudinary';
+import dotenv from 'dotenv';
 
-exports.validateRegisterUserSchema = {
-  email: Joi.string().email().max(35).required(),
-  first_name: Joi.string().max(15).regex(/^[a-zA-Z]+$/).required(),
-  last_name: Joi.string().max(15).regex(/^[a-zA-Z]+$/).required(),
-  password: Joi.string().min(6).max(15).required(),
-  address: Joi.string().max(40).required(),
-};
+dotenv.config();
+
+const cloudinary = Cloudinary.v2;
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_name,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+export default cloudinary;
