@@ -4,12 +4,6 @@ import validateOrderInput from '../helper/validations/validateOrderInput';
 
 class orderController {
   static createOrder(req, res) {
-    // const { errors, isValid } = validateOrderInput(req.body);
-    // if (!isValid) {
-    //   return res.status(400).json({
-    //     errors,
-    //   });
-    // }
     const userId = parseInt(req.body.userId, 10);
     const carId = parseInt(req.body.carId, 10);
 
