@@ -14,7 +14,7 @@ const vehicles = [
 
   {
     id: 2,
-    userId: 1,
+    userId: 2,
     createdOn: new Date(),
     state: 'new',
     status: 'available',
@@ -26,7 +26,7 @@ const vehicles = [
 
   {
     id: 3,
-    userId: 1,
+    userId: 3,
     createdOn: new Date(),
     state: 'new',
     status: 'sold',
