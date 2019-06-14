@@ -13,13 +13,12 @@ class userController {
   static registerUser(req, res) {
     const { errors, isValid } = validateRegisterInput(req.body);
     const { email, password, } = req.body;
-    if (!isValid) {
-      return errorMessage(res, 400, errors);
-    }
+    if (!isValid) return errorMessage(res, 400, errors);
+
     const checkedEmail = users.filter(user => user.email === email.trim());
-    if (checkedEmail.length > 0) {
-      return errorMessage(res, 409, 'The user already exist');
-    }
+
+    if (checkedEmail.length > 0) return errorMessage(res, 409, 'The user already exist');
+
     bcrypt.genSalt(10, (err, salt) => {
       bcrypt.hash(password.trim(), salt, (err, hash) => {
         const user = {
@@ -41,13 +40,10 @@ class userController {
   static loginUser(req, res) {
     const { errors, isValid } = validateLogin(req.body);
     const { email, password } = req.body;
-    if (!isValid) {
-      return errorMessage(res, 400, errors);
-    }
+    if (!isValid) return errorMessage(res, 400, errors);
     const loginUser = users.filter(user => user.email === email.trim());
-    if (loginUser.length < 1) {
-      return errorMessage(res, 404, 'Auth Failed');
-    }
+    if (loginUser.length < 1) return errorMessage(res, 404, 'Auth Failed');
+
     bcrypt.compare(password.trim(), loginUser[0].password, (err, result) => {
       if (result) {
         const token = generateToken(loginUser[0].email, loginUser[0].id);

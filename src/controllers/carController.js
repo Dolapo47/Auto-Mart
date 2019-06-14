@@ -1,6 +1,8 @@
 /* eslint-disable require-jsdoc */
 import vehicles from '../db/carDb';
 import validateCarInput from '../helper/validations/validateCarInput';
+import { errorMessage, carMessage, retrieveCarMessage } from '../helper/validations/responseMessages';
+import carQueries from '../helper/carHelpers';
 
 class carController {
   static createCar(req, res) {
@@ -18,120 +20,58 @@ class carController {
       model: req.body.model,
       bodyType: req.body.bodyType
     };
-
     vehicles.push(vehicle);
-    return res.status(201).json({
-      status: 201,
-      message: 'Vehicle created successfully',
-      data: vehicle,
-    });
+    return retrieveCarMessage(res, 201, 'Vehicle created successfully', vehicle);
   }
 
   static getAllCars(req, res) {
-    if (vehicles.length === 0) {
-      res.status(404).json({
-        status: 404,
-        message: 'No vehicle matched the specified criteria',
-      });
-    } else {
-      res.status(200).json({
-        status: 200,
-        message: 'Vehicles retrieved successfully',
-        data: vehicles,
-      });
-    }
+    if (vehicles.length === 0) return errorMessage(res, 404, 'No vehicle found');
+    return retrieveCarMessage(res, 200, 'Vehicles successfully retrieved', vehicles);
   }
 
   static getOneCar(req, res) {
     const id = parseInt(req.params.car_id, 10);
-    const item = vehicles.filter(vehicle => vehicle.id === id);
-    if (item.length === 0) {
-      res.status(404).json({
-        status: 404,
-        message: 'No vehicle matched the specified criteria',
-      });
-    } else {
-      res.status(200).json({
-        status: 200,
-        message: 'Vehicle retrieved successfully',
-        data: item,
-      });
-    }
+    const item = carQueries.findOneCar(id);
+    if (!item) return errorMessage(res, 404, 'No vehicle matched the specified criteria');
+    return retrieveCarMessage(res, 200, 'Vehicles successfully retrieved', item);
   }
 
-  static deleteCar(req, res) {
+  // static getAvailableCars(req, res) {
+  //   const { status } = req.query;
+  //   const isInvalidStatus = (status !== 'available');
+  //   if (isInvalidStatus) return errorMessage(res, 403, 'you do not have access to this resource');
+  //   const availableCars = vehicles.find(car => car.status === 'available');
+  //   if (!availableCars) return errorMessage(res, 404, 'No vehicle matched the specified criteria');
+  //   return retrieveCarMessage(res, 200, 'Vehicles successfully retrieved', availableCars);
+  // }
+
+  static updateStatus(req, res) {
     const id = parseInt(req.params.car_id, 10);
-    // eslint-disable-next-line array-callback-return
-    vehicles.map((vehicle, index) => {
-      if (vehicle.id === id) {
-        vehicles.splice(index, 1);
-        return res.status(200).json({
-          status: 200,
-          message: 'Vehicle successfully deleted',
-          data: vehicles,
-        });
-      }
-    });
-    return res.status(404).json({
-      status: 404,
-      message: 'vehicle not found',
-    });
+    const userId = parseInt(req.body.userId, 10);
+    const item = carQueries.findCar(id, userId);
+    item.status = req.body.status;
+    if (!item) return errorMessage(res, 404, 'No vehicle matched the specified criteria');
+    return carMessage(res, 200, 'Vehicle successfully updated');
   }
 
   static updatePrice(req, res) {
     const id = parseInt(req.params.car_id, 10);
-    const { price } = req.body;
-    const item = vehicles.filter(vehicle => vehicle.id === id);
-    item[0].price = price;
-    if (item.length === 0) {
-      res.status(404).json({
-        status: 404,
-        message: 'No vehicle matched the specified criteria',
-      });
-    } else {
-      return res.status(200).json({
-        status: 200,
-        message: 'Vehicle price updated',
-        data: item,
-      });
-    }
+    const userId = parseInt(req.body.userId, 10);
+    const item = carQueries.findOneCar(id, userId);
+    item.price = req.body.price;
+    console.log(item);
+    if (!item) return errorMessage(res, 404, 'No vehicle matched the specified criteria');
+    return carMessage(res, 200, 'Vehicle successfully updated');
   }
 
-  static updateStatus(req, res) {
+  static deleteCar(req, res) {
     const id = parseInt(req.params.car_id, 10);
-    const { status } = req.body;
-    const item = vehicles.filter(vehicle => vehicle.id === id);
-    item[0].status = status;
-    if (item.length === 0) {
-      res.status(404).json({
-        status: 404,
-        message: 'No vehicle matched the specified criteria',
-      });
-    } else {
-      return res.status(200).json({
-        status: 200,
-        message: 'Vehicle status updated',
-        data: item,
-      });
-    }
+    const car = carQueries.findOneCar(id);
+    if (!car) return errorMessage(res, 404, 'car not found');
+    const carIndex = vehicles.indexOf(car);
+    vehicles.splice(carIndex, 1);
+    return carMessage(res, 200, 'car successfully deleted');
   }
-
-  // this function has issues
-  // static getAvailableCars(req, res) {
-  //   const { query } = JSON.parse(req);
-  //   const available = vehicles.filter(vehicle => vehicle.status === query.status);
-  //   if (available.length === 0) {
-  //     return res.status(404).json({
-  //       status: 404,
-  //       message: 'No available vehicle was found',
-  //     });
-  //   }
-  //   res.status(200).json({
-  //     status: 200,
-  //     message: 'Available cars displayed',
-  //     data: available,
-  //   });
-  // }
 }
 
 export default carController;
