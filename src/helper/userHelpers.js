@@ -8,7 +8,7 @@ const secretKey = process.env.SECRET;
 
 // eslint-disable-next-line import/prefer-default-export
 export const generateToken = (email, userId) => {
-  const token = jwt.sign({ email, userId }, secretKey, { expiresIn: 84600 });
+  const token = jwt.sign({ email, userId }, secretKey, { expiresIn: '1h' });
   return token;
 };
 
