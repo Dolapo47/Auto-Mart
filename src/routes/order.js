@@ -4,7 +4,7 @@ import { verifyToken } from '../helper/userHelpers';
 
 const router = express.Router();
 
-router.post('/order', orderController.createOrder);
+router.post('/order', verifyToken, orderController.createOrder);
 // router.patch('/order/:orderId/price', orderController.updateOrder);
 
 
