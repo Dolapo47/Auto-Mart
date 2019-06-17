@@ -6,7 +6,7 @@ import { responseMessage } from '../helper/validations/responseMessages';
 class orderController {
   static createOrder(req, res) {
     const { errors, isValid } = validateOrderInput(req.body);
-    if (!isValid) return responseMessage(res, 400, errors);
+    if (!isValid) return responseMessage(res, 422, errors);
     const userId = parseInt(req.body.userId, 10);
     const carId = parseInt(req.body.carId, 10);
 
@@ -23,7 +23,7 @@ class orderController {
         carId,
         status: 'pending',
         amount: 1200000,
-        amount_offered: req.body.amount_offered,
+        amount_offered: req.body.amountOffered,
       };
 
       orders.push(order);
