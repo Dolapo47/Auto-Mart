@@ -32,7 +32,6 @@ export const validatePostCar = [
       ? next()
       : responseMessage(res, 422, 'car state can either be "new" or "used"');
   },
-
   // PRICE VALIDATION
   (req, res, next) => {
     const { price } = req.body;

@@ -735,6 +735,86 @@ describe('Car routes', () => {
       });
   });
 
+  it('Should throw error if model is empty', (done) => {
+    chai.request(app)
+      .post('/api/v1/car')
+      .set('Authorization', signUpUserToken)
+      .send({
+        userId: 2,
+        state: 'new',
+        price: null,
+        manufacturer: 'honda',
+        model: '',
+        bodyType: 'car',
+      })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(422);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should throw error if body type is empty', (done) => {
+    chai.request(app)
+      .post('/api/v1/car')
+      .set('Authorization', signUpUserToken)
+      .send({
+        userId: 2,
+        state: 'new',
+        price: null,
+        manufacturer: 'honda',
+        model: 'sdjhdjd',
+        bodyType: 'car',
+      })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(422);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should throw error if body type is more than 30 characters', (done) => {
+    chai.request(app)
+      .post('/api/v1/car')
+      .set('Authorization', signUpUserToken)
+      .send({
+        userId: 2,
+        state: 'new',
+        price: null,
+        manufacturer: 'honda',
+        model: 'sdjhdjdkfkjdfkjfdkjfdkjfdfkjdfkhdfjfkjdfkfdkdfjkfd',
+        bodyType: 'car',
+      })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(422);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should throw error if body type is not alphabet', (done) => {
+    chai.request(app)
+      .post('/api/v1/car')
+      .set('Authorization', signUpUserToken)
+      .send({
+        userId: 2,
+        state: 'new',
+        price: null,
+        manufacturer: 'honda',
+        model: 'sdjhdjd',
+        bodyType: 'car2345',
+      })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(422);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
   it('Should throw error if price is more than 12', (done) => {
     chai.request(app)
       .post('/api/v1/car')
