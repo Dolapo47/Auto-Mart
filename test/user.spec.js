@@ -1,16 +1,11 @@
 /* eslint-disable quotes */
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import faker from 'faker';
 import app from '../src/app';
-import orders from '../src/db/orderDb';
-import vehicles from '../src/db/carDb';
 
 const { expect } = chai;
 chai.use(chaiHttp);
 
-let userToken;
-let UnAuthorizedUserToken;
 let signUpUserToken;
 const invalidToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpJ9.eyJlbWFpbCI6ImF5b21pZGVAYW5kZWxhLmNvbSIsInVzZXJJZCI6MywiaWF0IjoxNTYwNTkyODM0LCJleHAiOjE1NjA1OTY0MzR9.mniSRDZFQ1Yco7wjaMHxvzRy-uQ9f8ymkpqdZUZMSb8';
 
@@ -388,6 +383,551 @@ describe('User signin', () => {
         if (err) done(err);
         const { body } = res;
         expect(body.status).to.be.equals(400);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+});
+
+describe('Car routes', () => {
+  it('Should create new car', (done) => {
+    chai.request(app)
+      .post('/api/v1/car')
+      .set('Authorization', signUpUserToken)
+      .send({
+        userId: 2,
+        state: 'new',
+        price: 1200000,
+        manufacturer: 'honda',
+        model: 'accord',
+        bodyType: 'car',
+      })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(201);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should give 401 error if invalid token passed', (done) => {
+    chai.request(app)
+      .post('/api/v1/car')
+      .set('Authorization', invalidToken)
+      .send({
+        userId: 2,
+        state: 'new',
+        price: 1200000,
+        manufacturer: 'honda',
+        model: 'accord',
+        bodyType: 'car',
+      })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(401);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should give 401 error if no token passed', (done) => {
+    chai.request(app)
+      .post('/api/v1/car')
+      .send({
+        userId: 2,
+        state: 'new',
+        price: 1200000,
+        manufacturer: 'honda',
+        model: 'accord',
+        bodyType: 'car',
+      })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(401);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should successfully retrieve car', (done) => {
+    chai.request(app)
+      .get('/api/v1/car/2')
+      .set('Authorization', signUpUserToken)
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(200);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should throw an error if car not found', (done) => {
+    chai.request(app)
+      .get('/api/v1/car/12')
+      .set('Authorization', signUpUserToken)
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(404);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should throw error if car id not found', (done) => {
+    chai.request(app)
+      .delete('/api/v1/car/12')
+      .set('Authorization', signUpUserToken)
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(404);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should successfully get car', (done) => {
+    chai.request(app)
+      .get('/api/v1/car')
+      .set('Authorization', signUpUserToken)
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(200);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should throw error if id is not number', (done) => {
+    chai.request(app)
+      .get('/api/v1/car/rr')
+      .set('Authorization', signUpUserToken)
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(404);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should throw error if id is not number', (done) => {
+    chai.request(app)
+      .delete('/api/v1/car/rr')
+      .set('Authorization', signUpUserToken)
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(404);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should successfully delete car', (done) => {
+    chai.request(app)
+      .delete('/api/v1/car/1')
+      .set('Authorization', signUpUserToken)
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(200);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+});
+
+describe('Car routes', () => {
+  it('Should throw error if state not specified', (done) => {
+    chai.request(app)
+      .post('/api/v1/car')
+      .set('Authorization', signUpUserToken)
+      .send({
+        userId: 2,
+        state: '',
+        price: 1200000,
+        manufacturer: 'honda',
+        model: 'accord',
+        bodyType: 'car',
+      })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(422);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should throw error if state is not new or used', (done) => {
+    chai.request(app)
+      .post('/api/v1/car')
+      .set('Authorization', signUpUserToken)
+      .send({
+        userId: 2,
+        state: 'gab',
+        price: 1200000,
+        manufacturer: 'honda',
+        model: 'accord',
+        bodyType: 'car',
+      })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(422);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should throw error if state is not alphabet', (done) => {
+    chai.request(app)
+      .post('/api/v1/car')
+      .set('Authorization', signUpUserToken)
+      .send({
+        userId: 2,
+        state: '4646',
+        price: 1200000,
+        manufacturer: 'honda',
+        model: 'accord',
+        bodyType: 'car',
+      })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(422);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should throw error if model is empty', (done) => {
+    chai.request(app)
+      .post('/api/v1/car')
+      .set('Authorization', signUpUserToken)
+      .send({
+        userId: 2,
+        state: 'new',
+        price: 1200000,
+        manufacturer: 'honda',
+        model: '',
+        bodyType: 'car',
+      })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(422);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should throw error if state is not alphabet', (done) => {
+    chai.request(app)
+      .post('/api/v1/car')
+      .set('Authorization', signUpUserToken)
+      .send({
+        userId: 2,
+        state: 'new',
+        price: 1200000,
+        manufacturer: 'honda',
+        model: '=+',
+        bodyType: 'car',
+      })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(422);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should throw error if price is not number', (done) => {
+    chai.request(app)
+      .post('/api/v1/car')
+      .set('Authorization', signUpUserToken)
+      .send({
+        userId: 2,
+        state: 'new',
+        price: 'dddj',
+        manufacturer: 'honda',
+        model: '=+',
+        bodyType: 'car',
+      })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(422);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should throw error if price is empty', (done) => {
+    chai.request(app)
+      .post('/api/v1/car')
+      .set('Authorization', signUpUserToken)
+      .send({
+        userId: 2,
+        state: 'new',
+        price: null,
+        manufacturer: 'honda',
+        model: '=+',
+        bodyType: 'car',
+      })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(422);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should throw error if manufacturer is empty', (done) => {
+    chai.request(app)
+      .post('/api/v1/car')
+      .set('Authorization', signUpUserToken)
+      .send({
+        userId: 2,
+        state: 'new',
+        price: null,
+        manufacturer: '',
+        model: '=+',
+        bodyType: 'car',
+      })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(422);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should throw error if manufacturer is more than 30', (done) => {
+    chai.request(app)
+      .post('/api/v1/car')
+      .set('Authorization', signUpUserToken)
+      .send({
+        userId: 2,
+        state: 'new',
+        price: null,
+        manufacturer: 'dkjdskjsksdkjdskjfkjfksgfjgkjsgdkjdgskjdsgkgdsjkgsdjkgsdjsgd',
+        model: '=+',
+        bodyType: 'car',
+      })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(422);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should throw error if model is more than 30', (done) => {
+    chai.request(app)
+      .post('/api/v1/car')
+      .set('Authorization', signUpUserToken)
+      .send({
+        userId: 2,
+        state: 'new',
+        price: null,
+        manufacturer: 'honda',
+        model: 'dkjdskjsksdkjdskjfkjfksgfjgkjsgdkjdgskjdsgkgdsjkgsdjkgsdjsgd',
+        bodyType: 'car',
+      })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(422);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should throw error if model is empty', (done) => {
+    chai.request(app)
+      .post('/api/v1/car')
+      .set('Authorization', signUpUserToken)
+      .send({
+        userId: 2,
+        state: 'new',
+        price: null,
+        manufacturer: 'honda',
+        model: '',
+        bodyType: 'car',
+      })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(422);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should throw error if body type is empty', (done) => {
+    chai.request(app)
+      .post('/api/v1/car')
+      .set('Authorization', signUpUserToken)
+      .send({
+        userId: 2,
+        state: 'new',
+        price: null,
+        manufacturer: 'honda',
+        model: 'sdjhdjd',
+        bodyType: 'car',
+      })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(422);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should throw error if body type is more than 30 characters', (done) => {
+    chai.request(app)
+      .post('/api/v1/car')
+      .set('Authorization', signUpUserToken)
+      .send({
+        userId: 2,
+        state: 'new',
+        price: null,
+        manufacturer: 'honda',
+        model: 'sdjhdjdkfkjdfkjfdkjfdkjfdfkjdfkhdfjfkjdfkfdkdfjkfd',
+        bodyType: 'car',
+      })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(422);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should throw error if body type is not alphabet', (done) => {
+    chai.request(app)
+      .post('/api/v1/car')
+      .set('Authorization', signUpUserToken)
+      .send({
+        userId: 2,
+        state: 'new',
+        price: null,
+        manufacturer: 'honda',
+        model: 'sdjhdjd',
+        bodyType: 'car2345',
+      })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(422);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should throw error if price is more than 12', (done) => {
+    chai.request(app)
+      .post('/api/v1/car')
+      .set('Authorization', signUpUserToken)
+      .send({
+        userId: 2,
+        state: 'new',
+        price: 1763276272467244378734283583585385738753835,
+        manufacturer: 'honda',
+        model: 'accord',
+        bodyType: 'car',
+      })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(422);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should update', (done) => {
+    chai.request(app)
+      .patch('/api/v1/car/3/status')
+      .send({ userId: 3 })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.success).to.be.equals('Vehicle successfully updated');
+        expect(body.status).to.be.equal(200);
+        done();
+      });
+  });
+
+  it('Should update', (done) => {
+    chai.request(app)
+      .patch('/api/v1/car/3/price')
+      .send({ price: 3000000 })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.success).to.be.equals('Vehicle successfully updated');
+        expect(body.status).to.be.equal(200);
+        done();
+      });
+  });
+
+  it('Should throw error if id not found', (done) => {
+    chai.request(app)
+      .patch('/api/v1/car/8/price')
+      .set('Authorization', signUpUserToken)
+      .send({ price: 3000000 })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.error).to.be.equals('No vehicle matched the specified criteria');
+        expect(body.status).to.be.equal(404);
+        done();
+      });
+  });
+
+  it('Should throw error if id not found', (done) => {
+    chai.request(app)
+      .patch('/api/v1/car/8/status')
+      .set('Authorization', signUpUserToken)
+      .send({ status: 'sold' })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.error).to.be.equals('No vehicle matched the specified criteria');
+        expect(body.status).to.be.equal(404);
+        done();
+      });
+  });
+
+  it('Should throw error if id is not number', (done) => {
+    chai.request(app)
+      .delete('/api/v1/car/3')
+      .set('Authorization', signUpUserToken)
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(200);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should throw error if id is not number', (done) => {
+    chai.request(app)
+      .delete('/api/v1/car/2')
+      .set('Authorization', signUpUserToken)
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(200);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should throw error if id is not number', (done) => {
+    chai.request(app)
+      .delete('/api/v1/car/4')
+      .set('Authorization', signUpUserToken)
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(200);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should throw error if vehicle db is empty', (done) => {
+    chai.request(app)
+      .get('/api/v1/car')
+      .set('Authorization', signUpUserToken)
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(404);
         expect(body.status).to.be.a('number');
         done();
       });
