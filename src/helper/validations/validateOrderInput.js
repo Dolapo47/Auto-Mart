@@ -1,7 +1,7 @@
 import validator from 'validator';
 import { isEmpty, isFloat, isInteger } from '../isEmpty';
 
-const validateOrderInput = (data) => {
+export const validateOrderInput = (data) => {
   const errors = {};
 
   data.carId = isEmpty(data.carId) === true ? '' : data.carId;
@@ -38,4 +38,30 @@ const validateOrderInput = (data) => {
   };
 };
 
-export default validateOrderInput;
+export const validateOrderUpdate = (data) => {
+  const errors = {};
+
+  data.userId = isEmpty(data.userId) === true ? '' : data.userId;
+  data.amountOffered = isEmpty(data.amountOffered) === true ? '' : data.amountOffered;
+
+  if (validator.isEmpty(data.userId)) {
+    errors.userId = 'userId field is required';
+  }
+
+  if (validator.isEmpty(data.amountOffered)) {
+    errors.amountOffered = 'amountOffered field is required';
+  }
+
+  if (isFloat(data.amountOffered)) {
+    errors.amountOffered = 'only decimal numbers allowed (12.00)';
+  }
+
+  if (!isInteger(data.userId)) {
+    errors.userId = 'only interger numbers allowed';
+  }
+
+  return {
+    errors,
+    isValid: isEmpty(errors)
+  };
+};

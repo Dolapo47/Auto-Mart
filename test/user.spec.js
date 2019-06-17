@@ -1061,3 +1061,101 @@ describe('Order Routes', () => {
       });
   });
 });
+
+describe('Order routes', () => {
+  it('Should create order', (done) => {
+    chai.request(app)
+      .patch('/api/v1/order/3/price')
+      .set('Authorization', signUpUserToken)
+      .send({
+        amountOffered: '5000000.00',
+        userId: '1'
+      })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(200);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should throw error if id not found', (done) => {
+    chai.request(app)
+      .patch('/api/v1/order/65/price')
+      .set('Authorization', signUpUserToken)
+      .send({
+        amountOffered: '5000000.00',
+        userId: '1'
+      })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(409);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should throw error if userId not found', (done) => {
+    chai.request(app)
+      .patch('/api/v1/order/65/price')
+      .set('Authorization', signUpUserToken)
+      .send({
+        amountOffered: '5000000.00',
+        userId: ''
+      })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(422);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should throw error if amount offered not found', (done) => {
+    chai.request(app)
+      .patch('/api/v1/order/65/price')
+      .set('Authorization', signUpUserToken)
+      .send({
+        amountOffered: '',
+        userId: '1'
+      })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(422);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should throw error if amount offered not decimal', (done) => {
+    chai.request(app)
+      .patch('/api/v1/order/65/price')
+      .set('Authorization', signUpUserToken)
+      .send({
+        amountOffered: '5000000',
+        userId: '1'
+      })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(422);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should throw error if userId not integer', (done) => {
+    chai.request(app)
+      .patch('/api/v1/order/65/price')
+      .set('Authorization', signUpUserToken)
+      .send({
+        amountOffered: '5000000.00',
+        userId: '1.oo'
+      })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(422);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+});
