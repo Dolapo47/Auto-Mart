@@ -24,11 +24,11 @@ const validateOrderInput = (data) => {
     errors.carId = 'only interger numbers allowed';
   }
 
-  if (!isFloat(data.amount)) {
+  if (isFloat(data.amount)) {
     errors.amount = 'only decimal numbers allowed (12.00)';
   }
 
-  if (!isFloat(data.amountOffered)) {
+  if (isFloat(data.amountOffered)) {
     errors.amountOffered = 'only decimal numbers allowed (12.00)';
   }
 

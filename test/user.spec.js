@@ -933,3 +933,131 @@ describe('Car routes', () => {
       });
   });
 });
+
+describe('Order Routes', () => {
+  it('Should post order', (done) => {
+    chai.request(app)
+      .post('/api/v1/order')
+      .set('Authorization', signUpUserToken)
+      .send({
+        carId: '5',
+        amount: '1200000.00',
+        amountOffered: '1400000.00',
+        userId: 3
+      })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(201);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should throw error, order already exists', (done) => {
+    chai.request(app)
+      .post('/api/v1/order')
+      .set('Authorization', signUpUserToken)
+      .send({
+        carId: '5',
+        amount: '1200000.00',
+        amountOffered: '1400000.00',
+        userId: 3
+      })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(409);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should throw error car id is empty', (done) => {
+    chai.request(app)
+      .post('/api/v1/order')
+      .set('Authorization', signUpUserToken)
+      .send({
+        carId: '',
+        amount: '1200000.00',
+        amountOffered: '1400000.00',
+        userId: 3
+      })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(422);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should throw error amount is empty', (done) => {
+    chai.request(app)
+      .post('/api/v1/order')
+      .set('Authorization', signUpUserToken)
+      .send({
+        carId: '',
+        amount: '',
+        amountOffered: '1400000.00',
+        userId: 3
+      })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(422);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should throw error amount offered is empty', (done) => {
+    chai.request(app)
+      .post('/api/v1/order')
+      .set('Authorization', signUpUserToken)
+      .send({
+        carId: '',
+        amount: '1200000.00',
+        amountOffered: '',
+        userId: 3
+      })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(422);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should throw error amount offered is empty', (done) => {
+    chai.request(app)
+      .post('/api/v1/order')
+      .set('Authorization', signUpUserToken)
+      .send({
+        carId: '',
+        amount: '1200000',
+        amountOffered: '1400000',
+        userId: 3
+      })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(422);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should throw error amount offered is empty', (done) => {
+    chai.request(app)
+      .post('/api/v1/order')
+      .set('Authorization', signUpUserToken)
+      .send({
+        carId: '',
+        amount: '1200000',
+        amountOffered: '1400000',
+        userId: 3
+      })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(422);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+});
