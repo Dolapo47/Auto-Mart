@@ -1,9 +1,12 @@
 /* eslint-disable require-jsdoc */
 import orders from '../db/orderDb';
 import validateOrderInput from '../helper/validations/validateOrderInput';
+import { responseMessage } from '../helper/validations/responseMessages';
 
 class orderController {
   static createOrder(req, res) {
+    const { errors, isValid } = validateOrderInput(req.body);
+    if (!isValid) return responseMessage(res, 400, errors);
     const userId = parseInt(req.body.userId, 10);
     const carId = parseInt(req.body.carId, 10);
 
