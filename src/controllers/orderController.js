@@ -40,7 +40,6 @@ class orderController {
     }
     if (checkOrder[0].status === 'pending') {
       checkOrder[0].amountOffered = newAmount;
-      console.log(checkOrder[0]);
       return retrieveCarMessage(res, 200, 'order successfully updated', checkOrder[0]);
     }
     return responseMessage(res, 400, 'The order has been approved');

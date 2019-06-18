@@ -5,6 +5,9 @@ import { validatePostCar } from '../helper/validations/validateCarInput';
 
 const router = express.Router();
 
+
+router.get('/car', verifyToken, carController.filterAvailableCars);
+router.get('/car', verifyToken, carController.availableCars);
 router.get('/car', verifyToken, carController.getAllCars);
 router.get('/car/:car_id', verifyToken, carController.getOneCar);
 router.post('/car', verifyToken, validatePostCar, carController.createCar);

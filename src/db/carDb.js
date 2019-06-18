@@ -2,11 +2,11 @@
 const vehicles = [
   {
     id: 1,
-    userId: 1,
+    userId: 2,
     createdOn: new Date(),
     state: 'new',
     status: 'available',
-    price: 1200000,
+    price: 1000000,
     manufacturer: 'honda',
     model: 'accord',
     bodyType: 'car',
@@ -14,11 +14,11 @@ const vehicles = [
 
   {
     id: 2,
-    userId: 2,
+    userId: 3,
     createdOn: new Date(),
     state: 'new',
     status: 'available',
-    price: 1200000,
+    price: 12000000,
     manufacturer: 'honda',
     model: 'accord',
     bodyType: 'car',
@@ -26,11 +26,11 @@ const vehicles = [
 
   {
     id: 3,
-    userId: 3,
+    userId: 4,
     createdOn: new Date(),
     state: 'new',
     status: 'sold',
-    price: 1200000,
+    price: 1500000,
     manufacturer: 'honda',
     model: 'accord',
     bodyType: 'car',

@@ -1,8 +1,10 @@
+/* eslint-disable camelcase */
 /* eslint-disable import/no-named-as-default */
 /* eslint-disable require-jsdoc */
 import vehicles from '../db/carDb';
 import { responseMessage, retrieveCarMessage } from '../helper/validations/responseMessages';
 import carQueries from '../helper/carHelpers';
+import getUserFromToken from '../helper/userHelpers';
 
 class carController {
   static createCar(req, res) {
@@ -20,9 +22,37 @@ class carController {
     return retrieveCarMessage(res, 201, 'Vehicle created successfully', vehicle);
   }
 
+  static availableCars(req, res, next) {
+    const { status } = req.query;
+    if (status === undefined) {
+      return next();
+    }
+    const cars = vehicles.filter(car => car.status === status);
+    if (cars.length > 0) {
+      retrieveCarMessage(res, 200, 'vehicles retrieved successfully', cars);
+    } else {
+      responseMessage(res, 404, 'No car matched the specified criteria');
+    }
+  }
+
+  static filterAvailableCars(req, res, next) {
+    const { status, min_price, max_price } = req.query;
+    console.log(req.query);
+    if (min_price === undefined || max_price === undefined) {
+      return next();
+    }
+    const cars = vehicles.filter(car => car.status === status
+      && car.price >= min_price && car.price <= max_price);
+    if (cars.length > 0) {
+      retrieveCarMessage(res, 200, 'vehicles retrieved successfully', cars);
+    } else {
+      responseMessage(res, 404, 'No car matched the specified criteria');
+    }
+  }
+
   static getAllCars(req, res) {
     if (vehicles.length === 0) return responseMessage(res, 404, 'No vehicle found');
-    return retrieveCarMessage(res, 200, 'Vehicles successfully retrieved', vehicles);
+    return retrieveCarMessage(res, 200, 'Vehicles successfully retrieved just get', vehicles);
   }
 
   static getOneCar(req, res) {
