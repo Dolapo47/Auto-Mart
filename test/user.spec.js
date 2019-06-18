@@ -909,6 +909,34 @@ describe('Car routes', () => {
       });
   });
 
+  it('should get available car', (done) => {
+    chai.request(app)
+      .get('/api/v1/car')
+      .set('Authorization', signUpUserToken)
+      .query({ status: 'available' })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(200);
+        done();
+      });
+  });
+
+  it('should get available car', (done) => {
+    chai.request(app)
+      .get('/api/v1/car')
+      .set('Authorization', signUpUserToken)
+      .query({
+        status: 'available',
+        min_price: '1000000',
+        max_price: '1200000',
+      })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(200);
+        done();
+      });
+  });
+
   it('Should throw error if id is not number', (done) => {
     chai.request(app)
       .delete('/api/v1/car/4')
@@ -1155,6 +1183,36 @@ describe('Order routes', () => {
         const { body } = res;
         expect(body.status).to.be.equals(422);
         expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+});
+
+describe('Get routes', () => {
+  it('should get available car', (done) => {
+    chai.request(app)
+      .get('/api/v1/car')
+      .set('Authorization', signUpUserToken)
+      .query({ status: 'available' })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(404);
+        done();
+      });
+  });
+
+  it('should get available car', (done) => {
+    chai.request(app)
+      .get('/api/v1/car')
+      .set('Authorization', signUpUserToken)
+      .query({
+        status: 'available',
+        min_price: '100000000',
+        max_price: '120000000',
+      })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(404);
         done();
       });
   });
