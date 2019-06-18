@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import { responseMessage } from './validations/responseMessages';
+import userQueries from '../db/userDb';
 
 
 dotenv.config();
@@ -25,5 +26,16 @@ export const verifyToken = (req, res, next) => {
     return next();
   } catch (err) {
     return responseMessage(res, 401, 'Invalid authorization token');
+  }
+};
+
+export const getUserFromToken = (token) => {
+  try {
+    const decoded = jwt.verify(token, secretKey);
+    const { email } = decoded;
+    const users = userQueries.find(user => user.email === email);
+    return users;
+  } catch (error) {
+    return false;
   }
 };

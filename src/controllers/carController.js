@@ -3,6 +3,7 @@
 import vehicles from '../db/carDb';
 import { responseMessage, retrieveCarMessage } from '../helper/validations/responseMessages';
 import carQueries from '../helper/carHelpers';
+import { getUserFromToken } from '../helper/userHelpers';
 
 class carController {
   static createCar(req, res) {
@@ -23,6 +24,29 @@ class carController {
   static getAllCars(req, res) {
     if (vehicles.length === 0) return responseMessage(res, 404, 'No vehicle found');
     return retrieveCarMessage(res, 200, 'Vehicles successfully retrieved', vehicles);
+  }
+
+  static getAvailableCars(req, res) {
+    const { status } = req.query;
+    const invalidStatus = (status !== 'available');
+    if (invalidStatus) return responseMessage(res, 403, 'you do not have access to this resource');
+    const cars = vehicles.filter(vehicle => vehicle.status === status);
+    return cars.length > 0
+      ? res.status(200).json({
+        status: 200,
+        data: cars
+      })
+      : res.status(404).json({
+        status: 404,
+        message: 'we could not find any car that matches your search'
+      });
+  }
+
+  static getCar(req, res) {
+    const { admin } = getUserFromToken(req.headers.authorization);
+    return admin
+      ? this.getAllCars(req, res)
+      : this.getAvailableCars(req, res);
   }
 
   static getOneCar(req, res) {
