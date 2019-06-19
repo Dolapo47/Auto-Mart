@@ -88,17 +88,3 @@ export const validateIdParam = (req, res, next) => {
     ? responseMessage(res, 422, message)
     : next();
 };
-
-
-export const validatePatchPrice = [
-  validateIdParam,
-  // PRICE VALIDATION
-  (req, res, next) => {
-    const { newPrice } = req.body;
-    const message = isNotSpecified(newPrice, 'new price')
-          || money.doValidation(newPrice, 'new price', 12);
-    return message
-      ? responseMessage(res, 422, message)
-      : next();
-  }
-];

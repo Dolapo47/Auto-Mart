@@ -404,6 +404,7 @@ describe('Car routes', () => {
       })
       .end((err, res) => {
         const { body } = res;
+        console.log(body);
         expect(body.status).to.be.equals(201);
         expect(body.status).to.be.a('number');
         done();
@@ -1213,6 +1214,93 @@ describe('Get routes', () => {
       .end((err, res) => {
         const { body } = res;
         expect(body.status).to.be.equals(404);
+        done();
+      });
+  });
+});
+
+describe('flag routes', () => {
+  it('Should create a new flag', (done) => {
+    chai.request(app)
+      .post('/api/v1/flag')
+      .set('Authorization', signUpUserToken)
+      .send({
+        carId: '3',
+        reason: 'gkjgjgdfgjfg',
+        description: 'fekhfdkhfdgkjhfdkhdhkdjdkfd'
+      })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(201);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should not create if carId empty', (done) => {
+    chai.request(app)
+      .post('/api/v1/flag')
+      .set('Authorization', signUpUserToken)
+      .send({
+        carId: '',
+        reason: 'gkjgjgdfgjfg',
+        description: 'fekhfdkhfdgkjhfdkhdhkdjdkfd'
+      })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(422);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should not create if reason empty', (done) => {
+    chai.request(app)
+      .post('/api/v1/flag')
+      .set('Authorization', signUpUserToken)
+      .send({
+        carId: '3',
+        reason: '',
+        description: 'fekhfdkhfdgkjhfdkhdhkdjdkfd'
+      })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(422);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should not create if description empty', (done) => {
+    chai.request(app)
+      .post('/api/v1/flag')
+      .set('Authorization', signUpUserToken)
+      .send({
+        carId: '3',
+        reason: 'gkjgjgdfgjfg',
+        description: ''
+      })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(422);
+        expect(body.status).to.be.a('number');
+        done();
+      });
+  });
+
+  it('Should not create if carid not number', (done) => {
+    chai.request(app)
+      .post('/api/v1/flag')
+      .set('Authorization', signUpUserToken)
+      .send({
+        carId: '3flfd',
+        reason: 'gkjgjgdfgjfg',
+        description: 'fekhfdkhfdgkjhfdkhdhkdjdkfd'
+      })
+      .end((err, res) => {
+        const { body } = res;
+        expect(body.status).to.be.equals(422);
+        expect(body.status).to.be.a('number');
         done();
       });
   });
