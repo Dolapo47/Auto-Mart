@@ -1,6 +1,7 @@
 import express from 'express';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
+import fileUpload from 'express-fileupload';
 import user from './routes/user';
 import vehicle from './routes/vehicle';
 import order from './routes/order';
@@ -10,6 +11,9 @@ import flag from './routes/flag';
 const app = express();
 const port = process.env.PORT || 3000;
 app.use(morgan('dev'));
+app.use(fileUpload({
+  useTempFiles: true,
+}));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({

@@ -1,25 +1,39 @@
 /* eslint-disable camelcase */
 /* eslint-disable import/no-named-as-default */
 /* eslint-disable require-jsdoc */
+import Cloudinary from 'cloudinary';
 import vehicles from '../db/carDb';
 import { responseMessage, retrieveCarMessage } from '../helper/validations/responseMessages';
 import carQueries from '../helper/carHelpers';
 import getUserFromToken from '../helper/userHelpers';
 
+const cloudinary = Cloudinary.v2;
+
+cloudinary.config({
+  cloud_name: 'dolapo',
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
 class carController {
   static createCar(req, res) {
-    const vehicle = {
-      id: vehicles.length + 1,
-      userId: 3,
-      state: req.body.state,
-      status: 'available',
-      price: req.body.price,
-      manufacturer: req.body.manufacturer,
-      model: req.body.model,
-      bodyType: req.body.bodyType
-    };
-    vehicles.push(vehicle);
-    return retrieveCarMessage(res, 201, 'Vehicle created successfully', vehicle);
+    const file = req.files.photo;
+    cloudinary.uploader.upload(file.tempFilePath, (err, result) => {
+      if (err) return responseMessage(res, 422, 'photo could not be uploaded');
+      const vehicle = {
+        id: vehicles.length + 1,
+        userId: 3,
+        state: req.body.state,
+        status: 'available',
+        price: req.body.price,
+        manufacturer: req.body.manufacturer,
+        model: req.body.model,
+        bodyType: req.body.bodyType,
+        photo: result.url,
+      };
+      vehicles.push(vehicle);
+      return retrieveCarMessage(res, 201, 'Vehicle created successfully', vehicle);
+    });
   }
 
   static availableCars(req, res, next) {
