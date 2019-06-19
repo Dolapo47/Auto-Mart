@@ -390,26 +390,6 @@ describe('User signin', () => {
 });
 
 describe('Car routes', () => {
-  it('Should create new car', (done) => {
-    chai.request(app)
-      .post('/api/v1/car')
-      .set('Authorization', signUpUserToken)
-      .send({
-        userId: 2,
-        state: 'new',
-        price: 1200000,
-        manufacturer: 'honda',
-        model: 'accord',
-        bodyType: 'car',
-      })
-      .end((err, res) => {
-        const { body } = res;
-        console.log(body);
-        expect(body.status).to.be.equals(201);
-        expect(body.status).to.be.a('number');
-        done();
-      });
-  });
 
   it('Should give 401 error if invalid token passed', (done) => {
     chai.request(app)
@@ -901,46 +881,6 @@ describe('Car routes', () => {
   it('Should throw error if id is not number', (done) => {
     chai.request(app)
       .delete('/api/v1/car/2')
-      .set('Authorization', signUpUserToken)
-      .end((err, res) => {
-        const { body } = res;
-        expect(body.status).to.be.equals(200);
-        expect(body.status).to.be.a('number');
-        done();
-      });
-  });
-
-  it('should get available car', (done) => {
-    chai.request(app)
-      .get('/api/v1/car')
-      .set('Authorization', signUpUserToken)
-      .query({ status: 'available' })
-      .end((err, res) => {
-        const { body } = res;
-        expect(body.status).to.be.equals(200);
-        done();
-      });
-  });
-
-  it('should get available car', (done) => {
-    chai.request(app)
-      .get('/api/v1/car')
-      .set('Authorization', signUpUserToken)
-      .query({
-        status: 'available',
-        min_price: '1000000',
-        max_price: '1200000',
-      })
-      .end((err, res) => {
-        const { body } = res;
-        expect(body.status).to.be.equals(200);
-        done();
-      });
-  });
-
-  it('Should throw error if id is not number', (done) => {
-    chai.request(app)
-      .delete('/api/v1/car/4')
       .set('Authorization', signUpUserToken)
       .end((err, res) => {
         const { body } = res;
