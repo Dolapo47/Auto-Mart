@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import user from './routes/user';
 import vehicle from './routes/vehicle';
 import order from './routes/order';
+import flag from './routes/flag';
 
 
 const app = express();
@@ -14,6 +15,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: false,
 }));
+
 
 app.get('/', (req, res) => {
   res.status(200).json({
@@ -29,6 +31,7 @@ app.get('/', (req, res) => {
 app.use('/api/v1', user);
 app.use('/api/v1', vehicle);
 app.use('/api/v1', order);
+app.use('/api/v1', flag);
 
 
 app.all('*', (req, res) => res.status(404).json({
