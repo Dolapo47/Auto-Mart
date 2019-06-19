@@ -29,7 +29,6 @@ class carController {
         manufacturer: req.body.manufacturer,
         model: req.body.model,
         bodyType: req.body.bodyType,
-        photo: result.url,
       };
       vehicles.push(vehicle);
       return retrieveCarMessage(res, 201, 'Vehicle created successfully', vehicle);
