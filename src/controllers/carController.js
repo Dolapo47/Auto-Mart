@@ -14,6 +14,14 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+const cloudinary = Cloudinary.v2;
+
+cloudinary.config({
+  cloud_name: 'dolapo',
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
 class carController {
   static createCar(req, res) {
     const file = req.files.photo;
