@@ -235,49 +235,6 @@ describe('POST routes', () => {
   });
 });
 
-describe('JWT Auth', () => {
-  it('should return status code 401 if token is invalid', (done) => {
-    chai.request(app)
-      .post('/api/v1/car')
-      .set('Authorization', invalidToken)
-      .send({
-        id: 3,
-        email: "ayomide@andela.com",
-        first_name: "Adedolapo",
-        last_name: "Adeleye",
-        password: "$2a$10$i8bQSQI7ZAOAClm0d88LUeoYA2Cmc9wivx5moS7z5.nDaI2.ZssMS",
-        address: "9 gabriel olusanya lagos",
-        admin: false
-      })
-      .end((err, res) => {
-        const { body } = res;
-        expect(body).to.be.an('object');
-        expect(body.status).to.be.equals(401);
-        done();
-      });
-  });
-
-  it('should return status code 401 if token is empty', (done) => {
-    chai.request(app)
-      .post('/api/v1/car')
-      .send({
-        id: 3,
-        email: "ayomide@andela.com",
-        first_name: "Adedolapo",
-        last_name: "Adeleye",
-        password: "$2a$10$i8bQSQI7ZAOAClm0d88LUeoYA2Cmc9wivx5moS7z5.nDaI2.ZssMS",
-        address: "9 gabriel olusanya lagos",
-        admin: false
-      })
-      .end((err, res) => {
-        const { body } = res;
-        expect(body).to.be.an('object');
-        expect(body.status).to.be.equals(401);
-        done();
-      });
-  });
-});
-
 describe('User signin', () => {
   it('should login user', (done) => {
     chai.request(app)
@@ -390,45 +347,6 @@ describe('User signin', () => {
 });
 
 describe('Car routes', () => {
-
-  it('Should give 401 error if invalid token passed', (done) => {
-    chai.request(app)
-      .post('/api/v1/car')
-      .set('Authorization', invalidToken)
-      .send({
-        userId: 2,
-        state: 'new',
-        price: 1200000,
-        manufacturer: 'honda',
-        model: 'accord',
-        bodyType: 'car',
-      })
-      .end((err, res) => {
-        const { body } = res;
-        expect(body.status).to.be.equals(401);
-        expect(body.status).to.be.a('number');
-        done();
-      });
-  });
-
-  it('Should give 401 error if no token passed', (done) => {
-    chai.request(app)
-      .post('/api/v1/car')
-      .send({
-        userId: 2,
-        state: 'new',
-        price: 1200000,
-        manufacturer: 'honda',
-        model: 'accord',
-        bodyType: 'car',
-      })
-      .end((err, res) => {
-        const { body } = res;
-        expect(body.status).to.be.equals(401);
-        expect(body.status).to.be.a('number');
-        done();
-      });
-  });
 
   it('Should successfully retrieve car', (done) => {
     chai.request(app)
@@ -812,18 +730,6 @@ describe('Car routes', () => {
         const { body } = res;
         expect(body.status).to.be.equals(422);
         expect(body.status).to.be.a('number');
-        done();
-      });
-  });
-
-  it('Should update', (done) => {
-    chai.request(app)
-      .patch('/api/v1/car/3/status')
-      .send({ userId: 3 })
-      .end((err, res) => {
-        const { body } = res;
-        expect(body.success).to.be.equals('Vehicle successfully updated');
-        expect(body.status).to.be.equal(200);
         done();
       });
   });
