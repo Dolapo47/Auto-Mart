@@ -12,13 +12,9 @@ const validateLogin = (data) => {
   data.email = isEmpty(data.email) === true ? '' : data.email;
   data.password = isEmpty(data.password) === true ? '' : data.password;
 
-  if (!Validator.isEmail(data.email)) {
-    errors.email = 'Email is invalid';
-  }
+  if (!Validator.isEmail(data.email)) errors.email = 'Email is invalid';
 
-  if (!Validator.isLength(data.password, { min: 8, max: 30 })) {
-    errors.password = 'Password must be between 8 and 30 characters';
-  }
+  if (!Validator.isLength(data.password, { min: 8, max: 30 })) errors.password = 'Password must be between 8 and 30 characters';
 
   return {
     errors,

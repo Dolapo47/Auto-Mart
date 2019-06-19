@@ -17,6 +17,6 @@ export const retrieveCarMessage = (res, statusCode, message, car) => {
   res.status(statusCode).json({
     status: statusCode,
     success: message,
-    vehicle: car,
+    data: car,
   });
 };
