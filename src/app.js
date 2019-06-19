@@ -1,7 +1,6 @@
 import express from 'express';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
-import fileUpload from 'express-fileupload';
 import user from './routes/user';
 import vehicle from './routes/vehicle';
 import order from './routes/order';
