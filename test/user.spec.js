@@ -1,4 +1,5 @@
 /* eslint-disable quotes */
+import fs from 'fs';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../src/app';
@@ -240,6 +241,9 @@ describe('JWT Auth', () => {
     chai.request(app)
       .post('/api/v1/car')
       .set('Authorization', invalidToken)
+      .set('enctype', 'multipart/form-data')
+      .type('form')
+      .attach('photo', fs.readFileSync('./test/assets/auromart7.jpg'), 'auromart.jpg')
       .send({
         id: 3,
         email: "ayomide@andela.com",
@@ -394,6 +398,9 @@ describe('Car routes', () => {
     chai.request(app)
       .post('/api/v1/car')
       .set('Authorization', signUpUserToken)
+      .set('enctype', 'multipart/form-data')
+      .type('form')
+      .attach('photo', fs.readFileSync('./test/assets/auromart7.jpg'), 'auromart.jpg')
       .send({
         userId: 2,
         state: 'new',
