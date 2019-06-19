@@ -1,4 +1,5 @@
 /* eslint-disable quotes */
+import fs from 'fs';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../src/app';
@@ -234,7 +235,6 @@ describe('POST routes', () => {
       });
   });
 });
-
 describe('User signin', () => {
   it('should login user', (done) => {
     chai.request(app)
@@ -347,7 +347,6 @@ describe('User signin', () => {
 });
 
 describe('Car routes', () => {
-
   it('Should successfully retrieve car', (done) => {
     chai.request(app)
       .get('/api/v1/car/2')

@@ -1,7 +1,6 @@
 /* eslint-disable camelcase */
 /* eslint-disable import/no-named-as-default */
 /* eslint-disable require-jsdoc */
-import Cloudinary from 'cloudinary';
 import vehicles from '../db/carDb';
 import { responseMessage, retrieveCarMessage } from '../helper/validations/responseMessages';
 import carQueries from '../helper/carHelpers';
