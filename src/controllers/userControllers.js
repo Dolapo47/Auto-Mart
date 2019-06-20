@@ -1,3 +1,4 @@
+/* eslint-disable require-jsdoc */
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import pool from '../db/index';
