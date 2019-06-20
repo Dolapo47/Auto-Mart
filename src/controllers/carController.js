@@ -24,6 +24,29 @@ class carController {
       responseMessage(res, 400, 'Unable to create car');
     }
   }
+
+  static async updateStatus(req, res) {
+    const { carId } = req.params;
+    const { email } = req.user;
+    const { status } = req.body;
+
+    try {
+      const findCar = await pool.query('SELECT * FROM cars WHERE id=$1 AND ownerEmail=$2;', [carId, email]);
+      if (findCar.rowCount < 1) {
+        return responseMessage(res, 400, 'Unable to update car');
+      }
+      if (findCar.rows[0].status === 'sold') {
+        return responseMessage(res, 400, 'Car has been tagged sold');
+      }
+      const updateStatus = await pool.query('UPDATE cars SET status=$1 WHERE id=$2 RETURNING * ;', [status, findCar.rows[0].id]);
+      return retrieveCarMessage(res, 200, 'car status updated', updateStatus.rows[0]);
+    } catch (error) {
+      return res.status(500).send({
+        status: 'error',
+        error: 'internal server error',
+      });
+    }
+  }
 }
 
 export default carController;
