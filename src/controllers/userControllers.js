@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import pool from '../db/index';
 import validateRegisterInput from '../helper/validations/validateRegeisterInput';
+import validateLogin from '../helper/validations/validateLogin';
 import { responseMessage } from '../helper/validations/responseMessages';
 
 /**
