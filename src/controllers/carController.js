@@ -1,95 +1,28 @@
-/* eslint-disable camelcase */
-/* eslint-disable import/no-named-as-default */
 /* eslint-disable require-jsdoc */
-import vehicles from '../db/carDb';
+import pool from '../db/index';
 import { responseMessage, retrieveCarMessage } from '../helper/validations/responseMessages';
-import carQueries from '../helper/carHelpers';
+
+/**
+ *@car advert controller- controls all endpoint concerning the car adverts going to be used by users
+  of this application
+ */
 
 class carController {
-  static createCar(req, res) {
-    const file = req.files.photo;
-    console.log(file);
-    const vehicle = {
-      id: vehicles.length + 1,
-      userId: 3,
-      state: req.body.state,
-      status: 'available',
-      price: req.body.price,
-      manufacturer: req.body.manufacturer,
-      model: req.body.model,
-      bodyType: req.body.bodyType
-    };
-    vehicles.push(vehicle);
-    return retrieveCarMessage(res, 201, 'Vehicle created successfully', vehicle);
-  }
+  static async createCar(req, res) {
+    const { id, email } = req.user;
+    const {
+      manufacturer, model, state, price, bodyType, imageUrl,
+    } = req.body;
+    const Formattedprice = parseFloat(price).toFixed(2);
+    const createdOn = new Date().toLocaleString();
+    const status = 'available';
+    try {
+      const newCar = await pool.query('INSERT INTO cars(ownerId, ownerEmail, createdon, state, status, price, manufacturer, model, body_type, image_url, flagged) VALUES($1, $2, $3, $4, $5, $6, $7, $8 , $9, $10, $11) RETURNING *;', [id, email, createdOn, state, status, Formattedprice, manufacturer, model, bodyType, imageUrl, false]);
 
-  static availableCars(req, res, next) {
-    const { status } = req.query;
-    if (status === undefined) {
-      return next();
+      retrieveCarMessage(res, 201, 'Vehicle created', newCar.rows[0]);
+    } catch (error) {
+      responseMessage(res, 400, 'Unable to create car');
     }
-    const cars = vehicles.filter(car => car.status === status);
-    if (cars.length > 0) {
-      retrieveCarMessage(res, 200, 'vehicles retrieved successfully', cars);
-    } else {
-      responseMessage(res, 404, 'No car matched the specified criteria');
-    }
-  }
-
-  static filterAvailableCars(req, res, next) {
-    const { status, min_price, max_price } = req.query;
-    console.log(req.query);
-    if (min_price === undefined || max_price === undefined) {
-      return next();
-    }
-    const cars = vehicles.filter(car => car.status === status
-      && car.price >= min_price && car.price <= max_price);
-    if (cars.length > 0) {
-      retrieveCarMessage(res, 200, 'vehicles retrieved successfully', cars);
-    } else {
-      responseMessage(res, 404, 'No car matched the specified criteria');
-    }
-  }
-
-  static getAllCars(req, res) {
-    if (vehicles.length === 0) return responseMessage(res, 404, 'No vehicle found');
-    return retrieveCarMessage(res, 200, 'Vehicles successfully retrieved just get', vehicles);
-  }
-
-  static getOneCar(req, res) {
-    const id = parseInt(req.params.car_id, 10);
-    const item = carQueries.findOneCar(id);
-    if (!item) return responseMessage(res, 404, 'No vehicle matched the specified criteria');
-    return retrieveCarMessage(res, 200, 'Vehicles successfully retrieved', item);
-  }
-
-  static updateStatus(req, res) {
-    const id = parseInt(req.params.car_id, 10);
-    const userId = parseInt(req.body.userId, 10);
-    const { status } = req.body;
-    const item = carQueries.findOneCar(id, userId);
-    if (!item) return responseMessage(res, 404, 'No vehicle matched the specified criteria');
-    item.status = status;
-    return retrieveCarMessage(res, 200, 'Vehicle successfully updated', item);
-  }
-
-  static updatePrice(req, res) {
-    const id = parseInt(req.params.car_id, 10);
-    const userId = parseInt(req.body.userId, 10);
-    const { price } = req.body;
-    const item = carQueries.findOneCar(id, userId);
-    if (!item) return responseMessage(res, 404, 'No vehicle matched the specified criteria');
-    item.status = price;
-    return retrieveCarMessage(res, 200, 'Vehicle successfully updated', item);
-  }
-
-  static deleteCar(req, res) {
-    const id = parseInt(req.params.car_id, 10);
-    const car = carQueries.findOneCar(id);
-    if (!car) return responseMessage(res, 404, 'car not found');
-    const carIndex = vehicles.indexOf(car);
-    vehicles.splice(carIndex, 1);
-    return responseMessage(res, 200, 'car successfully deleted');
   }
 }
 
