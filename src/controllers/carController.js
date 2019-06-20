@@ -70,7 +70,6 @@ class carController {
 
   static async getOneCar(req, res) {
     const { carId } = req.params;
-
     try {
       const getCar = await pool.query('SELECT * FROM cars WHERE id=$1;', [carId]);
       if (getCar.rowCount <= 0) return responseMessage(res, 404, 'Car not found');
