@@ -1,6 +1,7 @@
 import express from 'express';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
+import '@babel/polyfill';
 import user from './routes/user';
 import vehicle from './routes/vehicle';
 import order from './routes/order';
