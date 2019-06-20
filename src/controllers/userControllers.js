@@ -11,10 +11,6 @@ import { responseMessage } from '../helper/validations/responseMessages';
  */
 
 class userController {
-  /**
-  * @handles registration of new users to the application
- */
-
   static async signupUser(req, res) {
     const { errors, isValid } = validateRegisterInput(req.body);
     if (!isValid) return responseMessage(res, 400, errors);
@@ -24,10 +20,6 @@ class userController {
     const isAdmin = adminSecret === process.env.ADMIN_SECRET ? 't' : 'f';
 
     try {
-      /**
-    * Check if the email used exist
-    */
-
       const existingUser = await pool.query('SELECT * from users WHERE email=$1;', [email]);
       if (existingUser.rowCount) {
         return res.status(409).send({
@@ -45,11 +37,7 @@ class userController {
           status: 201,
           data: {
             token,
-            id: registerUser.rows[0].id,
-            firstname: registerUser.rows[0].firstname,
-            lastname: registerUser.rows[0].lastname,
-            email: registerUser.rows[0].email,
-            address: registerUser.rows[0].address,
+            user: registerUser[0],
           },
         });
       });
@@ -87,11 +75,7 @@ class userController {
           status: 'success',
           data: {
             token,
-            id: userExist.rows[0].id,
-            email: userExist.rows[0].email,
-            lastname: userExist.rows[0].lastname,
-            firstname: userExist.rows[0].firstname,
-            adminStatus: userExist.rows[0].is_admin,
+            user: userExist.rows[0],
           },
         });
       });
