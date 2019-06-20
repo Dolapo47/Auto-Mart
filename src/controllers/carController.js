@@ -68,6 +68,20 @@ class carController {
     }
   }
 
+  static async getOneCar(req, res) {
+    const { carId } = req.params;
+
+    try {
+      const getCar = await pool.query('SELECT * FROM cars WHERE id=$1;', [carId]);
+      if (getCar.rowCount <= 0) return responseMessage(res, 404, 'Car not found');
+      return retrieveCarMessage(res, 200, 'vehicle successfully retrieved', getCar.rows[0]);
+    } catch (error) {
+      return res.status(500).send({
+        status: 'error',
+        error: error.message,
+      });
+    }
+  }
 }
 
 export default carController;
