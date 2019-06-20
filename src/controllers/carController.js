@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable require-jsdoc */
 import pool from '../db/index';
 import { responseMessage, retrieveCarMessage } from '../helper/validations/responseMessages';
@@ -78,7 +79,28 @@ class carController {
     } catch (error) {
       return res.status(500).send({
         status: 'error',
-        error: error.message,
+        error: 'internal server error',
+      });
+    }
+  }
+
+  static async deleteCar(req, res) {
+    const { is_admin } = req.user;
+    const { carId } = req.params;
+    if (is_admin !== 't') {
+      return responseMessage(res, 403, 'you are not authorized to do this');
+    }
+    try {
+      const findCar = await pool.query('SELECT * FROM cars WHERE id=$1;', [carId]);
+      if (findCar.rowCount <= 0) {
+        return responseMessage(res, 404, 'Ad not found');
+      }
+      await pool.query('DELETE FROM cars WHERE id=$1;', [carId]);
+      return retrieveCarMessage(res, 200, 'Car Ad was successfully deleted');
+    } catch (error) {
+      res.status(500).send({
+        status: 'error',
+        error: 'internal server error',
       });
     }
   }
