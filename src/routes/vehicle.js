@@ -9,7 +9,7 @@ const router = express.Router();
 
 // router.get('/car', verifyToken, carController.filterAvailableCars);
 // router.get('/car', verifyToken, carController.availableCars);
-// router.get('/car', verifyToken, carController.getAllCars);
+router.get('/car', verifyToken, carController.getAllCars);
 router.get('/car/:carId', verifyToken, carController.getOneCar);
 router.post('/car', verifyToken, upload.array('image_url', 2), cloudinaryuploader, carController.createCar);
 router.patch('/car/:carId/status', verifyToken, carController.updateStatus);
