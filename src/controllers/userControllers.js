@@ -18,7 +18,6 @@ class userController {
       firstname, lastname, email, password, address, adminSecret,
     } = req.body;
     const isAdmin = adminSecret === process.env.ADMIN_SECRET ? 't' : 'f';
-
     try {
       const existingUser = await pool.query('SELECT * from users WHERE email=$1;', [email]);
       if (existingUser.rowCount) {
@@ -27,7 +26,6 @@ class userController {
           error: 'User exist already',
         });
       }
-
       const hashedPassword = bcrypt.hashSync(password, 10);
       const registerUser = await pool.query('INSERT INTO users(firstname, lastname, email, password, address, is_admin) VALUES($1, $2, $3, $4, $5, $6) RETURNING *;', [firstname, lastname, email, hashedPassword, address, isAdmin]);
 
