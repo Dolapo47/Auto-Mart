@@ -15,16 +15,11 @@ export const generateToken = (email, userId) => {
 
 export const verifyToken = (req, res, next) => {
   const token = req.headers.authorization;
-  if (!token) {
-    return responseMessage(res, 401, 'Authorization token was not provided');
-  }
+  if (!token) res.status(401).send({ status: 'error', error: 'You must be logged in to use this route' });
+  const decoded = jwt.verify(token, process.env.SECRET);
 
-  try {
-    const decoded = jwt.verify(token, secretKey);
-    req.body.userId = decoded.userId;
-    req.user = decoded;
-    return next();
-  } catch (err) {
-    return responseMessage(res, 401, 'Invalid authorization token');
-  }
+
+  req.user = decoded;
+
+  return next();
 };
