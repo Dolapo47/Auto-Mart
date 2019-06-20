@@ -5,20 +5,20 @@ const validateRegisterInput = (data) => {
   const errors = {};
 
   data.email = isEmpty(data.email) === true ? '' : data.email;
-  data.first_name = isEmpty(data.first_name) === true ? '' : data.first_name;
-  data.last_name = isEmpty(data.last_name) === true ? '' : data.last_name;
+  data.firstname = isEmpty(data.firstname) === true ? '' : data.firstname;
+  data.lastname = isEmpty(data.lastname) === true ? '' : data.lastname;
   data.password = isEmpty(data.password) === true ? '' : data.password;
   data.address = isEmpty(data.address) === true ? '' : data.address;
 
-  if (!Validator.isAlpha(data.last_name)) errors.last_name = 'Last name must be only alphabets';
+  if (!Validator.isAlpha(data.lastname)) errors.lastname = 'Last name must be only alphabets';
 
-  if (Validator.isEmpty(data.last_name)
-  || !Validator.isLength(data.last_name, { min: 2, max: 30 })) errors.last_name = 'Last name must be between 2 and 30 characters';
+  if (Validator.isEmpty(data.lastname)
+  || !Validator.isLength(data.lastname, { min: 2, max: 30 })) errors.lastname = 'Last name must be between 2 and 30 characters';
 
-  if (!Validator.isAlpha(data.first_name)) errors.first_name = 'First name must be only alphabets';
+  if (!Validator.isAlpha(data.firstname)) errors.firstname = 'First name must be only alphabets';
 
-  if (Validator.isEmpty(data.first_name)
-  || !Validator.isLength(data.first_name, { min: 2, max: 30 })) errors.first_name = 'First name must be between 2 and 30 characters';
+  if (Validator.isEmpty(data.firstname)
+  || !Validator.isLength(data.firstname, { min: 2, max: 30 })) errors.firstname = 'First name must be between 2 and 30 characters';
 
   if (!Validator.isEmail(data.email)) errors.email = 'The Email is invalid';
 

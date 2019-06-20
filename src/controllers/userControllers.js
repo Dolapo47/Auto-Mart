@@ -1,56 +1,59 @@
-/* eslint-disable require-jsdoc */
 import bcrypt from 'bcryptjs';
-import dotenv from 'dotenv';
-import users from '../db/userDb';
+import jwt from 'jsonwebtoken';
+import pool from '../db/index';
 import validateRegisterInput from '../helper/validations/validateRegeisterInput';
-import validateLogin from '../helper/validations/validateLogin';
-import { generateToken } from '../helper/userHelpers';
-import { responseMessage, userMessage } from '../helper/validations/responseMessages';
+import { responseMessage } from '../helper/validations/responseMessages';
 
-dotenv.config();
+/**
+ @class usercontroller- authorizes and authenticates users of this application
+ */
 
 class userController {
-  static registerUser(req, res) {
+  /**
+  * @handles registration of new users to the application
+ */
+
+  static async signupUser(req, res) {
     const { errors, isValid } = validateRegisterInput(req.body);
-    const { email, password, } = req.body;
     if (!isValid) return responseMessage(res, 400, errors);
+    const {
+      firstname, lastname, email, password, address, adminSecret,
+    } = req.body;
+    const isAdmin = adminSecret === process.env.ADMIN_SECRET ? 't' : 'f';
 
-    const checkedEmail = users.filter(user => user.email === email.trim());
+    try {
+      /**
+    * Check if the email used exist
+    */
 
-    if (checkedEmail.length > 0) return responseMessage(res, 409, 'The user already exist');
-
-    bcrypt.genSalt(10, (err, salt) => {
-      bcrypt.hash(password.trim(), salt, (err, hash) => {
-        const user = {
-          id: users.length + 1,
-          email: req.body.email,
-          first_name: req.body.first_name,
-          last_name: req.body.last_name,
-          password: hash,
-          address: req.body.address,
-          admin: false,
-        };
-        users.push(user);
-        const token = generateToken(user.email, user.id);
-        return userMessage(res, 201, 'user registered', token, user);
-      });
-    });
-  }
-
-  static loginUser(req, res) {
-    const { errors, isValid } = validateLogin(req.body);
-    const { email, password } = req.body;
-    if (!isValid) return responseMessage(res, 400, errors);
-    const loginUser = users.filter(user => user.email === email.trim());
-    if (loginUser.length < 1) return responseMessage(res, 404, 'Auth Failed');
-
-    bcrypt.compare(password.trim(), loginUser[0].password, (err, result) => {
-      if (result) {
-        const token = generateToken(loginUser[0].email, loginUser[0].id);
-        return userMessage(res, 200, 'Auth Successful', token, loginUser[0]);
+      const existingUser = await pool.query('SELECT * from users WHERE email=$1;', [email]);
+      if (existingUser.rowCount) {
+        return res.status(409).send({
+          status: 409,
+          error: 'User exist already',
+        });
       }
-      return responseMessage(res, 401, 'Auth Failed');
-    });
+
+      const hashedPassword = bcrypt.hashSync(password, 10);
+      const registerUser = await pool.query('INSERT INTO users(firstname, lastname, email, password, address, is_admin) VALUES($1, $2, $3, $4, $5, $6) RETURNING *;', [firstname, lastname, email, hashedPassword, address, isAdmin]);
+
+      return jwt.sign(registerUser.rows[0], process.env.SECRET, (err, token) => {
+        if (err) res.status(400).send({ error: err.message });
+        res.status(201).send({
+          status: 201,
+          data: {
+            token,
+            id: registerUser.rows[0].id,
+            firstname: registerUser.rows[0].firstname,
+            lastname: registerUser.rows[0].lastname,
+            email: registerUser.rows[0].email,
+            address: registerUser.rows[0].address,
+          },
+        });
+      });
+    } catch (error) {
+      return res.status(400).send({ error: error.message });
+    }
   }
 }
 
