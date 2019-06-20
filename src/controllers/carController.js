@@ -47,6 +47,27 @@ class carController {
       });
     }
   }
+
+  static async updatePrice(req, res) {
+    const { carId } = req.params;
+    const { email } = req.user;
+    const { price } = req.body;
+
+    try {
+      const findCar = await pool.query('SELECT * FROM cars WHERE id=$1 AND ownerEmail=$2;', [carId, email]);
+      if (findCar.rowCount < 1) {
+        return responseMessage(res, 400, 'Unable to update car');
+      }
+      const updatePrice = await pool.query('UPDATE cars SET price=$1 WHERE id=$2 RETURNING * ;', [price, findCar.rows[0].id]);
+      return retrieveCarMessage(res, 200, 'car price updated', updatePrice.rows[0]);
+    } catch (error) {
+      return res.status(500).send({
+        status: 'error',
+        error: 'internal server error',
+      });
+    }
+  }
+
 }
 
 export default carController;

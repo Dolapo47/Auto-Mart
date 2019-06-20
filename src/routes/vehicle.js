@@ -13,7 +13,7 @@ const router = express.Router();
 // router.get('/car/:car_id', verifyToken, carController.getOneCar);
 router.post('/car', verifyToken, upload.array('image_url', 2), cloudinaryuploader, carController.createCar);
 router.patch('/car/:carId/status', verifyToken, carController.updateStatus);
-// router.patch('/car/:car_id/price', carController.updatePrice);
+router.patch('/car/:carId/price', verifyToken, carController.updatePrice);
 // router.delete('/car/:car_id', verifyToken, carController.deleteCar);
 
 
