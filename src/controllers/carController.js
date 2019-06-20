@@ -3,10 +3,6 @@
 import pool from '../db/index';
 import { responseMessage, retrieveCarMessage } from '../helper/validations/responseMessages';
 
-/**
- *@car advert controller- controls all endpoint concerning the car adverts going to be used by users
-  of this application
- */
 
 class carController {
   static async createCar(req, res) {
