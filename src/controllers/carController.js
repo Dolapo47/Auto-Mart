@@ -104,6 +104,25 @@ class carController {
       });
     }
   }
+
+  static async getAllCars(req, res) {
+    const { is_admin } = req.user;
+    if (is_admin !== 't') {
+      return responseMessage(res, 403, 'you are not authorized to do this');
+    }
+    try {
+      const getCars = await pool.query('SELECT * FROM CARS ;');
+      if (getCars.rowCount <= 0) {
+        return responseMessage(res, 404, 'No ad found');
+      }
+      return retrieveCarMessage(res, 200, 'All ads successfully retrieved', getCars.rows);
+    } catch (error) {
+      return res.status(500).send({
+        status: 'error',
+        error: error.message,
+      });
+    }
+  }
 }
 
 export default carController;
