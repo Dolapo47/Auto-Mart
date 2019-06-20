@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = void 0;
+exports.isInteger = exports.isFloat = exports.isEmpty = void 0;
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -13,5 +13,25 @@ var isEmpty = function isEmpty(value) {
   }
 };
 
-var _default = isEmpty;
-exports["default"] = _default;
+exports.isEmpty = isEmpty;
+
+var isFloat = function isFloat(value) {
+  var regex = /^\d*(\.\d{2})?$/;
+  var regInt = /^[0-9]*[1-9][0-9]*$/;
+
+  if (value.match(regex) && value.match(regInt)) {
+    return true;
+  }
+};
+
+exports.isFloat = isFloat;
+
+var isInteger = function isInteger(value) {
+  var regInt = /^[0-9]*[1-9][0-9]*$/;
+
+  if (value.match(regInt)) {
+    return true;
+  }
+};
+
+exports.isInteger = isInteger;

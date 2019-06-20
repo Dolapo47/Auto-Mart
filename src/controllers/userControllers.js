@@ -6,9 +6,6 @@ import validateRegisterInput from '../helper/validations/validateRegeisterInput'
 import validateLogin from '../helper/validations/validateLogin';
 import { responseMessage } from '../helper/validations/responseMessages';
 
-/**
- @class usercontroller- authorizes and authenticates users of this application
- */
 
 class userController {
   static async signupUser(req, res) {
@@ -44,11 +41,6 @@ class userController {
     }
   }
 
-  /**
-   * @controller - handles the loggin in of registered user
-   * It will not log an unregistered user in
-   * It will not login on wrong password credentials
-   */
 
   static async loginUser(req, res) {
     const { errors, isValid } = validateLogin(req.body);

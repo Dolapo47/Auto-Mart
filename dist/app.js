@@ -17,6 +17,8 @@ var _vehicle = _interopRequireDefault(require("./routes/vehicle"));
 
 var _order = _interopRequireDefault(require("./routes/order"));
 
+var _flag = _interopRequireDefault(require("./routes/flag"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var app = (0, _express["default"])();
@@ -37,21 +39,20 @@ app.get('/', function (req, res) {
 app.use('/api/v1', _user["default"]);
 app.use('/api/v1', _vehicle["default"]);
 app.use('/api/v1', _order["default"]);
-app.use(function (err, req, res, next) {
+app.use('/api/v1', _flag["default"]);
+app.all('*', function (req, res) {
+  return res.status(404).json({
+    status: 404,
+    error: 'Route does not exist'
+  });
+});
+app.use(function (err, req, res) {
   if (err) {
     return res.status(500).json({
       status: 500,
       error: 'internal server error'
     });
   }
-
-  return next();
-});
-app.all('*', function (req, res) {
-  return res.status(404).json({
-    status: 404,
-    error: 'Route does not exist'
-  });
 });
 app.listen(port, function () {
   console.log("Server is running on port ".concat(port));

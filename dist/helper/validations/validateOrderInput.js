@@ -3,58 +3,45 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = void 0;
+exports.validateOrderUpdate = exports.validateOrderInput = void 0;
 
 var _validator = _interopRequireDefault(require("validator"));
 
-var _isEmpty = _interopRequireDefault(require("../isEmpty"));
+var _isEmpty = require("../isEmpty");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var validateOrderInput = function validateOrderInput(data) {
   var errors = {};
-  data.amount_offered = (0, _isEmpty["default"])(data.amount_offered) === true ? '' : data.amount_offered;
-  data.userId = (0, _isEmpty["default"])(data.userId) === true ? '' : data.userId;
-  data.carId = (0, _isEmpty["default"])(data.carId) === true ? '' : data.carId;
-
-  if (!_validator["default"].isFloat(data.amount_offered)) {
-    errors.amount_offered = 'Number must be in 0.00 format';
-  }
-
-  if (_validator["default"].isEmpty(data.amount_offered) || !_validator["default"].isLength(data.amount_offered, {
-    min: 1,
-    max: 13
-  })) {
-    errors.amount_offered = 'Last name must be between 1 and 13 characters';
-  }
-
-  if (!_validator["default"].isNumeric(data.userId)) {
-    errors.userId = 'User id should be a number';
-  }
-
-  if (_validator["default"].isEmpty(data.userId) || !_validator["default"].isLength(data.userId, {
-    min: 1,
-    max: 3
-  })) {
-    errors.userId = 'Last name must be between 1 and 3 characters';
-  }
-
-  if (!_validator["default"].isNumeric(data.carId)) {
-    errors.carId = 'Car id should be a number';
-  }
-
-  if (_validator["default"].isEmpty(data.carId) || !_validator["default"].isLength(data.carId, {
-    min: 1,
-    max: 3
-  })) {
-    errors.carId = 'Last name must be between 1 and 3 characters';
-  }
-
+  data.carId = (0, _isEmpty.isEmpty)(data.carId) === true ? '' : data.carId;
+  data.amount = (0, _isEmpty.isEmpty)(data.amount) === true ? '' : data.amount;
+  data.amountOffered = (0, _isEmpty.isEmpty)(data.amountOffered) === true ? '' : data.amountOffered;
+  if (_validator["default"].isEmpty(data.carId)) errors.carId = 'carId field is required';
+  if (_validator["default"].isEmpty(data.amount)) errors.amount = 'amount field is required';
+  if (_validator["default"].isEmpty(data.amountOffered)) errors.amountOffered = 'amount offered field is required';
+  if (!(0, _isEmpty.isInteger)(data.carId)) errors.carId = 'only interger numbers allowed';
+  if ((0, _isEmpty.isFloat)(data.amount)) errors.amount = 'only decimal numbers allowed (12.00)';
+  if ((0, _isEmpty.isFloat)(data.amountOffered)) errors.amountOffered = 'only decimal numbers allowed (12.00)';
   return {
     errors: errors,
-    isValid: (0, _isEmpty["default"])(errors)
+    isValid: (0, _isEmpty.isEmpty)(errors)
   };
 };
 
-var _default = validateOrderInput;
-exports["default"] = _default;
+exports.validateOrderInput = validateOrderInput;
+
+var validateOrderUpdate = function validateOrderUpdate(data) {
+  var errors = {};
+  data.userId = (0, _isEmpty.isEmpty)(data.userId) === true ? '' : data.userId;
+  data.amountOffered = (0, _isEmpty.isEmpty)(data.amountOffered) === true ? '' : data.amountOffered;
+  if (_validator["default"].isEmpty(data.userId)) errors.userId = 'userId field is required';
+  if (_validator["default"].isEmpty(data.amountOffered)) errors.amountOffered = 'amountOffered field is required';
+  if ((0, _isEmpty.isFloat)(data.amountOffered)) errors.amountOffered = 'only decimal numbers allowed (12.00)';
+  if (!(0, _isEmpty.isInteger)(data.userId)) errors.userId = 'only interger numbers allowed';
+  return {
+    errors: errors,
+    isValid: (0, _isEmpty.isEmpty)(errors)
+  };
+};
+
+exports.validateOrderUpdate = validateOrderUpdate;

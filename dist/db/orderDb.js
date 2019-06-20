@@ -18,6 +18,13 @@ var orders = [{
   status: 'pending',
   amount: 1200000.00,
   amountOffered: 1000000.00
+}, {
+  id: 3,
+  userId: 1,
+  carId: 1,
+  status: 'pending',
+  amount: 1200000.00,
+  amountOffered: 1000000.00
 }];
 var _default = orders;
 exports["default"] = _default;
