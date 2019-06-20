@@ -57,6 +57,48 @@ class userController {
       return res.status(400).send({ error: error.message });
     }
   }
+
+  /**
+   * @controller - handles the loggin in of registered user
+   * It will not log an unregistered user in
+   * It will not login on wrong password credentials
+   */
+
+  static async loginUser(req, res) {
+    const { errors, isValid } = validateLogin(req.body);
+    if (!isValid) return responseMessage(res, 400, errors);
+
+    const { email, password } = req.body;
+
+    try {
+      const userExist = await pool.query('SELECT * FROM users WHERE email=$1;', [email]);
+      if (userExist.rowCount <= 0) {
+        responseMessage(res, 404, 'User does not exist!');
+      }
+
+      const comparePasswords = bcrypt.compareSync(password, userExist.rows[0].password);
+      if (!comparePasswords) {
+        responseMessage(res, 401, 'Email or password is incorrect!');
+      }
+
+      return jwt.sign(userExist.rows[0], process.env.SECRET, (err, token) => {
+        if (err) responseMessage(res, 401, 'Auth Failed');
+        res.status(200).send({
+          status: 'success',
+          data: {
+            token,
+            id: userExist.rows[0].id,
+            email: userExist.rows[0].email,
+            lastname: userExist.rows[0].lastname,
+            firstname: userExist.rows[0].firstname,
+            adminStatus: userExist.rows[0].is_admin,
+          },
+        });
+      });
+    } catch (error) {
+      return res.status(500).send({ error: error.message });
+    }
+  }
 }
 
 export default userController;
