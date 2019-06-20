@@ -123,6 +123,19 @@ class carController {
       });
     }
   }
+
+  static async availableCars(req, res, next) {
+    const { status } = req.query;
+
+    if (status === undefined) {
+      return next();
+    }
+    const getAvailableCars = await pool.query('SELECT * FROM cars WHERE status=$1;', ['available']);
+    if (getAvailableCars.rowCount < 1) {
+      return responseMessage(res, 404, 'No ad found');
+    }
+    retrieveCarMessage(res, 200, 'Available cars successfully retrieved', getAvailableCars.rows);
+  }
 }
 
 export default carController;
