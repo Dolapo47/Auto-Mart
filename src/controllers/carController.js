@@ -132,6 +132,32 @@ class carController {
     }
     retrieveCarMessage(res, 200, 'Available cars successfully retrieved', getAvailableCars.rows);
   }
+
+  static async filteredAvailableCar(req, res, next) {
+    const { status, min_price: minPrice = 0, max_price: maxPrice = 100000000000000 } = req.query;
+
+    if (status === undefined || (minPrice === undefined || maxPrice === undefined)) {
+      return next();
+    }
+
+    const getFilteredCars = await pool.query('SELECT * FROM cars WHERE status=$1 AND (price >= $2 AND price <= $3);', ['available', minPrice, maxPrice]);
+    if (getFilteredCars.rows < 1) {
+      return responseMessage(res, 404, 'no car matched the specified criteria');
+    } return retrieveCarMessage(res, 200, 'vehicles successfully retrieved', getFilteredCars.rows);
+  }
+
+  static async filteredAvailablenew(req, res, next) {
+    const { status, state } = req.query;
+
+    if (status === undefined || state === undefined) {
+      return next();
+    }
+
+    const getFilteredCars = await pool.query('SELECT * FROM cars WHERE status=$1 AND state=$2;', ['available', 'new']);
+    if (getFilteredCars.rows < 1) {
+      return responseMessage(res, 404, 'no car matched the specified criteria');
+    } return retrieveCarMessage(res, 200, 'vehicles successfully retrieved', getFilteredCars.rows);
+  }
 }
 
 export default carController;
