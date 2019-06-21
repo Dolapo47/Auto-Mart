@@ -1,22 +1,28 @@
 /* eslint-disable require-jsdoc */
-import db from '../db/flagDb';
+import pool from '../db/index';
 import validateFlagInput from '../helper/validations/validateFlagInput';
 import { responseMessage, retrieveCarMessage } from '../helper/validations/responseMessages';
 
 class flagController {
-  static createFlag(req, res) {
+  static async createFlag(req, res) {
+    const { reason, carId, description } = req.body;
     const { errors, isValid } = validateFlagInput(req.body);
-    if (!isValid) return responseMessage(res, 422, errors);
+    if (!isValid) return responseMessage(res, 400, errors);
+    const createdOn = new Date().toLocaleDateString();
 
-    const flag = {
-      id: db.length + 1,
-      carId: req.body.carId,
-      reason: req.body.reason,
-      description: req.body.description,
-    };
+    try {
+      const carExist = await pool.query('SELECT * FROM cars WHERE id=$1;', [carId]);
 
-    db.push(flag);
-    return retrieveCarMessage(res, 201, 'flag successfully created', flag);
+      if (carExist.rowCount <= 0) return res.status(404).send({ status: 'error', error: 'Car not found' });
+      const reportAd = await pool.query('INSERT INTO flags(car_id, reason, description, createdon) VALUES($1, $2, $3, $4) RETURNING * ;', [carId, reason, description, createdOn]);
+
+      return retrieveCarMessage(res, 201, 'Flag created', reportAd.rows[0]);
+    } catch (error) {
+      return res.status(400).send({
+        status: 'error',
+        error: error.message,
+      });
+    }
   }
 }
 

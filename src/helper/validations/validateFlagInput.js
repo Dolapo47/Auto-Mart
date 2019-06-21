@@ -4,7 +4,6 @@ import { isEmpty, isInteger } from '../isEmpty';
 const validateFlagInput = (data) => {
   const errors = {};
 
-  data.carId = isEmpty(data.carId) === true ? '' : data.carId;
   data.reason = isEmpty(data.reason) === true ? '' : data.reason;
   data.description = isEmpty(data.description) === true ? '' : data.description;
 
