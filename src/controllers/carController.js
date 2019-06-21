@@ -145,19 +145,6 @@ class carController {
       return responseMessage(res, 404, 'no car matched the specified criteria');
     } return retrieveCarMessage(res, 200, 'vehicles successfully retrieved', getFilteredCars.rows);
   }
-
-  static async filteredAvailablenew(req, res, next) {
-    const { status, state } = req.query;
-
-    if (status === undefined || state === undefined) {
-      return next();
-    }
-
-    const getFilteredCars = await pool.query('SELECT * FROM cars WHERE status=$1 AND state=$2;', ['available', 'new']);
-    if (getFilteredCars.rows < 1) {
-      return responseMessage(res, 404, 'no car matched the specified criteria');
-    } return retrieveCarMessage(res, 200, 'vehicles successfully retrieved', getFilteredCars.rows);
-  }
 }
 
 export default carController;
