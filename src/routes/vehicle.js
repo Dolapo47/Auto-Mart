@@ -7,7 +7,7 @@ import cloudinaryuploader from '../helper/cloudinary';
 const router = express.Router();
 
 
-// router.get('/car', verifyToken, carController.filterAvailableCars);
+router.get('/car', verifyToken, carController.filteredAvailableCar);
 router.get('/car', verifyToken, carController.availableCars);
 router.get('/car', verifyToken, carController.getAllCars);
 router.get('/car/:carId', verifyToken, carController.getOneCar);
