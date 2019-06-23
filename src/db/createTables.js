@@ -11,7 +11,7 @@ const createUsers = `CREATE TABLE IF NOT EXISTS users (
 
 const createCars = `CREATE TABLE IF NOT EXISTS cars (
     id SERIAL PRIMARY KEY,
-    ownerid INTEGER,
+    ownerid INTEGER REFERENCES users(id),
     owneremail VARCHAR(50),
     createdon TIMESTAMP NOT NULL,
     state VARCHAR(50) NOT NULL,
@@ -27,7 +27,7 @@ const createCars = `CREATE TABLE IF NOT EXISTS cars (
 
 const createOrders = ` CREATE TABLE IF NOT EXISTS orders (
  id SERIAL PRIMARY KEY,
- car_id INTEGER ,
+ car_id INTEGER REFERENCES cars(id),
  buyer_id INTEGER REFERENCES users(id),
  createdon TIMESTAMP,
  amountOffered DECIMAL,
@@ -37,7 +37,7 @@ const createOrders = ` CREATE TABLE IF NOT EXISTS orders (
 
 const createFlags = ` CREATE TABLE IF NOT EXISTS flags (
  id SERIAL PRIMARY KEY,
- car_id INTEGER REFERENCES users(id),
+ car_id INTEGER REFERENCES cars(id),
  reason VARCHAR(255) NOT NULL,
  description VARCHAR(255) NOT NULL,
  createdon TIMESTAMP NOT NULL

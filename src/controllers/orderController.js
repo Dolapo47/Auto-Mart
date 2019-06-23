@@ -1,29 +1,41 @@
 /* eslint-disable require-jsdoc */
-import orders from '../db/orderDb';
 import { validateOrderInput, validateOrderUpdate } from '../helper/validations/validateOrderInput';
 import { responseMessage, retrieveCarMessage } from '../helper/validations/responseMessages';
+import pool from '../db';
 
 class orderController {
-  static createOrder(req, res) {
+  static async createOrder(req, res) {
     const { errors, isValid } = validateOrderInput(req.body);
     if (!isValid) return responseMessage(res, 422, errors);
-    const userId = parseInt(req.body.userId, 10);
+    const { id } = req.user;
     const carId = parseInt(req.body.carId, 10);
-
-    const checkOrder = orders.filter(order => order.userId === userId && order.carId === carId);
-    if (checkOrder.length > 0) {
-      return responseMessage(res, 409, 'The order already exist');
+    const { priceOffered } = req.body;
+    const price = Number(priceOffered).toFixed(2);
+    const status = 'pending';
+    try {
+      const checkOrder = await pool.query('SELECT * FROM orders WHERE (car_id = $1 AND buyer_id = $2) OR status = $3;', [carId, id, 'pending']);
+      if (checkOrder.rowCount > 0) {
+        return responseMessage(res, 409, 'The order already exist');
+      }
+      const createdOn = new Date().toLocaleDateString();
+      const makeOrder = await pool.query('INSERT into orders(car_id, buyer_id, createdon ,amountOffered, status) VALUES($1, $2, $3, $4, $5) RETURNING * ;', [carId, id, createdOn, price, status]);
+      return res.status(201).send({
+        status: 'success',
+        data: {
+          id: makeOrder.rows[0].id,
+          buyerId: makeOrder.rows[0].buyer_id,
+          carId,
+          createdOn: makeOrder.rows[0].createdon,
+          priceOffered: makeOrder.rows[0].amountoffered,
+          status: makeOrder.rows[0].status,
+        },
+      });
+    } catch (error) {
+      return res.status(400).send({
+        status: 'error',
+        error: error.message,
+      });
     }
-    const order = {
-      id: orders.length + 1,
-      userId,
-      carId,
-      status: 'pending',
-      amount: 1200000,
-      amount_offered: req.body.amountOffered,
-    };
-    orders.push(order);
-    return retrieveCarMessage(res, 201, 'order successfully created', order);
   }
 
   static updateOrder(req, res) {
