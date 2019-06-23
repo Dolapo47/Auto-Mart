@@ -91,7 +91,7 @@ class carController {
       if (findCar.rowCount <= 0) {
         return responseMessage(res, 404, 'Ad not found');
       }
-      await pool.query('DELETE FROM cars WHERE id=$1;', [carId]);
+      await pool.query('DELETE FROM cars WHERE id = $1;', [carId]);
       return retrieveCarMessage(res, 200, 'Car Ad was successfully deleted');
     } catch (error) {
       res.status(500).send({
