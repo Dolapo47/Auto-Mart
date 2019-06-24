@@ -1,4 +1,5 @@
 import chai from 'chai';
+import fs from 'fs';
 import chaiHttp from 'chai-http';
 import dotenv from 'dotenv';
 import app from '../src/app';
