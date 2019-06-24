@@ -40,7 +40,7 @@ class orderController {
         return responseMessage(res, 404, 'order not found');
       }
       const updateOrderPrice = await pool.query('UPDATE orders SET amountoffered=$1 WHERE id=$2 RETURNING *;', [newOffer, checkUserOrder.rows[0].id]);
-      return retrieveCarMessage(res, 200, 'success', updateOrderPrice.rows);
+      return retrieveCarMessage(res, 200, 'success', updateOrderPrice.rows[0]);
     } catch (error) {
       return res.status(400).send({
         status: 'error',
