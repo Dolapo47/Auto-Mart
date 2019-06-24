@@ -65,6 +65,7 @@ class carController {
 
   static async getOneCar(req, res) {
     const { carId } = req.params;
+    console.log(carId);
 
     try {
       const getCar = await pool.query('SELECT * FROM cars WHERE id=$1;', [carId]);
@@ -81,20 +82,34 @@ class carController {
   static async deleteCar(req, res) {
     const { is_admin } = req.user;
     const { carId } = req.params;
+    console.log(carId);
     if (is_admin !== 't') {
-      return responseMessage(res, 403, 'you are not authorized to do this');
+      return res.status(403).send({
+        status: 'error',
+        error: 'you are not authorized to do this',
+      });
     }
+
     try {
       const findCar = await pool.query('SELECT * FROM cars WHERE id=$1;', [carId]);
+
       if (findCar.rowCount <= 0) {
-        return responseMessage(res, 404, 'Ad not found');
+        return res.status(404).send({
+          status: 'error',
+          error: 'Advert not found',
+        });
       }
-      await pool.query('DELETE FROM cars WHERE id = $1;', [carId]);
-      return retrieveCarMessage(res, 200, 'Car Ad was successfully deleted');
+
+      await pool.query('DELETE FROM cars WHERE id=$1;', [carId]);
+
+      return res.status(200).send({
+        status: 'success',
+        data: 'Car Ad was successfully deleted',
+      });
     } catch (error) {
       res.status(500).send({
         status: 'error',
-        error: 'internal server error',
+        error: error.message,
       });
     }
   }

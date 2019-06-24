@@ -9,7 +9,7 @@
     "build": "npm run clean && npm run babel-build",
     "db-migrations": "babel-node ./src/db/dbSetup.js",
     "coverage": "nyc npm run test && npm run generate-lcov && npm run coveralls-coverage && npm run codeclimate-coverage",
-    "test": "mocha --require @babel/register --recursive --timeout 20000 --exit",
+    "test": "cross-env NODE_ENV=test mocha --require @babel/register --recursive --timeout 30000 --exit",
     "start": "nodemon --exec babel-node src/app.js",
     "babel-build": "babel src --out-dir dist",
     "serve": "node dist/app.js",
