@@ -82,7 +82,6 @@ class carController {
   static async deleteCar(req, res) {
     const { is_admin } = req.user;
     const { carId } = req.params;
-    console.log(carId);
     if (is_admin !== 't') {
       return res.status(403).send({
         status: 'error',
