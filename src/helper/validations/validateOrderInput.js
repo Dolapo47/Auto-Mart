@@ -21,13 +21,10 @@ export const validateOrderInput = (data) => {
 export const validateOrderUpdate = (data) => {
   const errors = {};
 
-  data.userId = isEmpty(data.userId) === true ? '' : data.userId;
-  data.amountOffered = isEmpty(data.amountOffered) === true ? '' : data.amountOffered;
+  data.newOffer = isEmpty(data.newOffer) === true ? '' : data.newOffer;
 
-  if (validator.isEmpty(data.userId)) errors.userId = 'userId field is required';
-  if (validator.isEmpty(data.amountOffered)) errors.amountOffered = 'amountOffered field is required';
-  if (isFloat(data.amountOffered)) errors.amountOffered = 'only decimal numbers allowed (12.00)';
-  if (!isInteger(data.userId)) errors.userId = 'only interger numbers allowed';
+  if (validator.isEmpty(data.newOffer)) errors.newOffer = 'amountOffered field is required';
+  if (isFloat(data.newOffer)) errors.amountOffer = 'only decimal numbers allowed (12.00)';
 
   return {
     errors,

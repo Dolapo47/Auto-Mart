@@ -15,7 +15,6 @@ class carController {
     const status = 'available';
     try {
       const newCar = await pool.query('INSERT INTO cars(ownerId, ownerEmail, createdon, state, status, price, manufacturer, model, body_type, image_url, flagged) VALUES($1, $2, $3, $4, $5, $6, $7, $8 , $9, $10, $11) RETURNING *;', [id, email, createdOn, state, status, Formattedprice, manufacturer, model, bodyType, imageUrl, false]);
-
       retrieveCarMessage(res, 201, 'Vehicle created', newCar.rows[0]);
     } catch (error) {
       responseMessage(res, 400, 'Unable to create car');

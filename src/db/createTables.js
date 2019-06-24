@@ -28,7 +28,7 @@ const createCars = `CREATE TABLE IF NOT EXISTS cars (
 const createOrders = ` CREATE TABLE IF NOT EXISTS orders (
  id SERIAL PRIMARY KEY,
  car_id INTEGER REFERENCES cars(id),
- buyer_id INTEGER REFERENCES users(id),
+ buyer_id INTEGER,
  createdon TIMESTAMP,
  amountOffered DECIMAL,
  status CHAR(50)
