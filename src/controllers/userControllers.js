@@ -1,7 +1,7 @@
 /* eslint-disable require-jsdoc */
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import pool from '../db/index';
+import DB from '../db/index';
 import validateRegisterInput from '../helper/validations/validateRegeisterInput';
 import validateLogin from '../helper/validations/validateLogin';
 import { responseMessage } from '../helper/validations/responseMessages';
@@ -16,7 +16,7 @@ class userController {
     } = req.body;
     const isAdmin = adminSecret === process.env.ADMIN_SECRET ? 't' : 'f';
     try {
-      const existingUser = await pool.query('SELECT * from users WHERE email=$1;', [email]);
+      const existingUser = await DB.query('SELECT * from users WHERE email=$1;', [email]);
       if (existingUser.rowCount) {
         return res.status(409).send({
           status: 409,
@@ -24,7 +24,7 @@ class userController {
         });
       }
       const hashedPassword = bcrypt.hashSync(password, 10);
-      const registerUser = await pool.query('INSERT INTO users(firstname, lastname, email, password, address, is_admin) VALUES($1, $2, $3, $4, $5, $6) RETURNING *;', [firstname, lastname, email, hashedPassword, address, isAdmin]);
+      const registerUser = await DB.query('INSERT INTO users(firstname, lastname, email, password, address, is_admin) VALUES($1, $2, $3, $4, $5, $6) RETURNING *;', [firstname, lastname, email, hashedPassword, address, isAdmin]);
 
       return jwt.sign(registerUser.rows[0], process.env.SECRET, (err, token) => {
         if (err) res.status(400).send({ error: err.message });
@@ -49,7 +49,7 @@ class userController {
     const { email, password } = req.body;
 
     try {
-      const userExist = await pool.query('SELECT * FROM users WHERE email=$1;', [email]);
+      const userExist = await DB.query('SELECT * FROM users WHERE email=$1;', [email]);
       if (userExist.rowCount <= 0) {
         responseMessage(res, 404, 'User does not exist!');
       }
