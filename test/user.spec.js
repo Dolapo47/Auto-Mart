@@ -63,6 +63,199 @@ describe('Can register new user', () => {
         done();
       });
   });
+
+  it('should throw error if email is missing', (done) => {
+    chai.request(app)
+      .post('/api/v1/auth/signup')
+      .send({
+        email: '',
+        firstname: 'Murray',
+        lastname: 'Kohler',
+        password: 'dolapo2018@@',
+        address: '9 gabriel olusanya',
+        adminSecret: 'dappy'
+      })
+      .end((err, res) => {
+        if (err)done();
+        expect(res.body).to.be.a('object');
+        expect(res.status).to.equal(422);
+        done();
+      });
+  });
+
+  it('should throw error if first name is missing', (done) => {
+    chai.request(app)
+      .post('/api/v1/auth/signup')
+      .send({
+        email: 'Sean.Hane@yahoo.com',
+        firstname: '',
+        lastname: 'Kohler',
+        password: 'dolapo2018@@',
+        address: '9 gabriel olusanya',
+        adminSecret: 'dappy'
+      })
+      .end((err, res) => {
+        if (err)done();
+        expect(res.body).to.be.a('object');
+        expect(res.status).to.equal(422);
+        done();
+      });
+  });
+
+  it('should throw error if last name is missing', (done) => {
+    chai.request(app)
+      .post('/api/v1/auth/signup')
+      .send({
+        email: 'Sean.Hane@yahoo.com',
+        firstname: 'Murray',
+        lastname: '',
+        password: 'dolapo2018@@',
+        address: '9 gabriel olusanya',
+        adminSecret: 'dappy'
+      })
+      .end((err, res) => {
+        if (err)done();
+        expect(res.body).to.be.a('object');
+        expect(res.status).to.equal(422);
+        done();
+      });
+  });
+
+  it('should throw error if password is missing', (done) => {
+    chai.request(app)
+      .post('/api/v1/auth/signup')
+      .send({
+        email: 'Sean.Hane@yahoo.com',
+        firstname: 'Murray',
+        lastname: 'Kohler',
+        password: '',
+        address: '9 gabriel olusanya',
+        adminSecret: 'dappy'
+      })
+      .end((err, res) => {
+        if (err)done();
+        expect(res.body).to.be.a('object');
+        expect(res.status).to.equal(422);
+        done();
+      });
+  });
+
+  it('should throw error if address is missing', (done) => {
+    chai.request(app)
+      .post('/api/v1/auth/signup')
+      .send({
+        email: 'Sean.Hane@yahoo.com',
+        firstname: 'Murray',
+        lastname: 'Kohler',
+        password: 'dolapo2018@@',
+        address: '',
+        adminSecret: 'dappy'
+      })
+      .end((err, res) => {
+        if (err)done();
+        expect(res.body).to.be.a('object');
+        expect(res.status).to.equal(422);
+        done();
+      });
+  });
+
+  it('should throw error if email is invalid', (done) => {
+    chai.request(app)
+      .post('/api/v1/auth/signup')
+      .send({
+        email: 'Sean.Haneyahoo.com',
+        firstname: 'Murray',
+        lastname: 'Kohler',
+        password: 'dolapo2018@@',
+        address: '9 gabriel olusanya',
+        adminSecret: 'dappy'
+      })
+      .end((err, res) => {
+        if (err)done();
+        expect(res.body).to.be.a('object');
+        expect(res.status).to.equal(422);
+        done();
+      });
+  });
+
+  it('should throw error if first name is not all aphabets', (done) => {
+    chai.request(app)
+      .post('/api/v1/auth/signup')
+      .send({
+        email: 'Sean.Hane@yahoo.com',
+        firstname: 'Murray335',
+        lastname: 'Kohler',
+        password: 'dolapo2018@@',
+        address: '9 gabriel olusanya',
+        adminSecret: 'dappy'
+      })
+      .end((err, res) => {
+        if (err)done();
+        expect(res.body).to.be.a('object');
+        expect(res.status).to.equal(422);
+        done();
+      });
+  });
+
+  it('should throw error if last name is not all alphabets', (done) => {
+    chai.request(app)
+      .post('/api/v1/auth/signup')
+      .send({
+        email: 'Sean.Hane@yahoo.com',
+        firstname: 'Murray',
+        lastname: 'Kohler454',
+        password: 'dolapo2018@@',
+        address: '9 gabriel olusanya',
+        adminSecret: 'dappy'
+      })
+      .end((err, res) => {
+        if (err)done();
+        expect(res.body).to.be.a('object');
+        expect(res.status).to.equal(422);
+        done();
+      });
+  });
+
+  it('should throw error if password is less than 6 characters', (done) => {
+    chai.request(app)
+      .post('/api/v1/auth/signup')
+      .send({
+        email: 'Sean.Hane@yahoo.com',
+        firstname: 'Murray',
+        lastname: 'Kohler',
+        password: 'dola',
+        address: '9 gabriel olusanya',
+        adminSecret: 'dappy'
+      })
+      .end((err, res) => {
+        if (err)done();
+        expect(res.body).to.be.a('object');
+        expect(res.status).to.equal(422);
+        done();
+      });
+  });
+
+  it('should get default route', (done) => {
+    chai.request(app)
+      .get('/')
+      .end((err, res) => {
+        if (err)done();
+        expect(res.body).to.be.a('object');
+        expect(res.status).to.equal(200);
+        done();
+      });
+  });
+
+  it('should get default route', (done) => {
+    chai.request(app)
+      .get('/dlkdl')
+      .end((err, res) => {
+        if (err)done();
+        expect(res.body).to.be.a('object');
+        expect(res.status).to.equal(404);
+        done();
+      });
+  });
 });
 
 describe('Can register new user', () => {
@@ -80,7 +273,7 @@ describe('Can register new user', () => {
   });
 });
 
-describe('Can register new user', () => {
+describe('Can authorize user to the app', () => {
   it('should allow user signin to app', (done) => {
     chai.request(app)
       .post('/api/v1/auth/signin')
@@ -93,6 +286,96 @@ describe('Can register new user', () => {
         adminUserToken = res.body.data.token;
         expect(res.body).to.be.a('object');
         expect(res.status).to.equal(200);
+        done();
+      });
+  });
+
+  it('should throw an error is user does not exist', (done) => {
+    chai.request(app)
+      .post('/api/v1/auth/signin')
+      .send({
+        email: 'Se.Hane@yahoo.com',
+        password: 'dolapo2018@@',
+      })
+      .end((err, res) => {
+        if (err)done();
+        expect(res.body).to.be.a('object');
+        expect(res.status).to.equal(404);
+        done();
+      });
+  });
+
+  it('should throw an error if email is empty', (done) => {
+    chai.request(app)
+      .post('/api/v1/auth/signin')
+      .send({
+        email: '',
+        password: 'dolapo2018@@',
+      })
+      .end((err, res) => {
+        if (err)done();
+        expect(res.body).to.be.a('object');
+        expect(res.status).to.equal(422);
+        done();
+      });
+  });
+
+  it('should throw an error if password is empty', (done) => {
+    chai.request(app)
+      .post('/api/v1/auth/signin')
+      .send({
+        email: 'Se.Hane@yahoo.com',
+        password: '',
+      })
+      .end((err, res) => {
+        if (err)done();
+        expect(res.body).to.be.a('object');
+        expect(res.status).to.equal(422);
+        done();
+      });
+  });
+
+  it('should throw an error if password is less than 6 characters', (done) => {
+    chai.request(app)
+      .post('/api/v1/auth/signin')
+      .send({
+        email: 'Se.Hane@yahoo.com',
+        password: 'dola',
+      })
+      .end((err, res) => {
+        if (err)done();
+        expect(res.body).to.be.a('object');
+        expect(res.status).to.equal(422);
+        done();
+      });
+  });
+
+  it('should throw an error if password is incorrect', (done) => {
+    chai.request(app)
+      .post('/api/v1/auth/signin')
+      .send({
+        email: 'Sean.Hane@yahoo.com',
+        password: 'dolapo2018@@@',
+      })
+      .end((err, res) => {
+        if (err)done();
+        expect(res.body).to.be.a('object');
+        expect(res.status).to.equal(401);
+        done();
+      });
+  });
+
+  it('should throw an error is user does not exist', (done) => {
+    chai.request(app)
+      .post('/api/v1/auth/signin')
+      .send({
+        email: 'Se.Hane@yahoo.com',
+        password: 'dolapo2018@@',
+      })
+      .end((err, res) => {
+        if (err)done();
+        expect(res.body).to.be.a('object');
+        expect(res.status).to.equal(404);
         done();
       });
   });
