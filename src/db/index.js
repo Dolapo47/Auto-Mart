@@ -1,12 +1,37 @@
+/* eslint-disable require-jsdoc */
+import { Pool } from 'pg';
 
 import dotenv from 'dotenv';
 
-import { Pool } from 'pg';
-
 dotenv.config();
 
-const env = process.env.NODE_ENV;
+let connectionString;
 
-const pool = env === 'test' ? new Pool({ connectionString: process.env.DATABASE_URL }) : new Pool({ connectionString: process.env.TEST_URL });
+if (process.env.NODE_ENV === 'test') {
+  connectionString = process.env.TEST_URL;
+}
+if (process.env.NODE_ENV === 'production') {
+  connectionString = process.env.DATABASE_URL;
+}
 
-export default pool;
+// Instantiate pool
+const pool = new Pool({
+  connectionString
+});
+
+class Db {
+  static query(queryString, params) {
+    return new Promise((resolve, reject) => {
+      pool
+        .query(queryString, params)
+        .then((res) => {
+          resolve(res);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
+}
+
+export default Db;
