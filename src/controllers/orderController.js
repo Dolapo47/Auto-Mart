@@ -1,12 +1,12 @@
 /* eslint-disable require-jsdoc */
-import { validateOrderInput, validateOrderUpdate } from '../helper/validations/validateOrderInput';
+import validate from '../helper/validations/validateInput';
 import { responseMessage, retrieveCarMessage } from '../helper/validations/responseMessages';
 import pool from '../db';
 
 class orderController {
   static async createOrder(req, res) {
-    const { errors, isValid } = validateOrderInput(req.body);
-    if (!isValid) return responseMessage(res, 400, errors);
+    const { error } = validate.validateOrderInput(req.body);
+    if (error) return responseMessage(res, 422, error.details[0].message);
     const { id } = req.user;
     const { carId, priceOffered } = req.body;
     const price = Number(priceOffered).toFixed(2);
@@ -23,14 +23,14 @@ class orderController {
 
       const makeOrder = await pool.query('INSERT into orders(car_id, buyer_id, createdon ,amountOffered, status) VALUES($1, $2, $3, $4, $5) RETURNING * ;', [carId, id, createdOn, price, status]);
       return retrieveCarMessage(res, 201, 'order created', makeOrder.rows[0]);
-    } catch (error) {
+    } catch (errors) {
       return responseMessage(res, 404, error.message);
     }
   }
 
   static async updateOrder(req, res) {
-    const { errors, isValid } = validateOrderUpdate(req.body);
-    if (!isValid) return responseMessage(res, 400, errors);
+    const { error } = validate.validatePatchOrder(req.body);
+    if (error) return responseMessage(res, 422, error.details[0].message);
     const { orderId } = req.params;
     const { newOffer } = req.body;
     const { id } = req.user;
@@ -41,7 +41,7 @@ class orderController {
       }
       const updateOrderPrice = await pool.query('UPDATE orders SET amountoffered=$1 WHERE id=$2 RETURNING *;', [newOffer, checkUserOrder.rows[0].id]);
       return retrieveCarMessage(res, 200, 'success', updateOrderPrice.rows[0]);
-    } catch (error) {
+    } catch (errors) {
       return res.status(400).send({
         status: 'error',
         error: error.message,

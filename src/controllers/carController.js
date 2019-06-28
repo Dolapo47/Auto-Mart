@@ -2,9 +2,12 @@
 /* eslint-disable require-jsdoc */
 import pool from '../db/index';
 import { responseMessage, retrieveCarMessage } from '../helper/validations/responseMessages';
+import validate from '../helper/validations/validateInput';
 
 class carController {
   static async createCar(req, res) {
+    const { error } = validate.validateCarInput(req.body);
+    if (error) return responseMessage(res, 422, error.details[0].message);
     const { id, email } = req.user;
     const {
       manufacturer, model, state, price, bodyType, imageUrl,
@@ -15,12 +18,15 @@ class carController {
     try {
       const newCar = await pool.query('INSERT INTO cars(ownerId, ownerEmail, createdon, state, status, price, manufacturer, model, body_type, image_url, flagged) VALUES($1, $2, $3, $4, $5, $6, $7, $8 , $9, $10, $11) RETURNING *;', [id, email, createdOn, state, status, Formattedprice, manufacturer, model, bodyType, imageUrl, false]);
       retrieveCarMessage(res, 201, 'Vehicle created', newCar.rows[0]);
-    } catch (error) {
+    } catch (errors) {
       responseMessage(res, 400, 'Unable to create car');
     }
   }
 
   static async updateStatus(req, res) {
+    const { error } = validate.validateUpdateStatus(req.body);
+    if (error) return responseMessage(res, 422, error.details[0].message);
+
     const { carId } = req.params;
     const { email } = req.user;
     const { status } = req.body;
@@ -35,7 +41,7 @@ class carController {
       }
       const updateStatus = await pool.query('UPDATE cars SET status=$1 WHERE id=$2 RETURNING * ;', [status, findCar.rows[0].id]);
       return retrieveCarMessage(res, 200, 'car status updated', updateStatus.rows[0]);
-    } catch (error) {
+    } catch (errors) {
       return res.status(500).send({
         status: 'error',
         error: 'internal server error',
@@ -44,18 +50,22 @@ class carController {
   }
 
   static async updatePrice(req, res) {
+    const { error } = validate.validateUpdatePrice(req.body);
+    if (error) return responseMessage(res, 422, error.details[0].message);
+
     const { carId } = req.params;
     const { email } = req.user;
     const { price } = req.body;
+    const Formattedprice = parseFloat(price).toFixed(2);
 
     try {
       const findCar = await pool.query('SELECT * FROM cars WHERE id=$1 AND ownerEmail=$2;', [carId, email]);
       if (findCar.rowCount < 1) {
         return responseMessage(res, 400, 'Unable to update car');
       }
-      const updatePrice = await pool.query('UPDATE cars SET price=$1 WHERE id=$2 RETURNING * ;', [price, findCar.rows[0].id]);
+      const updatePrice = await pool.query('UPDATE cars SET price=$1 WHERE id=$2 RETURNING * ;', [Formattedprice, findCar.rows[0].id]);
       return retrieveCarMessage(res, 200, 'car price updated', updatePrice.rows[0]);
-    } catch (error) {
+    } catch (errors) {
       return res.status(500).send({
         status: 'error',
         error: 'internal server error',
