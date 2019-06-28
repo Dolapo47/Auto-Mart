@@ -3,7 +3,6 @@
 import pool from '../db/index';
 import { responseMessage, retrieveCarMessage } from '../helper/validations/responseMessages';
 
-
 class carController {
   static async createCar(req, res) {
     const { id, email } = req.user;
