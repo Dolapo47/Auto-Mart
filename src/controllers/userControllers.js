@@ -2,15 +2,14 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import DB from '../db/index';
-import validateRegisterInput from '../helper/validations/validateRegeisterInput';
-import validateLogin from '../helper/validations/validateLogin';
+import validate from '../helper/validations/validateInput';
 import { responseMessage } from '../helper/validations/responseMessages';
 
 
 class userController {
   static async signupUser(req, res) {
-    const { errors, isValid } = validateRegisterInput(req.body);
-    if (!isValid) return responseMessage(res, 400, errors);
+    const { error } = validate.validateUser(req.body);
+    if (error) return responseMessage(res, 422, error.details[0].message);
     const {
       firstname, lastname, email, password, address, adminSecret,
     } = req.body;
@@ -36,15 +35,15 @@ class userController {
           },
         });
       });
-    } catch (error) {
-      return res.status(400).send({ error: error.message });
+    } catch (errors) {
+      return res.status(400).send({ error: errors.message });
     }
   }
 
 
   static async loginUser(req, res) {
-    const { errors, isValid } = validateLogin(req.body);
-    if (!isValid) return responseMessage(res, 400, errors);
+    const { error } = validate.validateLogin(req.body);
+    if (error) return responseMessage(res, 422, error.details[0].message);
 
     const { email, password } = req.body;
 
@@ -65,12 +64,11 @@ class userController {
           status: 'success',
           data: {
             token,
-            user: userExist.rows[0],
           },
         });
       });
-    } catch (error) {
-      return res.status(500).send({ error: error.message });
+    } catch (errors) {
+      return res.status(500).send({ error: errors.message });
     }
   }
 }

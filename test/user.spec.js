@@ -27,12 +27,12 @@ const user = {
   email: faker.internet.email(),
   password: 'dolapo2018@@',
   address: '12 gabriel olusanya',
-  is_admin: ''
+  adminSecret: 'd',
 };
 
 
 describe('Can register new user', () => {
-  it('should allow user signup', (done) => {
+  it('should allow administrator signup', (done) => {
     chai.request(app)
       .post('/api/v1/auth/signup')
       .send(adminUser)
@@ -81,7 +81,7 @@ describe('Can register new user', () => {
 });
 
 describe('Can register new user', () => {
-  it('should allow user signup', (done) => {
+  it('should allow user signin to app', (done) => {
     chai.request(app)
       .post('/api/v1/auth/signin')
       .send({
