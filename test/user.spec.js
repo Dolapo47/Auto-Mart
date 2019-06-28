@@ -38,7 +38,6 @@ describe('Can register new user', () => {
       .send(adminUser)
       .end((err, res) => {
         if (err)done();
-        console.log(res);
         adminUserToken = res.body.data.token;
         expect(res.body).to.be.a('object');
         expect(res.status).to.equal(201);
@@ -46,13 +45,19 @@ describe('Can register new user', () => {
       });
   });
 
-  it('should throw error if user already signed in', (done) => {
+  it('should throw error if user already signed up', (done) => {
     chai.request(app)
       .post('/api/v1/auth/signup')
-      .send(adminUser)
+      .send({
+        email: 'Sean.Hane@yahoo.com',
+        firstname: 'Murray',
+        lastname: 'Kohler',
+        password: 'dolapo2018@@',
+        address: '9 gabriel olusanya',
+        adminSecret: 'dappy'
+      })
       .end((err, res) => {
         if (err)done();
-        adminUserToken = res.body.data.token;
         expect(res.body).to.be.a('object');
         expect(res.status).to.equal(409);
         done();
