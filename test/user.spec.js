@@ -1,5 +1,6 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
+import fs from 'fs';
 import faker from 'faker';
 import dotenv from 'dotenv';
 import app from '../src/app';
@@ -376,6 +377,110 @@ describe('Can authorize user to the app', () => {
         if (err)done();
         expect(res.body).to.be.a('object');
         expect(res.status).to.equal(404);
+        done();
+      });
+  });
+});
+
+describe('car routes', () => {
+  it('should create new car', (done) => {
+    chai.request(app)
+      .post('/api/v1/car')
+      .set('Authorization', userToken)
+      .set('Content-Type', 'application/x-www-form-urlencoded')
+      .attach('image_url', fs.readFileSync('C:/Users/23470/Desktop/Auto-Mart/test/assets/auromart7.jpg'), 'auromart7.jpg')
+      .field('state', 'new')
+      .field('price', '3000000')
+      .field('manufacturer', 'honda')
+      .field('model', 'accord')
+      .field('bodyType', 'car')
+      .end((err, res) => {
+        expect(res).to.be.an('object');
+        expect(res.status).to.equal(201);
+        done();
+      });
+  });
+
+  it('should get all cars', (done) => {
+    chai.request(app)
+      .get('/api/v1/car')
+      .set('Authorization', adminUserToken)
+      .end((err, res) => {
+        if (err)done();
+        expect(res.body).to.be.a('object');
+        expect(res.status).to.equal(200);
+        done();
+      });
+  });
+
+  it('should get all cars', (done) => {
+    chai.request(app)
+      .get('/api/v1/car/4')
+      .set('Authorization', adminUserToken)
+      .end((err, res) => {
+        if (err)done();
+        expect(res.body).to.be.a('object');
+        expect(res.status).to.equal(200);
+        done();
+      });
+  });
+
+  it('should throw an error if id not found', (done) => {
+    chai.request(app)
+      .get('/api/v1/car/20')
+      .set('Authorization', adminUserToken)
+      .end((err, res) => {
+        if (err)done();
+        expect(res.body).to.be.a('object');
+        expect(res.status).to.equal(404);
+        done();
+      });
+  });
+
+  it('should get all available cars', (done) => {
+    chai.request(app)
+      .get('/api/v1/car?status=available')
+      .set('Authorization', userToken)
+      .end((err, res) => {
+        if (err)done();
+        expect(res.body).to.be.a('object');
+        expect(res.status).to.equal(200);
+        done();
+      });
+  });
+
+  it('should get all available cars within price range', (done) => {
+    chai.request(app)
+      .get('/api/v1/car?status=available&min_price=3000000&max_price=5000000')
+      .set('Authorization', userToken)
+      .end((err, res) => {
+        if (err)done();
+        expect(res.body).to.be.a('object');
+        expect(res.status).to.equal(200);
+        done();
+      });
+  });
+
+  it('should throw error if cannot get available cars within price range', (done) => {
+    chai.request(app)
+      .get('/api/v1/car?status=available&min_price=1000000&max_price=2000000')
+      .set('Authorization', userToken)
+      .end((err, res) => {
+        if (err)done();
+        expect(res.body).to.be.a('object');
+        expect(res.status).to.equal(404);
+        done();
+      });
+  });
+
+  it('should throw error if user not admin', (done) => {
+    chai.request(app)
+      .get('/api/v1/car')
+      .set('Authorization', userToken)
+      .end((err, res) => {
+        if (err)done();
+        expect(res.body).to.be.a('object');
+        expect(res.status).to.equal(403);
         done();
       });
   });

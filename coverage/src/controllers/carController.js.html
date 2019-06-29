@@ -20,14 +20,14 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">50% </span>
+        <span class="strong">62.5% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>4/8</span>
+        <span class='fraction'>5/8</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>0/6</span>
+        <span class='fraction'>6/6</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
@@ -35,9 +35,9 @@
         <span class='fraction'>0/0</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">50% </span>
+        <span class="strong">62.5% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>4/8</span>
+        <span class='fraction'>5/8</span>
       </div>
     </div>
     <p class="quiet">
@@ -204,7 +204,14 @@
 <a name='L156'></a><a href='#L156'>156</a>
 <a name='L157'></a><a href='#L157'>157</a>
 <a name='L158'></a><a href='#L158'>158</a>
-<a name='L159'></a><a href='#L159'>159</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L159'></a><a href='#L159'>159</a>
+<a name='L160'></a><a href='#L160'>160</a>
+<a name='L161'></a><a href='#L161'>161</a>
+<a name='L162'></a><a href='#L162'>162</a>
+<a name='L163'></a><a href='#L163'>163</a>
+<a name='L164'></a><a href='#L164'>164</a>
+<a name='L165'></a><a href='#L165'>165</a>
+<a name='L166'></a><a href='#L166'>166</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -223,7 +230,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -344,7 +351,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -381,7 +395,7 @@ class carController {
     const status = 'available';
     try {
       const newCar = await pool.query('INSERT INTO cars(ownerId, ownerEmail, createdon, state, status, price, manufacturer, model, body_type, image_url, flagged) VALUES($1, $2, $3, $4, $5, $6, $7, $8 , $9, $10, $11) RETURNING *;', [id, email, createdOn, state, status, Formattedprice, manufacturer, model, bodyType, imageUrl, false]);
-<span class="cstat-no" title="statement not covered" >      retrieveCarMessage(r</span>es, 201, 'Vehicle created', newCar.rows[0]);
+      retrieveCarMessage(res, 201, 'Vehicle created', newCar.rows[0]);
     } catch (errors) {
 <span class="cstat-no" title="statement not covered" >      responseMessage(r</span>es, 400, 'Unable to create car');
     }
@@ -487,7 +501,7 @@ class carController {
     } catch (error) {
       return res.status(500).send({
         status: 'error',
-        error: error.message,
+        error: 'internal server error',
       });
     }
   }
@@ -498,15 +512,22 @@ class carController {
     if (status === undefined) {
       return next();
     }
-    const getAvailableCars = await pool.query('SELECT * FROM cars WHERE status=$1;', ['available']);
-    if (getAvailableCars.rowCount &lt; 1) {
-      return responseMessage(res, 404, 'No ad found');
+    try {
+      const getAvailableCars = await pool.query('SELECT * FROM cars WHERE status=$1;', ['available']);
+      if (getAvailableCars.rowCount &lt; 1) {
+        return responseMessage(res, 404, 'No ad found');
+      }
+<span class="cstat-no" title="statement not covered" >      retrieveCarMessage(r</span>es, 200, 'Available cars successfully retrieved', getAvailableCars.rows);
+    } catch (error) {
+      return res.status(500).send({
+        status: 'error',
+        error: 'internal server error',
+      });
     }
-<span class="cstat-no" title="statement not covered" >    retrieveCarMessage(r</span>es, 200, 'Available cars successfully retrieved', getAvailableCars.rows);
   }
 &nbsp;
   static async filteredAvailableCar(req, res, next) {
-    const { status, min_price: minPrice = 0, max_price: maxPrice = <span class="branch-0 cbranch-no" title="branch not covered" >100000000000000 } = r</span>eq.query;
+    const { status, min_price: minPrice = 0, max_price: maxPrice = 100000000000000 } = req.query;
 &nbsp;
     if (status === undefined || (minPrice === undefined || maxPrice === undefined)) {
       return next();
@@ -526,7 +547,7 @@ export default carController;
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Fri Jun 28 2019 15:30:58 GMT+0100 (West Africa Standard Time)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sat Jun 29 2019 08:17:25 GMT+0100 (West Africa Standard Time)
 </div>
 </div>
 <script src="..\..\prettify.js"></script>
