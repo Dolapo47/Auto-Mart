@@ -388,7 +388,7 @@ describe('car routes', () => {
       .post('/api/v1/car')
       .set('Authorization', userToken)
       .set('Content-Type', 'application/x-www-form-urlencoded')
-      .attach('image_url', fs.readFileSync('C:/Users/23470/Desktop/Auto-Mart/test/assets/auromart7.jpg'), 'auromart7.jpg')
+      .attach('image_url', fs.readFileSync('test/assets/auromart7.jpg'), 'auromart7.jpg')
       .field('state', 'new')
       .field('price', '3000000')
       .field('manufacturer', 'honda')
