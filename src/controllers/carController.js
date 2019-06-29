@@ -123,7 +123,7 @@ class carController {
     } catch (error) {
       return res.status(500).send({
         status: 'error',
-        error: error.message,
+        error: 'internal server error',
       });
     }
   }
@@ -134,11 +134,18 @@ class carController {
     if (status === undefined) {
       return next();
     }
-    const getAvailableCars = await pool.query('SELECT * FROM cars WHERE status=$1;', ['available']);
-    if (getAvailableCars.rowCount < 1) {
-      return responseMessage(res, 404, 'No ad found');
+    try {
+      const getAvailableCars = await pool.query('SELECT * FROM cars WHERE status=$1;', ['available']);
+      if (getAvailableCars.rowCount < 1) {
+        return responseMessage(res, 404, 'No ad found');
+      }
+      retrieveCarMessage(res, 200, 'Available cars successfully retrieved', getAvailableCars.rows);
+    } catch (error) {
+      return res.status(500).send({
+        status: 'error',
+        error: 'internal server error',
+      });
     }
-    retrieveCarMessage(res, 200, 'Available cars successfully retrieved', getAvailableCars.rows);
   }
 
   static async filteredAvailableCar(req, res, next) {
