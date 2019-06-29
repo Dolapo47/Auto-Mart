@@ -427,7 +427,7 @@ describe('car routes', () => {
 
   it('should throw an error if id not found', (done) => {
     chai.request(app)
-      .get('/api/v1/car/20')
+      .get('/api/v1/car/600')
       .set('Authorization', adminUserToken)
       .end((err, res) => {
         if (err)done();
