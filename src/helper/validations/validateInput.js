@@ -45,7 +45,7 @@ class validate {
       state: joi.string()
         .insensitive()
         .valid('new', 'used')
-        .regex('/^[0-9]+$/')
+        .regex(/^[0-9]+$/)
         .trim()
         .required()
         .error(() => 'state can only be new or used'),
