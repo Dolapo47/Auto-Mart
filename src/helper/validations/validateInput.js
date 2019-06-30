@@ -17,9 +17,8 @@ class validate {
         .required()
         .error(() => 'Firstname is required and must contain only alphabets'),
       password: joi.string()
-        .min(6)
         .required()
-        .error(() => 'password is required and must be at least 6 characters long'),
+        .min(6),
       address: joi.string().required(),
       adminSecret: joi.string().trim(),
     });
@@ -79,8 +78,7 @@ class validate {
         .regex(/^\d*(\.\d{2})?$/)
         .regex(/^[0-9]*[1-9][0-9]*$/)
         .trim()
-        .required()
-        .error(() => 'only numbers allowed'),
+        .required(),
     });
     return joi.validate(details, schema);
   }
@@ -107,8 +105,7 @@ class validate {
         .regex(/^\d*(\.\d{2})?$/)
         .regex(/^[0-9]*[1-9][0-9]*$/)
         .trim()
-        .required()
-        .error(() => 'only numbers allowed'),
+        .required(),
     });
     return joi.validate(details, schema);
   }

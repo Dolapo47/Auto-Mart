@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import DB from '../db/index';
 import validate from '../helper/validations/validateInput';
-import { responseMessage } from '../helper/validations/responseMessages';
+import { responseMessage, userMessage } from '../helper/validations/responseMessages';
 
 
 class userController {
@@ -27,13 +27,7 @@ class userController {
 
       return jwt.sign(registerUser.rows[0], process.env.SECRET, (err, token) => {
         if (err) res.status(400).send({ error: err.message });
-        res.status(201).send({
-          status: 201,
-          data: {
-            token,
-            user: registerUser[0],
-          },
-        });
+        userMessage(res, 201, 'user created', token, registerUser[0]);
       });
     } catch (errors) {
       return res.status(400).send({ error: errors.message });
@@ -60,12 +54,7 @@ class userController {
 
       return jwt.sign(userExist.rows[0], process.env.SECRET, (err, token) => {
         if (err) responseMessage(res, 401, 'Auth Failed');
-        res.status(200).send({
-          status: 'success',
-          data: {
-            token,
-          },
-        });
+        userMessage(res, 200, 'Auth Successful', token);
       });
     } catch (errors) {
       return res.status(500).send({ error: errors.message });

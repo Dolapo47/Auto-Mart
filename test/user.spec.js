@@ -31,7 +31,6 @@ const user = {
   adminSecret: 'd',
 };
 
-
 describe('Can register new user', () => {
   it('should allow administrator signup', (done) => {
     chai.request(app)
@@ -39,7 +38,6 @@ describe('Can register new user', () => {
       .send(adminUser)
       .end((err, res) => {
         if (err)done();
-        adminUserToken = res.body.data.token;
         expect(res.body).to.be.a('object');
         expect(res.status).to.equal(201);
         done();
@@ -236,6 +234,25 @@ describe('Can register new user', () => {
       });
   });
 
+  it('should throw error if password is less than 6 characters', (done) => {
+    chai.request(app)
+      .post('/api/v1/auth/signup')
+      .send({
+        email: 'Sean.Hane@yahoo.com',
+        firstname: 'Murray',
+        lastname: 'Kohler',
+        password: '',
+        address: '9 gabriel olusanya',
+        adminSecret: 'dappy'
+      })
+      .end((err, res) => {
+        if (err)done();
+        expect(res.body).to.be.a('object');
+        expect(res.status).to.equal(422);
+        done();
+      });
+  });
+
   it('should get default route', (done) => {
     chai.request(app)
       .get('/')
@@ -386,7 +403,7 @@ describe('car routes', () => {
   it('should create new car', (done) => {
     chai.request(app)
       .post('/api/v1/car')
-      .set('Authorization', userToken)
+      .set('Authorization', adminUserToken)
       .set('Content-Type', 'application/x-www-form-urlencoded')
       .attach('image_url', fs.readFileSync('test/assets/auromart7.jpg'), 'auromart7.jpg')
       .field('state', 'new')
@@ -397,6 +414,324 @@ describe('car routes', () => {
       .end((err, res) => {
         expect(res).to.be.an('object');
         expect(res.status).to.equal(201);
+        done();
+      });
+  });
+
+  it('should throw error if state empty', (done) => {
+    chai.request(app)
+      .post('/api/v1/car')
+      .set('Authorization', adminUserToken)
+      .set('Content-Type', 'application/x-www-form-urlencoded')
+      .attach('image_url', fs.readFileSync('test/assets/auromart7.jpg'), 'auromart7.jpg')
+      .field('state', 'jeep')
+      .field('price', '3000000')
+      .field('manufacturer', 'honda')
+      .field('model', 'accord')
+      .field('bodyType', 'car')
+      .end((err, res) => {
+        expect(res).to.be.an('object');
+        expect(res.status).to.equal(422);
+        done();
+      });
+  });
+
+  it('should throw error if state is not new or used', (done) => {
+    chai.request(app)
+      .post('/api/v1/car')
+      .set('Authorization', adminUserToken)
+      .set('Content-Type', 'application/x-www-form-urlencoded')
+      .attach('image_url', fs.readFileSync('test/assets/auromart7.jpg'), 'auromart7.jpg')
+      .field('state', 'jeep')
+      .field('price', '3000000')
+      .field('manufacturer', 'honda')
+      .field('model', 'accord')
+      .field('bodyType', 'car')
+      .end((err, res) => {
+        expect(res).to.be.an('object');
+        expect(res.status).to.equal(422);
+        done();
+      });
+  });
+
+  it('should throw error if price is empty', (done) => {
+    chai.request(app)
+      .post('/api/v1/car')
+      .set('Authorization', adminUserToken)
+      .set('Content-Type', 'application/x-www-form-urlencoded')
+      .attach('image_url', fs.readFileSync('test/assets/auromart7.jpg'), 'auromart7.jpg')
+      .field('state', 'new')
+      .field('price', '')
+      .field('manufacturer', 'honda')
+      .field('model', 'accord')
+      .field('bodyType', 'car')
+      .end((err, res) => {
+        expect(res).to.be.an('object');
+        expect(res.status).to.equal(422);
+        done();
+      });
+  });
+
+  it('should throw error if manufacturer is empty', (done) => {
+    chai.request(app)
+      .post('/api/v1/car')
+      .set('Authorization', adminUserToken)
+      .set('Content-Type', 'application/x-www-form-urlencoded')
+      .attach('image_url', fs.readFileSync('test/assets/auromart7.jpg'), 'auromart7.jpg')
+      .field('state', 'new')
+      .field('price', '3000000')
+      .field('manufacturer', '')
+      .field('model', 'accord')
+      .field('bodyType', 'car')
+      .end((err, res) => {
+        expect(res).to.be.an('object');
+        expect(res.status).to.equal(422);
+        done();
+      });
+  });
+
+  it('should throw error if model is empty', (done) => {
+    chai.request(app)
+      .post('/api/v1/car')
+      .set('Authorization', adminUserToken)
+      .set('Content-Type', 'application/x-www-form-urlencoded')
+      .attach('image_url', fs.readFileSync('test/assets/auromart7.jpg'), 'auromart7.jpg')
+      .field('state', 'new')
+      .field('price', '3000000')
+      .field('manufacturer', 'honda')
+      .field('model', '')
+      .field('bodyType', 'car')
+      .end((err, res) => {
+        expect(res).to.be.an('object');
+        expect(res.status).to.equal(422);
+        done();
+      });
+  });
+
+  it('should throw error if body type is empty', (done) => {
+    chai.request(app)
+      .post('/api/v1/car')
+      .set('Authorization', adminUserToken)
+      .set('Content-Type', 'application/x-www-form-urlencoded')
+      .attach('image_url', fs.readFileSync('test/assets/auromart7.jpg'), 'auromart7.jpg')
+      .field('state', 'new')
+      .field('price', '3000000')
+      .field('manufacturer', 'honda')
+      .field('model', 'accord')
+      .field('bodyType', '')
+      .end((err, res) => {
+        expect(res).to.be.an('object');
+        expect(res.status).to.equal(422);
+        done();
+      });
+  });
+
+  it('should throw error if body type is not car not van', (done) => {
+    chai.request(app)
+      .post('/api/v1/car')
+      .set('Authorization', adminUserToken)
+      .set('Content-Type', 'application/x-www-form-urlencoded')
+      .attach('image_url', fs.readFileSync('test/assets/auromart7.jpg'), 'auromart7.jpg')
+      .field('state', 'new')
+      .field('price', '3000000')
+      .field('manufacturer', 'honda')
+      .field('model', 'accord')
+      .field('bodyType', 'jam')
+      .end((err, res) => {
+        expect(res).to.be.an('object');
+        expect(res.status).to.equal(422);
+        done();
+      });
+  });
+
+  it('should throw error if body type is not car not van', (done) => {
+    chai.request(app)
+      .post('/api/v1/car')
+      .set('Content-Type', 'application/x-www-form-urlencoded')
+      .attach('image_url', fs.readFileSync('test/assets/auromart7.jpg'), 'auromart7.jpg')
+      .field('state', 'new')
+      .field('price', '3000000')
+      .field('manufacturer', 'honda')
+      .field('model', 'accord')
+      .field('bodyType', 'jam')
+      .end((err, res) => {
+        expect(res).to.be.an('object');
+        expect(res.status).to.equal(401);
+        done();
+      });
+  });
+
+  it('should update car status', (done) => {
+    chai.request(app)
+      .patch('/api/v1/car/76/status')
+      .set('Authorization', adminUserToken)
+      .send({
+        status: 'sold',
+      })
+      .end((err, res) => {
+        expect(res).to.be.an('object');
+        expect(res.status).to.equal(400);
+        done();
+      });
+  });
+
+  it('should update car status', (done) => {
+    chai.request(app)
+      .patch('/api/v1/car/76/status')
+      .set('Authorization', adminUserToken)
+      .send({
+        status: '',
+      })
+      .end((err, res) => {
+        expect(res).to.be.an('object');
+        expect(res.status).to.equal(422);
+        done();
+      });
+  });
+
+  it('should update car price', (done) => {
+    chai.request(app)
+      .patch('/api/v1/car/76/price')
+      .set('Authorization', adminUserToken)
+      .send({
+        price: '800000',
+      })
+      .end((err, res) => {
+        expect(res).to.be.an('object');
+        expect(res.status).to.equal(200);
+        done();
+      });
+  });
+
+  it('should update car price', (done) => {
+    chai.request(app)
+      .patch('/api/v1/car/76/price')
+      .set('Authorization', adminUserToken)
+      .send({
+        price: '',
+      })
+      .end((err, res) => {
+        expect(res).to.be.an('object');
+        expect(res.status).to.equal(422);
+        done();
+      });
+  });
+
+  it('should update car status', (done) => {
+    chai.request(app)
+      .patch('/api/v1/car/76/status')
+      .set('Authorization', adminUserToken)
+      .send({
+        status: 'jeep',
+      })
+      .end((err, res) => {
+        expect(res).to.be.an('object');
+        expect(res.status).to.equal(422);
+        done();
+      });
+  });
+
+  it('should get one car', (done) => {
+    chai.request(app)
+      .get('/api/v1/car/76')
+      .set('Authorization', adminUserToken)
+      .end((err, res) => {
+        expect(res).to.be.an('object');
+        expect(res.status).to.equal(200);
+        done();
+      });
+  });
+
+  it('should create new order', (done) => {
+    chai.request(app)
+      .post('/api/v1/order')
+      .set('Authorization', adminUserToken)
+      .send({
+        carId: '6',
+        priceOffered: '30000000'
+      })
+      .end((err, res) => {
+        if (err)done();
+        expect(res.body).to.be.a('object');
+        expect(res.status).to.equal(201);
+        done();
+      });
+  });
+
+  it('should throw error if car does not exist', (done) => {
+    chai.request(app)
+      .post('/api/v1/order')
+      .set('Authorization', adminUserToken)
+      .send({
+        carId: '305',
+        priceOffered: '30000000'
+      })
+      .end((err, res) => {
+        if (err)done();
+        expect(res.body).to.be.a('object');
+        expect(res.status).to.equal(404);
+        done();
+      });
+  });
+
+  it('should throw error if car is not specified', (done) => {
+    chai.request(app)
+      .post('/api/v1/order')
+      .set('Authorization', adminUserToken)
+      .send({
+        carId: '',
+        priceOffered: '30000000'
+      })
+      .end((err, res) => {
+        if (err)done();
+        expect(res.body).to.be.a('object');
+        expect(res.status).to.equal(422);
+        done();
+      });
+  });
+
+  it('should throw error if price is not specified', (done) => {
+    chai.request(app)
+      .post('/api/v1/order')
+      .set('Authorization', adminUserToken)
+      .send({
+        carId: '305',
+        priceOffered: ''
+      })
+      .end((err, res) => {
+        if (err)done();
+        expect(res.body).to.be.a('object');
+        expect(res.status).to.equal(422);
+        done();
+      });
+  });
+
+  it('should throw error if price is not specified', (done) => {
+    chai.request(app)
+      .patch('/api/v1/order/26/price')
+      .set('Authorization', adminUserToken)
+      .send({
+        newOffer: '40000000',
+      })
+      .end((err, res) => {
+        if (err)done();
+        expect(res.body).to.be.a('object');
+        expect(res.status).to.equal(200);
+        done();
+      });
+  });
+
+  it('should throw error if price is not specified', (done) => {
+    chai.request(app)
+      .patch('/api/v1/order/500/price')
+      .set('Authorization', adminUserToken)
+      .send({
+        newOffer: '40000000',
+      })
+      .end((err, res) => {
+        if (err)done();
+        expect(res.body).to.be.a('object');
+        expect(res.status).to.equal(404);
         done();
       });
   });
