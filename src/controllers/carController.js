@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 /* eslint-disable require-jsdoc */
-import pool from '../db/index';
+import DB from '../db/index';
 import { responseMessage, retrieveCarMessage } from '../helper/validations/responseMessages';
 import validate from '../helper/validations/validateInput';
 
@@ -16,7 +16,7 @@ class carController {
     const createdOn = new Date().toLocaleString();
     const status = 'available';
     try {
-      const newCar = await pool.query('INSERT INTO cars(ownerId, ownerEmail, createdon, state, status, price, manufacturer, model, body_type, image_url, flagged) VALUES($1, $2, $3, $4, $5, $6, $7, $8 , $9, $10, $11) RETURNING *;', [id, email, createdOn, state, status, Formattedprice, manufacturer, model, bodyType, imageUrl, false]);
+      const newCar = await DB.query('INSERT INTO cars(ownerId, ownerEmail, createdon, state, status, price, manufacturer, model, body_type, image_url, flagged) VALUES($1, $2, $3, $4, $5, $6, $7, $8 , $9, $10, $11) RETURNING *;', [id, email, createdOn, state, status, Formattedprice, manufacturer, model, bodyType, imageUrl, false]);
       retrieveCarMessage(res, 201, 'Vehicle created', newCar.rows[0]);
     } catch (errors) {
       responseMessage(res, 400, 'Unable to create car');
@@ -32,14 +32,14 @@ class carController {
     const { status } = req.body;
 
     try {
-      const findCar = await pool.query('SELECT * FROM cars WHERE id=$1 AND ownerEmail=$2;', [carId, email]);
+      const findCar = await DB.query('SELECT * FROM cars WHERE id=$1 AND ownerEmail=$2;', [carId, email]);
       if (findCar.rowCount < 1) {
         return responseMessage(res, 400, 'Unable to update car');
       }
       if (findCar.rows[0].status === 'sold') {
         return responseMessage(res, 400, 'Car has been tagged sold');
       }
-      const updateStatus = await pool.query('UPDATE cars SET status=$1 WHERE id=$2 RETURNING * ;', [status, findCar.rows[0].id]);
+      const updateStatus = await DB.query('UPDATE cars SET status=$1 WHERE id=$2 RETURNING * ;', [status, findCar.rows[0].id]);
       return retrieveCarMessage(res, 200, 'car status updated', updateStatus.rows[0]);
     } catch (errors) {
       return res.status(500).send({
@@ -59,11 +59,11 @@ class carController {
     const Formattedprice = parseFloat(price).toFixed(2);
 
     try {
-      const findCar = await pool.query('SELECT * FROM cars WHERE id=$1 AND ownerEmail=$2;', [carId, email]);
+      const findCar = await DB.query('SELECT * FROM cars WHERE id=$1 AND ownerEmail=$2;', [carId, email]);
       if (findCar.rowCount < 1) {
         return responseMessage(res, 400, 'Unable to update car');
       }
-      const updatePrice = await pool.query('UPDATE cars SET price=$1 WHERE id=$2 RETURNING * ;', [Formattedprice, findCar.rows[0].id]);
+      const updatePrice = await DB.query('UPDATE cars SET price=$1 WHERE id=$2 RETURNING * ;', [Formattedprice, findCar.rows[0].id]);
       return retrieveCarMessage(res, 200, 'car price updated', updatePrice.rows[0]);
     } catch (errors) {
       return res.status(500).send({
@@ -77,7 +77,7 @@ class carController {
     const { carId } = req.params;
 
     try {
-      const getCar = await pool.query('SELECT * FROM cars WHERE id=$1;', [carId]);
+      const getCar = await DB.query('SELECT * FROM cars WHERE id=$1;', [carId]);
       if (getCar.rowCount <= 0) return responseMessage(res, 404, 'Car not found');
       return retrieveCarMessage(res, 200, 'vehicle successfully retrieved', getCar.rows[0]);
     } catch (error) {
@@ -95,11 +95,11 @@ class carController {
       return responseMessage(res, 403, 'you are not authorized to do this');
     }
     try {
-      const findCar = await pool.query('SELECT * FROM cars WHERE id=$1;', [carId]);
+      const findCar = await DB.query('SELECT * FROM cars WHERE id=$1;', [carId]);
       if (findCar.rowCount <= 0) {
         return responseMessage(res, 404, 'Ad not found');
       }
-      await pool.query('DELETE FROM cars WHERE id = $1;', [carId]);
+      await DB.query('DELETE FROM cars WHERE id = $1;', [carId]);
       return retrieveCarMessage(res, 200, 'Car Ad was successfully deleted');
     } catch (error) {
       res.status(500).send({
@@ -115,7 +115,7 @@ class carController {
       return responseMessage(res, 403, 'you are not authorized to do this');
     }
     try {
-      const getCars = await pool.query('SELECT * FROM CARS ;');
+      const getCars = await DB.query('SELECT * FROM CARS ;');
       if (getCars.rowCount <= 0) {
         return responseMessage(res, 404, 'No ad found');
       }
@@ -135,7 +135,7 @@ class carController {
       return next();
     }
     try {
-      const getAvailableCars = await pool.query('SELECT * FROM cars WHERE status=$1;', ['available']);
+      const getAvailableCars = await DB.query('SELECT * FROM cars WHERE status=$1;', ['available']);
       if (getAvailableCars.rowCount < 1) {
         return responseMessage(res, 404, 'No ad found');
       }
@@ -155,7 +155,7 @@ class carController {
       return next();
     }
 
-    const getFilteredCars = await pool.query('SELECT * FROM cars WHERE status=$1 AND (price >= $2 AND price <= $3);', ['available', minPrice, maxPrice]);
+    const getFilteredCars = await DB.query('SELECT * FROM cars WHERE status=$1 AND (price >= $2 AND price <= $3);', ['available', minPrice, maxPrice]);
     if (getFilteredCars.rows < 1) {
       return responseMessage(res, 404, 'no car matched the specified criteria');
     } return retrieveCarMessage(res, 200, 'vehicles successfully retrieved', getFilteredCars.rows);

@@ -9,7 +9,7 @@ export const userMessage = (res, statusCode, message, token, user) => {
   res.status(statusCode).json({
     status: statusCode,
     success: message,
-    data: [{ token, user, }]
+    data: { token, user, }
   });
 };
 
