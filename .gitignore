@@ -1,6 +1,5 @@
 node_modules
 .nyc_output
 lcov.info
-/UI
 /coverage
 /.env
