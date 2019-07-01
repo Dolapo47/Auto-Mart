@@ -7,7 +7,7 @@ const cloudinaryUpload = async (req, res, next) => {
       req.body.imageUrl = result.url;
     });
   } catch (err) {
-    console.log(err);
+    return err;
   }
 
   return next();
