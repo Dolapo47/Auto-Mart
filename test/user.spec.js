@@ -750,7 +750,7 @@ describe('car routes', () => {
       .end((err, res) => {
         if (err)done();
         expect(res.body).to.be.a('object');
-        expect(res.status).to.equal(201);
+        expect(res.status).to.equal(404);
         done();
       });
   });
