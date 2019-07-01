@@ -27,13 +27,9 @@ class validate {
 
   static validateLogin(details) {
     const schema = joi.object().keys({
-      email: joi.string()
-        .email()
-        .trim()
+      email: joi.string().email().trim()
         .error(() => 'email is required and must be a valid email'),
-      password: joi.string()
-        .min(6)
-        .required()
+      password: joi.string().min(6).required()
         .error(() => 'password is required and must be at least 6 characters long'),
     });
     return joi.validate(details, schema);
@@ -41,28 +37,18 @@ class validate {
 
   static validateCarInput(details) {
     const schema = joi.object().keys({
-      state: joi.string()
-        .insensitive()
-        .valid('new', 'used')
-        .regex(/^[0-9]+$/)
+      state: joi.string().insensitive().valid('new', 'used').regex(/^[0-9]+$/)
         .trim()
         .required()
         .error(() => 'state can only be new or used'),
-      price: joi.string()
-        .trim()
-        .required()
+      price: joi.string().trim().required()
         .error(() => 'only numbers allowed'),
-      manufacturer: joi.string()
-        .regex(/^[A-Za-z]+$/)
-        .trim()
+      manufacturer: joi.string().regex(/^[A-Za-z]+$/).trim()
         .required(),
-      model: joi.string()
-        .regex(/^[a-zA-Z0-9]*$/)
-        .trim()
+      model: joi.string().regex(/^[a-zA-Z0-9]*$/).trim()
         .required()
         .error(() => 'only alphanumeric characters allowed'),
-      bodyType: joi.string()
-        .insensitive()
+      bodyType: joi.string().insensitive()
         .valid('car', 'van', 'truck', 'trailer')
         .trim()
         .required()
@@ -116,8 +102,7 @@ class validate {
         .regex(/^\d*(\.\d{2})?$/)
         .regex(/^[0-9]*[1-9][0-9]*$/)
         .trim()
-        .required()
-        .error(() => 'only numbers allowed'),
+        .required(),
     });
     return joi.validate(details, schema);
   }
