@@ -738,6 +738,23 @@ describe('car routes', () => {
       });
   });
 
+  it('create new flag', (done) => {
+    chai.request(app)
+      .post('/api/v1/flag')
+      .set('Authorization', adminUserToken)
+      .send({
+        carId: '700',
+        reason: 'bad tyres',
+        description: 'really bad tyres',
+      })
+      .end((err, res) => {
+        if (err)done();
+        expect(res.body).to.be.a('object');
+        expect(res.status).to.equal(201);
+        done();
+      });
+  });
+
   it('throw error if car id not specified', (done) => {
     chai.request(app)
       .post('/api/v1/flag')
