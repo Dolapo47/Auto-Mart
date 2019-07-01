@@ -721,6 +721,74 @@ describe('car routes', () => {
       });
   });
 
+  it('create new flag', (done) => {
+    chai.request(app)
+      .post('/api/v1/flag')
+      .set('Authorization', adminUserToken)
+      .send({
+        carId: '6',
+        reason: 'bad tyres',
+        description: 'really bad tyres',
+      })
+      .end((err, res) => {
+        if (err)done();
+        expect(res.body).to.be.a('object');
+        expect(res.status).to.equal(201);
+        done();
+      });
+  });
+
+  it('throw error if car id not specified', (done) => {
+    chai.request(app)
+      .post('/api/v1/flag')
+      .set('Authorization', adminUserToken)
+      .send({
+        carId: '',
+        reason: 'bad tyres',
+        description: 'really bad tyres',
+      })
+      .end((err, res) => {
+        if (err)done();
+        expect(res.body).to.be.a('object');
+        expect(res.status).to.equal(422);
+        done();
+      });
+  });
+
+  it('throw error if reason not specified', (done) => {
+    chai.request(app)
+      .post('/api/v1/flag')
+      .set('Authorization', adminUserToken)
+      .send({
+        carId: '6',
+        reason: '',
+        description: 'really bad tyres',
+      })
+      .end((err, res) => {
+        if (err)done();
+        expect(res.body).to.be.a('object');
+        expect(res.status).to.equal(422);
+        done();
+      });
+  });
+
+  it('throw error if description not specified', (done) => {
+    chai.request(app)
+      .post('/api/v1/flag')
+      .set('Authorization', adminUserToken)
+      .send({
+        carId: '6',
+        reason: 'bad tyres',
+        description: '',
+      })
+      .end((err, res) => {
+        if (err)done();
+        expect(res.body).to.be.a('object');
+        expect(res.status).to.equal(422);
+        done();
+      });
+  });
+
   it('should throw error if price is not specified', (done) => {
     chai.request(app)
       .patch('/api/v1/order/500/price')
@@ -775,7 +843,7 @@ describe('car routes', () => {
   it('should get all available cars', (done) => {
     chai.request(app)
       .get('/api/v1/car?status=available')
-      .set('Authorization', userToken)
+      .set('Authorization', adminUserToken)
       .end((err, res) => {
         if (err)done();
         expect(res.body).to.be.a('object');
@@ -787,7 +855,7 @@ describe('car routes', () => {
   it('should get all available cars within price range', (done) => {
     chai.request(app)
       .get('/api/v1/car?status=available&min_price=3000000&max_price=5000000')
-      .set('Authorization', userToken)
+      .set('Authorization', adminUserToken)
       .end((err, res) => {
         if (err)done();
         expect(res.body).to.be.a('object');
@@ -799,7 +867,7 @@ describe('car routes', () => {
   it('should throw error if cannot get available cars within price range', (done) => {
     chai.request(app)
       .get('/api/v1/car?status=available&min_price=1000000&max_price=2000000')
-      .set('Authorization', userToken)
+      .set('Authorization', adminUserToken)
       .end((err, res) => {
         if (err)done();
         expect(res.body).to.be.a('object');
@@ -816,6 +884,30 @@ describe('car routes', () => {
         if (err)done();
         expect(res.body).to.be.a('object');
         expect(res.status).to.equal(403);
+        done();
+      });
+  });
+
+  it('should throw error if id not found', (done) => {
+    chai.request(app)
+      .delete('/api/v1/car/600')
+      .set('Authorization', adminUserToken)
+      .end((err, res) => {
+        if (err)done();
+        expect(res.body).to.be.a('object');
+        expect(res.status).to.equal(404);
+        done();
+      });
+  });
+
+  it('should delete car', (done) => {
+    chai.request(app)
+      .delete('/api/v1/car/78')
+      .set('Authorization', adminUserToken)
+      .end((err, res) => {
+        if (err)done();
+        expect(res.body).to.be.a('object');
+        expect(res.status).to.equal(200);
         done();
       });
   });
