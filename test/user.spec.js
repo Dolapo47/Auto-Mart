@@ -899,16 +899,4 @@ describe('car routes', () => {
         done();
       });
   });
-
-  it('should delete car', (done) => {
-    chai.request(app)
-      .delete('/api/v1/car/78')
-      .set('Authorization', adminUserToken)
-      .end((err, res) => {
-        if (err)done();
-        expect(res.body).to.be.a('object');
-        expect(res.status).to.equal(200);
-        done();
-      });
-  });
 });
