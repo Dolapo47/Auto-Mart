@@ -1,0 +1,411 @@
+swagger: '2.0'
+info:
+  version: '1.0'
+  title: auto-mart
+  description: auto mart api
+  contact: {}
+host: localhost:3000
+basePath: /api/v1
+schemes:
+- http
+consumes:
+- application/json
+produces:
+- application/json
+paths:
+  /auth/signup:
+    post:
+      description: 'TODO: Add Description'
+      summary: signup
+      tags:
+      - auth
+      operationId: AuthSignupPost
+      deprecated: false
+      produces:
+      - application/json
+      consumes:
+      - application/x-www-form-urlencoded
+      parameters:
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: email
+        in: formData
+        required: true
+        type: string
+        description: ''
+      - name: firstname
+        in: formData
+        required: true
+        type: string
+        description: ''
+      - name: lastname
+        in: formData
+        required: true
+        type: string
+        description: ''
+      - name: password
+        in: formData
+        required: true
+        type: string
+        description: ''
+      - name: adminSecret
+        in: formData
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+          headers: {}
+  /auth/signin:
+    post:
+      description: 'TODO: Add Description'
+      summary: login
+      tags:
+      - auth
+      operationId: AuthSigninPost
+      deprecated: false
+      produces:
+      - application/json
+      consumes:
+      - application/x-www-form-urlencoded
+      parameters:
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: email
+        in: formData
+        required: true
+        type: string
+        description: ''
+      - name: password
+        in: formData
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+          headers: {}
+  /car:
+    get:
+      description: 'TODO: Add Description'
+      summary: get all cars
+      tags:
+      - car routes
+      operationId: CarGet
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+          headers: {}
+      security: []
+    post:
+      description: 'TODO: Add Description'
+      summary: create new car ad
+      tags:
+      - car routes
+      operationId: CarPost
+      deprecated: false
+      produces:
+      - application/json
+      consumes:
+      - application/x-www-form-urlencoded
+      parameters:
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: authorization
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: image_url
+        in: formData
+        required: true
+        type: string
+        description: ''
+      - name: state
+        in: formData
+        required: true
+        type: string
+        description: ''
+      - name: price
+        in: formData
+        required: true
+        type: integer
+        format: int32
+        description: ''
+      - name: manufacturer
+        in: formData
+        required: true
+        type: string
+        description: ''
+      - name: model
+        in: formData
+        required: true
+        type: string
+        description: ''
+      - name: bodyType
+        in: formData
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+          headers: {}
+      security: []
+  /car/11/status:
+    patch:
+      description: 'TODO: Add Description'
+      summary: update car status
+      tags:
+      - car routes
+      operationId: Car11StatusPatch
+      deprecated: false
+      produces:
+      - application/json
+      consumes:
+      - application/x-www-form-urlencoded
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: status
+        in: formData
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+          headers: {}
+      security: []
+  /car/11/price:
+    patch:
+      description: 'TODO: Add Description'
+      summary: update car price
+      tags:
+      - car routes
+      operationId: Car11PricePatch
+      deprecated: false
+      produces:
+      - application/json
+      consumes:
+      - application/x-www-form-urlencoded
+      parameters:
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: Authorization
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: price
+        in: formData
+        required: true
+        type: integer
+        format: int32
+        description: ''
+      responses:
+        200:
+          description: ''
+          headers: {}
+      security: []
+  /car/11:
+    delete:
+      description: 'TODO: Add Description'
+      summary: delete car ad
+      tags:
+      - car routes
+      operationId: Car11Delete
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+          headers: {}
+      security: []
+  /car/4:
+    get:
+      description: 'TODO: Add Description'
+      summary: http://localhost:3000/api/v1/car/4
+      tags:
+      - car routes
+      operationId: Car4Get
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+          headers: {}
+      security: []
+  /order:
+    post:
+      description: 'TODO: Add Description'
+      summary: create order
+      tags:
+      - order routes
+      operationId: OrderPost
+      deprecated: false
+      produces:
+      - application/json
+      consumes:
+      - application/x-www-form-urlencoded
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: carId
+        in: formData
+        required: true
+        type: integer
+        format: int32
+        description: ''
+      - name: priceOffered
+        in: formData
+        required: true
+        type: integer
+        format: int64
+        description: ''
+      responses:
+        200:
+          description: ''
+          headers: {}
+      security: []
+  /order/7/price:
+    patch:
+      description: 'TODO: Add Description'
+      summary: patch order price
+      tags:
+      - order routes
+      operationId: Order7PricePatch
+      deprecated: false
+      produces:
+      - application/json
+      consumes:
+      - application/x-www-form-urlencoded
+      parameters:
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: Authorization
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: newOffer
+        in: formData
+        required: true
+        type: integer
+        format: int32
+        description: ''
+      responses:
+        200:
+          description: ''
+          headers: {}
+      security: []
+  /flag:
+    post:
+      description: 'TODO: Add Description'
+      summary: create flag
+      tags:
+      - flag routes
+      operationId: FlagPost
+      deprecated: false
+      produces:
+      - application/json
+      consumes:
+      - application/x-www-form-urlencoded
+      parameters:
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: Authorization
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: carId
+        in: formData
+        required: true
+        type: integer
+        format: int32
+        description: ''
+      - name: reason
+        in: formData
+        required: true
+        type: string
+        description: ''
+      - name: description
+        in: formData
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+          headers: {}
+      security: []
+tags:
+- name: auth
+  description: for the user routes
+- name: car routes
+- name: order routes
+- name: flag routes
