@@ -2,6 +2,8 @@ import express from 'express';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
 import '@babel/polyfill';
+import swaggerUi from 'swagger-ui-express';
+import YAML from 'yamljs';
 import user from './routes/user';
 import vehicle from './routes/vehicle';
 import order from './routes/order';
@@ -11,6 +13,10 @@ import flag from './routes/flag';
 const app = express();
 const port = process.env.PORT || 3000;
 app.use(morgan('dev'));
+
+const swaggerDocument = YAML.load(`${__dirname}/../swagger.yaml`);
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
