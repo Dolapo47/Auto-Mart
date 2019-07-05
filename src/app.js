@@ -3,6 +3,7 @@ import morgan from 'morgan';
 import bodyParser from 'body-parser';
 import '@babel/polyfill';
 import swaggerUi from 'swagger-ui-express';
+import cors from 'cors';
 import YAML from 'yamljs';
 import user from './routes/user';
 import vehicle from './routes/vehicle';
@@ -22,6 +23,23 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: false,
 }));
+
+app.use(
+  cors({
+    origin: '*',
+    methods: 'GET, HEAD, PUT, PATCH, POST, DELETE, OPTIONS',
+    preflightContinue: false,
+    optionsSuccessStatus: 204
+  })
+);
+
+app.all('/*', (req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'X-Requested-With');
+  next();
+});
+// cross origin resource sharing middleware
+app.use(cors());
 
 
 app.get('/', (req, res) => {
