@@ -201,8 +201,8 @@ h1 {
 .input {
     width: 100%;
     box-sizing: border-box;
-    padding: 15px;
-    margin-bottom: 25px;
+    padding: 10px;
+    margin-bottom: 20px;
     border: 2px solid #e9eaea;
     color: #3e3e40;
     font-size: 14px;
@@ -217,7 +217,7 @@ h1 {
 .btn {
     width: 100%;
     background: #06805b;
-    height: 60px;
+    height: 50px;
     text-align: center;
     line-height: 60px;
     text-transform: uppercase;
