@@ -57,6 +57,7 @@
     "cloudinary": "^1.14.0",
     "cors": "^2.8.5",
     "dotenv": "^8.0.0",
+    "es6-promise": "^4.2.8",
     "express": "^4.16.4",
     "express-fileupload": "^1.1.5",
     "express-validator": "^5.3.1",
