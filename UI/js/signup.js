@@ -10,7 +10,6 @@ const signUp = (e) => {
   const password = document.getElementById('password').value;
   const adminSecret = document.getElementById('adminSecret').value;
 
-  console.log(firstname);
   // sign up || api endpoint URL
   const url = 'https://pacific-eyrie-25629.herokuapp.com/auth/signin';
   // Make a post request to sign up endpoint

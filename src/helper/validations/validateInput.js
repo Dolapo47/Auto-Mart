@@ -8,11 +8,11 @@ class validate {
         .email()
         .trim()
         .error(() => 'email is required and must be a valid email'),
-      firstname: joi.string()
+      first_name: joi.string()
         .regex(/^[A-Za-z]+$/)
         .required()
         .error(() => 'Firstname is required and must contain only alphabets'),
-      lastname: joi.string()
+      last_name: joi.string()
         .regex(/^[A-Za-z]+$/)
         .required()
         .error(() => 'Firstname is required and must contain only alphabets'),
@@ -20,7 +20,6 @@ class validate {
         .required()
         .min(6),
       address: joi.string().required(),
-      adminSecret: joi.string().trim(),
     });
     return joi.validate(user, schema);
   }
