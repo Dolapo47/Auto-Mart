@@ -1,4 +1,5 @@
 /* eslint-disable no-undef */
+
 const signUp = (e) => {
   e.preventDefault();
   // get all user input
@@ -7,9 +8,11 @@ const signUp = (e) => {
   const email = document.getElementById('email').value;
   const address = document.getElementById('address').value;
   const password = document.getElementById('password').value;
+  const adminSecret = document.getElementById('adminSecret').value;
 
+  console.log(firstname);
   // sign up || api endpoint URL
-  const url = 'https://pacific-eyrie-25629.herokuapp.com/auth/signup';
+  const url = 'https://pacific-eyrie-25629.herokuapp.com/auth/signin';
   // Make a post request to sign up endpoint
 
   const formData = {
@@ -18,6 +21,7 @@ const signUp = (e) => {
     email,
     address,
     password,
+    adminSecret,
   };
 
   fetch(url,
@@ -32,13 +36,14 @@ const signUp = (e) => {
     .then((body) => {
       if (body.status === 201) {
         const userData = JSON.stringify({
-          id: body.data.registerUser.id,
-          username: body.data.registerUser.lastName,
+          id: body.data.registerUser.rows[0].id,
+          lastname: body.data.registerUser.rows[0].lastname,
+          firstname: body.data.registerUser.rows[0].firstname,
           token: body.data.token
         });
         localStorage.setItem('user', userData);
       }
-      if (body.data.registerUser.isAdmin) {
+      if (body.data.registerUser.rows[0].isAdmin) {
         setTimeout(() => {
           window.location.href = 'admin.html';
         }, 2000);
