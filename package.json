@@ -60,6 +60,7 @@
     "es6-promise": "^4.2.8",
     "express": "^4.16.4",
     "express-fileupload": "^1.1.5",
+    "express-trimmer": "0.0.3",
     "express-validator": "^5.3.1",
     "faker": "^4.1.0",
     "joi": "^14.3.1",

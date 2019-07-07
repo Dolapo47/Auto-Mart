@@ -5,6 +5,7 @@ import '@babel/polyfill';
 import swaggerUi from 'swagger-ui-express';
 import cors from 'cors';
 import YAML from 'yamljs';
+import trimmer from 'express-trimmer';
 import user from './routes/user';
 import vehicle from './routes/vehicle';
 import order from './routes/order';
@@ -23,6 +24,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: false,
 }));
+
+app.use(trimmer);
 
 app.use(
   cors({
