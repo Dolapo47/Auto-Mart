@@ -37,7 +37,7 @@ class carController {
         return errorMessage(res, 404, 'no car matched the specified criteria');
       }
       if (findCar.rows[0].status === 'sold') {
-        return errorMessage(res, 422, 'Car has been tagged sold');
+        return errorMessage(res, 400, 'Car has been tagged sold');
       }
       const updateStatus = await DB.query('UPDATE cars SET status=$1 WHERE id=$2 RETURNING * ;', [status, findCar.rows[0].id]);
       return retrieveCarMessage(res, 200, 'car status updated', updateStatus.rows[0]);

@@ -1,11 +1,11 @@
 import express from 'express';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
+import winston from 'winston';
 import '@babel/polyfill';
 import swaggerUi from 'swagger-ui-express';
 import cors from 'cors';
 import YAML from 'yamljs';
-import trimmer from 'express-trimmer';
 import user from './routes/user';
 import vehicle from './routes/vehicle';
 import order from './routes/order';
@@ -24,8 +24,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: false,
 }));
-
-app.use(trimmer);
 
 app.use(
   cors({
@@ -78,7 +76,7 @@ app.use((err, req, res) => {
 
 
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+  winston.info(`Server is running on port ${port}`);
 });
 
 export default app;
