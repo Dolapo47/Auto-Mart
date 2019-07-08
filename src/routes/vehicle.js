@@ -10,11 +10,11 @@ const router = express.Router();
 router.get('/car', verifyToken, carController.filteredAvailableCar);
 router.get('/car', verifyToken, carController.availableCars);
 router.get('/car', verifyToken, carController.getAllCars);
-router.get('/car/:carId', verifyToken, carController.getOneCar);
+router.get('/car/:car_id', verifyToken, carController.getOneCar);
 router.post('/car', verifyToken, upload.array('image_url', 2), cloudinaryuploader, carController.createCar);
-router.patch('/car/:carId/status', verifyToken, carController.updateStatus);
-router.patch('/car/:carId/price', verifyToken, carController.updatePrice);
-router.delete('/car/:carId', verifyToken, carController.deleteCar);
+router.patch('/car/:car_id/status', verifyToken, carController.updateStatus);
+router.patch('/car/:car_id/price', verifyToken, carController.updatePrice);
+router.delete('/car/:car_id', verifyToken, carController.deleteCar);
 
 
 export default router;

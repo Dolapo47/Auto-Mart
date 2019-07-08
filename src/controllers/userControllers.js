@@ -22,11 +22,11 @@ class userController {
       const hashedPassword = bcrypt.hashSync(password, 10);
       const registerUser = await DB.query('INSERT INTO users(firstname, lastname, email, password, address, is_admin) VALUES($1, $2, $3, $4, $5, $6) RETURNING *;', [first_name, last_name, email, hashedPassword, address, 'f']);
       return jwt.sign(registerUser.rows[0], process.env.SECRET, (err, token) => {
-        if (err) errorMessage(res, 400, err.message);
-        userMessage(res, 201, 'user created', token, registerUser[0]);
+        if (err) errorMessage(res, 400, 'unable to register new user');
+        userMessage(res, 201, 'user created', token, registerUser.rows[0]);
       });
     } catch (errors) {
-      return errorMessage(res, 400, errors.message);
+      return errorMessage(res, 400, 'unable to register new user');
     }
   }
 
@@ -53,7 +53,7 @@ class userController {
         userMessage(res, 200, 'Auth Successful', token, userExist.rows[0]);
       });
     } catch (errors) {
-      return errorMessage(res, 404, errors.message);
+      return errorMessage(res, 400, 'Auth Failed');
     }
   }
 }

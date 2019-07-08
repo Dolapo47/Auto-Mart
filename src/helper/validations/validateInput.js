@@ -47,7 +47,7 @@ class validate {
       model: joi.string().regex(/^[a-zA-Z0-9]*$/).trim()
         .required()
         .error(() => 'only alphanumeric characters allowed'),
-      bodyType: joi.string().insensitive()
+      body_type: joi.string().insensitive()
         .valid('car', 'van', 'truck', 'trailer')
         .trim()
         .required()
@@ -75,18 +75,17 @@ class validate {
         .valid('available', 'sold')
         .trim()
         .required()
-        .error(() => 'status can only be available or sold'),
     });
     return joi.validate(details, schema);
   }
 
   static validateOrderInput(details) {
     const schema = joi.object().keys({
-      carId: joi.string()
+      car_id: joi.string()
         .regex(/^[0-9]+$/)
         .trim()
         .required(),
-      priceOffered: joi.string()
+      price_offered: joi.string()
         .regex(/^\d*(\.\d{2})?$/)
         .regex(/^[0-9]*[1-9][0-9]*$/)
         .trim()
@@ -97,7 +96,7 @@ class validate {
 
   static validatePatchOrder(details) {
     const schema = joi.object().keys({
-      newOffer: joi.string()
+      new_offer: joi.string()
         .regex(/^\d*(\.\d{2})?$/)
         .regex(/^[0-9]*[1-9][0-9]*$/)
         .trim()
@@ -108,7 +107,7 @@ class validate {
 
   static validateFlagInput(details) {
     const schema = joi.object().keys({
-      carId: joi.string()
+      car_id: joi.string()
         .regex(/^[0-9]+$/)
         .trim()
         .required(),

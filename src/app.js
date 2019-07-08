@@ -1,6 +1,7 @@
 import express from 'express';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
+import winston from 'winston';
 import '@babel/polyfill';
 import swaggerUi from 'swagger-ui-express';
 import cors from 'cors';
@@ -75,7 +76,7 @@ app.use((err, req, res) => {
 
 
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+  winston.info(`Server is running on port ${port}`);
 });
 
 export default app;
