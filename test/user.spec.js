@@ -13,6 +13,7 @@ const { expect } = chai;
 
 chai.use(chaiHttp);
 
+let aToken;
 const adminUserToken = generateValidToken(users.admin);
 const userToken = generateValidToken(users.validUser);
 
@@ -290,6 +291,7 @@ describe('Can authorize user to the app', () => {
       })
       .end((err, res) => {
         if (err)done();
+        aToken = res.body.data.token;
         expect(res.body).to.be.a('object');
         expect(res.status).to.equal(200);
         done();
@@ -388,23 +390,24 @@ describe('Can authorize user to the app', () => {
 });
 
 describe('car routes', () => {
-  // it('should create new car', (done) => {
-  //   chai.request(app)
-  //     .post('/api/v1/car')
-  //     .set('Authorization', adminUserToken)
-  //     .set('Content-Type', 'application/x-www-form-urlencoded')
-  //     .attach('image_url', fs.readFileSync('test/assets/auromart7.jpg'), 'auromart7.jpg')
-  //     .field('state', 'new')
-  //     .field('price', '3000000')
-  //     .field('manufacturer', 'honda')
-  //     .field('model', 'accord')
-  //     .field('body_type', 'car')
-  //     .end((err, res) => {
-  //       expect(res).to.be.an('object');
-  //       expect(res.status).to.equal(201);
-  //       done();
-  //     });
-  // });
+  it('should create new car', (done) => {
+    chai.request(app)
+      .post('/api/v1/car')
+      .set('Authorization', aToken)
+      .set('Content-Type', 'application/x-www-form-urlencoded')
+      .attach('image_url', fs.readFileSync('test/assets/auromart7.jpg'), 'auromart7.jpg')
+      .field('state', 'new')
+      .field('price', '3000000')
+      .field('manufacturer', 'honda')
+      .field('model', 'accord')
+      .field('body_type', 'car')
+      .end((err, res) => {
+        console.log(res.body);
+        expect(res).to.be.an('object');
+        expect(res.status).to.equal(201);
+        done();
+      });
+  });
 
   // it('should throw error if state empty', (done) => {
   //   chai.request(app)
