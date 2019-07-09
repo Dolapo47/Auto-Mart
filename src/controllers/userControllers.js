@@ -26,7 +26,7 @@ class userController {
         userMessage(res, 201, 'user created', token, registerUser.rows[0]);
       });
     } catch (errors) {
-      return errorMessage(res, 400, 'unable to register new user');
+      errorMessage(res, 400, 'unable to register new user');
     }
   }
 
@@ -53,7 +53,7 @@ class userController {
         userMessage(res, 200, 'Auth Successful', token, userExist.rows[0]);
       });
     } catch (errors) {
-      return errorMessage(res, 400, 'Auth Failed');
+      errorMessage(res, 400, 'Auth Failed');
     }
   }
 }
