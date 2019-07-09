@@ -22,7 +22,7 @@ class orderController {
       const makeOrder = await DB.query('INSERT into orders(car_id, buyer_id, createdon ,amountOffered, status) VALUES($1, $2, $3, $4, $5) RETURNING * ;', [car_id, id, created_On, price, status]);
       return retrieveCarMessage(res, 201, 'order created', makeOrder.rows[0]);
     } catch (errors) {
-      errorMessage(res, 400, 'unable to create order');
+      return errorMessage(res, 400, 'unable to create order');
     }
   }
 
@@ -40,7 +40,7 @@ class orderController {
       const updateOrderPrice = await DB.query('UPDATE orders SET amountOffered=$1 WHERE id=$2 RETURNING *;', [new_offer, checkUserOrder.rows[0].id]);
       return retrieveCarMessage(res, 200, 'success', updateOrderPrice.rows[0]);
     } catch (errors) {
-      errorMessage(res, 400, 'unable to update order');
+      return errorMessage(res, 400, 'unable to update order');
     }
   }
 }

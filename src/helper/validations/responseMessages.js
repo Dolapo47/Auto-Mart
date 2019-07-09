@@ -5,13 +5,6 @@ export const errorMessage = (res, statusCode, message) => {
   });
 };
 
-export const successMessage = (res, statusCode, message) => {
-  res.status(statusCode).json({
-    status: statusCode,
-    message,
-  });
-};
-
 export const userMessage = (res, statusCode, message, token, user) => {
   res.status(statusCode).json({
     status: statusCode,
