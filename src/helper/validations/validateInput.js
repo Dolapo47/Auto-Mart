@@ -52,7 +52,7 @@ class validate {
         .trim()
         .required()
         .error(() => 'body type can be car, van, truck, trailer'),
-      imageUrl: joi.required(),
+      image_url: joi.required(),
     });
     return joi.validate(details, schema);
   }
@@ -101,6 +101,7 @@ class validate {
         .regex(/^[0-9]*[1-9][0-9]*$/)
         .trim()
         .required(),
+      order_id: joi.string(),
     });
     return joi.validate(details, schema);
   }
