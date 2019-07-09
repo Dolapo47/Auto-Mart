@@ -19,7 +19,7 @@ class carController {
       const newCar = await DB.query('INSERT INTO cars(ownerid, owneremail, createdon, state, status, price, manufacturer, model, body_type, image_url, flagged) VALUES($1, $2, $3, $4, $5, $6, $7, $8 , $9, $10, $11) RETURNING *;', [id, email, created_on, state, status, Formatted_price, manufacturer, model, body_type, image_url, false]);
       retrieveCarMessage(res, 201, 'Vehicle created', newCar.rows[0]);
     } catch (errors) {
-      errorMessage(res, 400, 'Unable to create car');
+      return errorMessage(res, 400, 'Unable to create car');
     }
   }
 
@@ -42,7 +42,7 @@ class carController {
       const updateStatus = await DB.query('UPDATE cars SET status=$1 WHERE id=$2 RETURNING * ;', [status, findCar.rows[0].id]);
       return retrieveCarMessage(res, 200, 'car status updated', updateStatus.rows[0]);
     } catch (errors) {
-      errorMessage(res, 400, 'Unable to update status');
+      return errorMessage(res, 400, 'Unable to update status');
     }
   }
 
@@ -63,7 +63,7 @@ class carController {
       const updatePrice = await DB.query('UPDATE cars SET price=$1 WHERE id=$2 RETURNING * ;', [Formatted_price, findCar.rows[0].id]);
       return retrieveCarMessage(res, 200, 'car price updated', updatePrice.rows[0]);
     } catch (errors) {
-      errorMessage(res, 400, 'Unable to update price');
+      return errorMessage(res, 400, 'Unable to update price');
     }
   }
 
@@ -74,7 +74,7 @@ class carController {
       if (getCar.rowCount === 0) return errorMessage(res, 404, 'Car not found');
       return retrieveCarMessage(res, 200, 'vehicle successfully retrieved', getCar.rows[0]);
     } catch (error) {
-      errorMessage(res, 400, 'Unable to retrieve car');
+      return errorMessage(res, 400, 'Unable to retrieve car');
     }
   }
 
@@ -92,7 +92,7 @@ class carController {
       await DB.query('DELETE FROM cars WHERE id = $1;', [car_id]);
       return retrieveCarMessage(res, 200, 'Car Ad was successfully deleted');
     } catch (error) {
-      errorMessage(res, 400, 'Unable to delete car');
+      return errorMessage(res, 400, 'Unable to delete car');
     }
   }
 
@@ -108,7 +108,7 @@ class carController {
       }
       return retrieveCarMessage(res, 200, 'All ads successfully retrieved', getCars.rows);
     } catch (error) {
-      errorMessage(res, 400, 'Unable to retrieve cars');
+      return errorMessage(res, 400, 'Unable to retrieve cars');
     }
   }
 
@@ -123,7 +123,7 @@ class carController {
       if (getAvailableCars.rowCount < 1) {
         return errorMessage(res, 404, 'No ad found');
       }
-      retrieveCarMessage(res, 200, 'Available cars successfully retrieved', getAvailableCars.rows);
+      return retrieveCarMessage(res, 200, 'Available cars successfully retrieved', getAvailableCars.rows);
     } catch (error) {
       return errorMessage(res, 400, 'Unable to retrieve available cars');
     }

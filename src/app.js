@@ -10,6 +10,7 @@ import user from './routes/user';
 import vehicle from './routes/vehicle';
 import order from './routes/order';
 import flag from './routes/flag';
+import { errorMessage } from './helper/validations/responseMessages';
 
 
 const app = express();
@@ -66,12 +67,7 @@ app.all('*', (req, res) => res.status(404).json({
 }));
 
 app.use((err, req, res) => {
-  if (err) {
-    return res.status(500).json({
-      status: 500,
-      error: 'internal server error'
-    });
-  }
+  if (err) return errorMessage(res, 500, 'internal server error');
 });
 
 

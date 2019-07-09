@@ -26,7 +26,7 @@ class userController {
         userMessage(res, 201, 'user created', token, registerUser.rows[0]);
       });
     } catch (errors) {
-      errorMessage(res, 400, 'unable to register new user');
+      return errorMessage(res, 400, 'unable to register new user');
     }
   }
 

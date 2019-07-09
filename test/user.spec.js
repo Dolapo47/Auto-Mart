@@ -403,6 +403,24 @@ describe('car routes', () => {
       });
   });
 
+  it('should create new car', (done) => {
+    chai.request(app)
+      .post('/api/v1/car')
+      .set('Authorization', adminUserToken)
+      .set('Content-Type', 'application/x-www-form-urlencoded')
+      .attach('image_url', fs.readFileSync('test/assets/auromart7.jpg'), 'auromart7.jpg')
+      .field('state', 'new  ')
+      .field('price', '3000000')
+      .field('manufacturer', 'honda')
+      .field('model', 'accord')
+      .field('body_type', 'car')
+      .end((err, res) => {
+        expect(res).to.be.an('object');
+        expect(res.status).to.equal(201);
+        done();
+      });
+  });
+
   it('should throw error if state empty', (done) => {
     chai.request(app)
       .post('/api/v1/car')
@@ -632,8 +650,8 @@ describe('car routes', () => {
       .post('/api/v1/order')
       .set('Authorization', adminUserToken)
       .send({
-        car_id: '6',
-        price_offered: '30000000'
+        car_id: '6   ',
+        price_offered: '30000000   '
       })
       .end((err, res) => {
         if (err)done();

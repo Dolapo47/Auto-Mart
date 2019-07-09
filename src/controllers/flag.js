@@ -19,7 +19,7 @@ class flagController {
 
       return retrieveCarMessage(res, 201, 'Flag created', flagAd.rows[0]);
     } catch (errors) {
-      errorMessage(res, 400, 'Unable to flag car');
+      return errorMessage(res, 400, 'Unable to flag car');
     }
   }
 }
