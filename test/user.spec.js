@@ -434,6 +434,7 @@ describe('car routes', () => {
       .field('model', 'accord')
       .field('body_type', 'car')
       .end((err, res) => {
+        console.log(res.body);
         expect(res).to.be.an('object');
         expect(res.status).to.equal(422);
         done();
@@ -452,6 +453,7 @@ describe('car routes', () => {
       .field('model', 'accord')
       .field('body_type', 'car')
       .end((err, res) => {
+        console.log(res.body);
         expect(res).to.be.an('object');
         expect(res.status).to.equal(422);
         done();
@@ -470,6 +472,7 @@ describe('car routes', () => {
       .field('model', 'accord')
       .field('body_type', 'car')
       .end((err, res) => {
+        console.log(res.body);
         expect(res).to.be.an('object');
         expect(res.status).to.equal(422);
         done();
@@ -488,6 +491,7 @@ describe('car routes', () => {
       .field('model', 'accord')
       .field('body_type', 'car')
       .end((err, res) => {
+        console.log(res.body);
         expect(res).to.be.an('object');
         expect(res.status).to.equal(422);
         done();
@@ -506,6 +510,7 @@ describe('car routes', () => {
       .field('model', '')
       .field('body_type', 'car')
       .end((err, res) => {
+        console.log(res.body);
         expect(res).to.be.an('object');
         expect(res.status).to.equal(422);
         done();
@@ -524,6 +529,7 @@ describe('car routes', () => {
       .field('model', 'accord')
       .field('body_type', '')
       .end((err, res) => {
+        console.log(res.body);
         expect(res).to.be.an('object');
         expect(res.status).to.equal(422);
         done();
@@ -542,6 +548,7 @@ describe('car routes', () => {
       .field('model', 'accord')
       .field('body_type', 'jam')
       .end((err, res) => {
+        console.log(res.body);
         expect(res).to.be.an('object');
         expect(res.status).to.equal(422);
         done();
@@ -559,6 +566,7 @@ describe('car routes', () => {
       .field('model', 'accord')
       .field('body_type', 'jam')
       .end((err, res) => {
+        console.log(res.body);
         expect(res).to.be.an('object');
         expect(res.status).to.equal(401);
         done();
