@@ -15,17 +15,14 @@ class orderController {
     try {
       const carExist = await DB.query('SELECT id, price FROM cars WHERE id=$1; ', [car_id]);
       if (carExist.rowCount <= 0) {
-        return res.status(404).send({
-          status: 404,
-          error: 'Car does not exist',
-        });
+        return errorMessage(res, 404, 'Car does not exist');
       }
-      const createdOn = new Date().toLocaleDateString();
+      const created_On = new Date().toLocaleDateString();
 
-      const makeOrder = await DB.query('INSERT into orders(car_id, buyer_id, createdon ,amountOffered, status) VALUES($1, $2, $3, $4, $5) RETURNING * ;', [car_id, id, createdOn, price, status]);
+      const makeOrder = await DB.query('INSERT into orders(car_id, buyer_id, createdon ,amountOffered, status) VALUES($1, $2, $3, $4, $5) RETURNING * ;', [car_id, id, created_On, price, status]);
       return retrieveCarMessage(res, 201, 'order created', makeOrder.rows[0]);
     } catch (errors) {
-      return errorMessage(res, 400, 'unable to create order');
+      errorMessage(res, 400, 'unable to create order');
     }
   }
 
@@ -43,7 +40,7 @@ class orderController {
       const updateOrderPrice = await DB.query('UPDATE orders SET amountOffered=$1 WHERE id=$2 RETURNING *;', [new_offer, checkUserOrder.rows[0].id]);
       return retrieveCarMessage(res, 200, 'success', updateOrderPrice.rows[0]);
     } catch (errors) {
-      return errorMessage(res, 400, 'unable to update order');
+      errorMessage(res, 400, 'unable to update order');
     }
   }
 }

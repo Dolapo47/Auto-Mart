@@ -42,7 +42,7 @@ class carController {
       const updateStatus = await DB.query('UPDATE cars SET status=$1 WHERE id=$2 RETURNING * ;', [status, findCar.rows[0].id]);
       return retrieveCarMessage(res, 200, 'car status updated', updateStatus.rows[0]);
     } catch (errors) {
-      return errorMessage(res, 400, 'Unable to update status');
+      errorMessage(res, 400, 'Unable to update status');
     }
   }
 
@@ -63,7 +63,7 @@ class carController {
       const updatePrice = await DB.query('UPDATE cars SET price=$1 WHERE id=$2 RETURNING * ;', [Formatted_price, findCar.rows[0].id]);
       return retrieveCarMessage(res, 200, 'car price updated', updatePrice.rows[0]);
     } catch (errors) {
-      return errorMessage(res, 400, 'Unable to update price');
+      errorMessage(res, 400, 'Unable to update price');
     }
   }
 
@@ -74,7 +74,7 @@ class carController {
       if (getCar.rowCount === 0) return errorMessage(res, 404, 'Car not found');
       return retrieveCarMessage(res, 200, 'vehicle successfully retrieved', getCar.rows[0]);
     } catch (error) {
-      return errorMessage(res, 400, 'Unable to retrieve car');
+      errorMessage(res, 400, 'Unable to retrieve car');
     }
   }
 
@@ -92,7 +92,7 @@ class carController {
       await DB.query('DELETE FROM cars WHERE id = $1;', [car_id]);
       return retrieveCarMessage(res, 200, 'Car Ad was successfully deleted');
     } catch (error) {
-      return errorMessage(res, 400, 'Unable to delete car');
+      errorMessage(res, 400, 'Unable to delete car');
     }
   }
 
@@ -108,7 +108,7 @@ class carController {
       }
       return retrieveCarMessage(res, 200, 'All ads successfully retrieved', getCars.rows);
     } catch (error) {
-      return errorMessage(res, 400, 'Unable to retrieve cars');
+      errorMessage(res, 400, 'Unable to retrieve cars');
     }
   }
 
