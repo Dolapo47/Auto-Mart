@@ -17,7 +17,7 @@ class userController {
     try {
       const existingUser = await DB.query('SELECT * from users WHERE email=$1;', [email]);
       if (existingUser.rowCount) {
-        return errorMessage(res, 409, 'User exist already');
+        return errorMessage(res, 409, 'User exists already');
       }
       const hashedPassword = bcrypt.hashSync(password, 10);
       const registerUser = await DB.query('INSERT INTO users(firstname, lastname, email, password, address, is_admin) VALUES($1, $2, $3, $4, $5, $6) RETURNING *;', [first_name, last_name, email, hashedPassword, address, 'f']);

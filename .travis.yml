@@ -5,7 +5,10 @@ node_js:
   - stable
 
 env: 
-  - CXX=g++-4.8   
+  global:
+    - secure: 
+  - CXX=g++-4.8
+  
 
 packages: 
   - g++-4.8
