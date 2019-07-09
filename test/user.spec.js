@@ -1,15 +1,43 @@
+/* eslint-disable require-jsdoc */
+import jwt from 'jsonwebtoken';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import fs from 'fs';
 import faker from 'faker';
 import dotenv from 'dotenv';
 import app from '../src/app';
-import { generateValidToken, users } from './users';
+// import { generateValidToken, users } from './users';
 
 dotenv.config();
 const { expect } = chai;
 
 chai.use(chaiHttp);
+
+function generateValidToken(userObject) {
+  return jwt.sign(userObject, process.env.SECRET).toString();
+}
+
+const users = {
+  admin: {
+    id: 7,
+    first_name: 'Murray',
+    last_name: 'Kohler',
+    address: '239, ikoroduroad',
+    email: 'Sean.Hane@yahoo.com',
+    password: 'dolapo2018@@',
+    is_admin: 't'
+  },
+  validUser: {
+    id: 6,
+    first_name: 'Gail',
+    last_name: 'Heathcote',
+    address: '234567, gdfcvcsyh',
+    email: 'Darrell1@gmail.com',
+    password: 'dolapo2018@@',
+    is_admin: 'f',
+  },
+}
+
 const adminUserToken = generateValidToken(users.admin);
 const userToken = generateValidToken(users.validUser);
 
@@ -403,25 +431,6 @@ describe('car routes', () => {
       });
   });
 
-  it('should create new car', (done) => {
-    chai.request(app)
-      .post('/api/v1/car')
-      .set('Authorization', adminUserToken)
-      .set('Content-Type', 'application/x-www-form-urlencoded')
-      .attach('image_url', fs.readFileSync('test/assets/auromart7.jpg'), 'auromart7.jpg')
-      .field('state', 'new  ')
-      .field('price', '3000000')
-      .field('manufacturer', 'honda')
-      .field('model', 'accord')
-      .field('body_type', 'car')
-      .end((err, res) => {
-        console.log(res.body);
-        expect(res).to.be.an('object');
-        expect(res.status).to.equal(201);
-        done();
-      });
-  });
-
   it('should throw error if state empty', (done) => {
     chai.request(app)
       .post('/api/v1/car')
@@ -566,7 +575,6 @@ describe('car routes', () => {
       .field('model', 'accord')
       .field('body_type', 'jam')
       .end((err, res) => {
-        console.log(res.body);
         expect(res).to.be.an('object');
         expect(res.status).to.equal(401);
         done();
