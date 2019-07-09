@@ -415,6 +415,7 @@ describe('car routes', () => {
       .field('model', 'accord')
       .field('body_type', 'car')
       .end((err, res) => {
+        console.log(res.body);
         expect(res).to.be.an('object');
         expect(res.status).to.equal(201);
         done();
