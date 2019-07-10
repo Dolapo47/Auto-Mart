@@ -419,7 +419,6 @@ describe('car routes', () => {
       .field('model', 'accord')
       .field('body_type', 'car')
       .end((err, res) => {
-        console.log(res.body);
         expect(res).to.be.an('object');
         expect(res.status).to.equal(422);
         done();
@@ -438,7 +437,6 @@ describe('car routes', () => {
       .field('model', 'accord')
       .field('body_type', 'car')
       .end((err, res) => {
-        console.log(res.body);
         expect(res).to.be.an('object');
         expect(res.status).to.equal(422);
         done();
@@ -457,7 +455,6 @@ describe('car routes', () => {
       .field('model', 'accord')
       .field('body_type', 'car')
       .end((err, res) => {
-        console.log(res.body);
         expect(res).to.be.an('object');
         expect(res.status).to.equal(422);
         done();
@@ -476,7 +473,6 @@ describe('car routes', () => {
       .field('model', 'accord')
       .field('body_type', 'car')
       .end((err, res) => {
-        console.log(res.body);
         expect(res).to.be.an('object');
         expect(res.status).to.equal(422);
         done();
@@ -495,7 +491,6 @@ describe('car routes', () => {
       .field('model', '')
       .field('body_type', 'car')
       .end((err, res) => {
-        console.log(res.body);
         expect(res).to.be.an('object');
         expect(res.status).to.equal(422);
         done();
@@ -508,13 +503,12 @@ describe('car routes', () => {
       .set('Authorization', adminUserToken)
       .set('Content-Type', 'application/x-www-form-urlencoded')
       .attach('image_url', fs.readFileSync('test/assets/auromart7.jpg'), 'auromart7.jpg')
-      .field('state', 'new')
+      .field('state', 'new ')
       .field('price', '3000000')
       .field('manufacturer', 'honda')
       .field('model', 'accord')
       .field('body_type', '')
       .end((err, res) => {
-        console.log(res.body);
         expect(res).to.be.an('object');
         expect(res.status).to.equal(422);
         done();
@@ -533,7 +527,6 @@ describe('car routes', () => {
       .field('model', 'accord')
       .field('body_type', 'jam')
       .end((err, res) => {
-        console.log(res.body);
         expect(res).to.be.an('object');
         expect(res.status).to.equal(422);
         done();
@@ -859,7 +852,6 @@ describe('car routes', () => {
       .set('Authorization', aToken)
       .end((err, res) => {
         if (err)done();
-        console.log(res.body, err);
         expect(res.body).to.be.a('object');
         expect(res.status).to.equal(200);
         done();

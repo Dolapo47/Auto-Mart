@@ -42,7 +42,7 @@ class carController {
       const updateStatus = await DB.query('UPDATE cars SET status=$1 WHERE id=$2 RETURNING * ;', [status, findCar.rows[0].id]);
       return retrieveCarMessage(res, 200, 'car status updated', updateStatus.rows[0]);
     } catch (errors) {
-      return errorMessage(res, 400, 'Unable to update status');
+      errorMessage(res, 400, 'Unable to update status');
     }
   }
 
