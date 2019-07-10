@@ -19,7 +19,7 @@ class orderController {
       }
       const created_On = new Date().toLocaleDateString();
 
-      const makeOrder = await DB.query('INSERT into orders(car_id, buyer_id, createdon ,amountOffered, status) VALUES($1, $2, $3, $4, $5) RETURNING * ;', [car_id, id, created_On, price, status]);
+      const makeOrder = await DB.query('INSERT into orders(car_id, buyer_id, created_on ,amount_offered, status) VALUES($1, $2, $3, $4, $5) RETURNING * ;', [car_id, id, created_On, price, status]);
       return retrieveCarMessage(res, 201, 'order created', makeOrder.rows[0]);
     } catch (errors) {
       return errorMessage(res, 400, 'unable to create order');
@@ -37,7 +37,7 @@ class orderController {
       if (checkUserOrder.rowCount <= 0) {
         return errorMessage(res, 404, 'order not found');
       }
-      const updateOrderPrice = await DB.query('UPDATE orders SET amountOffered=$1 WHERE id=$2 RETURNING *;', [new_offer, checkUserOrder.rows[0].id]);
+      const updateOrderPrice = await DB.query('UPDATE orders SET amount_offered=$1 WHERE id=$2 RETURNING *;', [new_offer, checkUserOrder.rows[0].id]);
       return retrieveCarMessage(res, 200, 'success', updateOrderPrice.rows[0]);
     } catch (errors) {
       return errorMessage(res, 400, 'unable to update order');
