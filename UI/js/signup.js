@@ -1,38 +1,5 @@
 /* eslint-disable no-undef */
 
-// const firstname = document.getElementById('firstname').value;
-// const lastname = document.getElementById('lastname').value;
-// const email = document.getElementById('email').value;
-// const address = document.getElementById('address').value;
-// const password = document.getElementById('password').value;
-// const adminSecret = document.getElementById('adminSecret').value;
-
-// console.log(firstname, lastname, email, address, password, adminSecret);
-
-
-// const formData = {
-//   firstname,
-//   lastname,
-//   email,
-//   address,
-//   password,
-// };
-
-// const url = 'https://pacific-eyrie-25629.herokuapp.com/api/v1/auth/signup';
-
-// fetch(url,
-//   {
-//     method: 'POST',
-//     headers: {
-//       'Content-Type': 'application/json'
-//     },
-//     body: JSON.stringify(formData)
-//   })
-//   .then(res => res.json())
-//   .then((body) => {
-//     console.log(JSON.stringify(body));
-//   });
-
 const signUp = (e) => {
   e.preventDefault();
   // get all user input
@@ -41,9 +8,10 @@ const signUp = (e) => {
   const email = document.getElementById('email').value;
   const address = document.getElementById('address').value;
   const password = document.getElementById('password').value;
+  const adminSecret = document.getElementById('adminSecret').value;
 
   // sign up || api endpoint URL
-  const url = 'https://pacific-eyrie-25629.herokuapp.com/auth/signup';
+  const url = 'https://pacific-eyrie-25629.herokuapp.com/auth/signin';
   // Make a post request to sign up endpoint
 
   const formData = {
@@ -52,6 +20,7 @@ const signUp = (e) => {
     email,
     address,
     password,
+    adminSecret,
   };
 
   fetch(url,

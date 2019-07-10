@@ -1,34 +1,35 @@
+/* eslint-disable require-jsdoc */
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import fs from 'fs';
 import faker from 'faker';
 import dotenv from 'dotenv';
 import app from '../src/app';
+import { generateValidToken, users } from './users';
 
 dotenv.config();
 const { expect } = chai;
 
 chai.use(chaiHttp);
-let adminUserToken;
-let userToken;
-const invalidToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZmlyc3RuYW1lIjoiZG9sYXBvIiwibGFzdG5hbWUiOiJhZGVsZXllIiwiZW1haWwiOiJkb2xhcG9AYW5kZWxhLmNvbSIsInBhc3N3b3JkIjoiJDJhJDEwJGd0emtNLjJqaExucnVXWkJhVFFybC5PU1pSekV0QjlwaHdKUWRXWDdPaTRvOTZwVzJpam9LIiwiYWRkcmVzcyI6IjEzMSBpamVzaGEgcm9hZCIsImlzX2FkbWluIjoiZiIsImlhdCI6MTU2MTM4NTY2Nn0.8T9lE2PcQn-NdPwLzU6m3eYfyvCcxB2VSo-iqX-gN2';
+
+let aToken;
+const adminUserToken = generateValidToken(users.admin);
+const userToken = generateValidToken(users.validUser);
 
 const adminUser = {
-  lastname: faker.name.lastName(),
-  firstname: faker.name.firstName(),
+  last_name: faker.name.lastName(),
+  first_name: faker.name.firstName(),
   email: faker.internet.email(),
   password: 'dolapo2018@@',
   address: '12 gabriel olusanya',
-  adminSecret: 'dappy'
 };
 
 const user = {
-  firstname: faker.name.firstName(),
-  lastname: faker.name.lastName(),
+  first_name: faker.name.firstName(),
+  last_name: faker.name.lastName(),
   email: faker.internet.email(),
   password: 'dolapo2018@@',
   address: '12 gabriel olusanya',
-  adminSecret: 'd',
 };
 
 describe('Can register new user', () => {
@@ -49,11 +50,10 @@ describe('Can register new user', () => {
       .post('/api/v1/auth/signup')
       .send({
         email: 'Sean.Hane@yahoo.com',
-        firstname: 'Murray',
-        lastname: 'Kohler',
+        first_name: 'Murray',
+        last_name: 'Kohler',
         password: 'dolapo2018@@',
         address: '9 gabriel olusanya',
-        adminSecret: 'dappy'
       })
       .end((err, res) => {
         if (err)done();
@@ -68,11 +68,10 @@ describe('Can register new user', () => {
       .post('/api/v1/auth/signup')
       .send({
         email: '',
-        firstname: 'Murray',
-        lastname: 'Kohler',
+        first_name: 'Murray',
+        last_name: 'Kohler',
         password: 'dolapo2018@@',
         address: '9 gabriel olusanya',
-        adminSecret: 'dappy'
       })
       .end((err, res) => {
         if (err)done();
@@ -87,11 +86,10 @@ describe('Can register new user', () => {
       .post('/api/v1/auth/signup')
       .send({
         email: 'Sean.Hane@yahoo.com',
-        firstname: '',
-        lastname: 'Kohler',
+        first_name: '',
+        last_name: 'Kohler',
         password: 'dolapo2018@@',
         address: '9 gabriel olusanya',
-        adminSecret: 'dappy'
       })
       .end((err, res) => {
         if (err)done();
@@ -106,11 +104,10 @@ describe('Can register new user', () => {
       .post('/api/v1/auth/signup')
       .send({
         email: 'Sean.Hane@yahoo.com',
-        firstname: 'Murray',
-        lastname: '',
+        first_name: 'Murray',
+        last_name: '',
         password: 'dolapo2018@@',
         address: '9 gabriel olusanya',
-        adminSecret: 'dappy'
       })
       .end((err, res) => {
         if (err)done();
@@ -125,11 +122,10 @@ describe('Can register new user', () => {
       .post('/api/v1/auth/signup')
       .send({
         email: 'Sean.Hane@yahoo.com',
-        firstname: 'Murray',
-        lastname: 'Kohler',
+        first_name: 'Murray',
+        last_name: 'Kohler',
         password: '',
         address: '9 gabriel olusanya',
-        adminSecret: 'dappy'
       })
       .end((err, res) => {
         if (err)done();
@@ -144,11 +140,10 @@ describe('Can register new user', () => {
       .post('/api/v1/auth/signup')
       .send({
         email: 'Sean.Hane@yahoo.com',
-        firstname: 'Murray',
-        lastname: 'Kohler',
+        first_name: 'Murray',
+        last_name: 'Kohler',
         password: 'dolapo2018@@',
         address: '',
-        adminSecret: 'dappy'
       })
       .end((err, res) => {
         if (err)done();
@@ -163,11 +158,10 @@ describe('Can register new user', () => {
       .post('/api/v1/auth/signup')
       .send({
         email: 'Sean.Haneyahoo.com',
-        firstname: 'Murray',
-        lastname: 'Kohler',
+        first_name: 'Murray',
+        last_name: 'Kohler',
         password: 'dolapo2018@@',
         address: '9 gabriel olusanya',
-        adminSecret: 'dappy'
       })
       .end((err, res) => {
         if (err)done();
@@ -182,11 +176,10 @@ describe('Can register new user', () => {
       .post('/api/v1/auth/signup')
       .send({
         email: 'Sean.Hane@yahoo.com',
-        firstname: 'Murray335',
-        lastname: 'Kohler',
+        first_name: 'Murray335',
+        last_name: 'Kohler',
         password: 'dolapo2018@@',
         address: '9 gabriel olusanya',
-        adminSecret: 'dappy'
       })
       .end((err, res) => {
         if (err)done();
@@ -201,11 +194,10 @@ describe('Can register new user', () => {
       .post('/api/v1/auth/signup')
       .send({
         email: 'Sean.Hane@yahoo.com',
-        firstname: 'Murray',
-        lastname: 'Kohler454',
+        first_name: 'Murray',
+        last_name: 'Kohler454',
         password: 'dolapo2018@@',
         address: '9 gabriel olusanya',
-        adminSecret: 'dappy'
       })
       .end((err, res) => {
         if (err)done();
@@ -220,11 +212,10 @@ describe('Can register new user', () => {
       .post('/api/v1/auth/signup')
       .send({
         email: 'Sean.Hane@yahoo.com',
-        firstname: 'Murray',
-        lastname: 'Kohler',
+        first_name: 'Murray',
+        last_name: 'Kohler',
         password: 'dola',
         address: '9 gabriel olusanya',
-        adminSecret: 'dappy'
       })
       .end((err, res) => {
         if (err)done();
@@ -239,11 +230,10 @@ describe('Can register new user', () => {
       .post('/api/v1/auth/signup')
       .send({
         email: 'Sean.Hane@yahoo.com',
-        firstname: 'Murray',
-        lastname: 'Kohler',
+        first_name: 'Murray',
+        last_name: 'Kohler',
         password: '',
         address: '9 gabriel olusanya',
-        adminSecret: 'dappy'
       })
       .end((err, res) => {
         if (err)done();
@@ -283,7 +273,6 @@ describe('Can register new user', () => {
       .send(user)
       .end((err, res) => {
         if (err)done();
-        userToken = res.body.data.token;
         expect(res.body).to.be.a('object');
         expect(res.status).to.equal(201);
         done();
@@ -301,7 +290,7 @@ describe('Can authorize user to the app', () => {
       })
       .end((err, res) => {
         if (err)done();
-        adminUserToken = res.body.data.token;
+        aToken = res.body.data.token;
         expect(res.body).to.be.a('object');
         expect(res.status).to.equal(200);
         done();
@@ -403,14 +392,14 @@ describe('car routes', () => {
   it('should create new car', (done) => {
     chai.request(app)
       .post('/api/v1/car')
-      .set('Authorization', adminUserToken)
+      .set('Authorization', aToken)
       .set('Content-Type', 'application/x-www-form-urlencoded')
       .attach('image_url', fs.readFileSync('test/assets/auromart7.jpg'), 'auromart7.jpg')
       .field('state', 'new')
       .field('price', '3000000')
       .field('manufacturer', 'honda')
       .field('model', 'accord')
-      .field('bodyType', 'car')
+      .field('body_type', 'car')
       .end((err, res) => {
         expect(res).to.be.an('object');
         expect(res.status).to.equal(201);
@@ -428,7 +417,7 @@ describe('car routes', () => {
       .field('price', '3000000')
       .field('manufacturer', 'honda')
       .field('model', 'accord')
-      .field('bodyType', 'car')
+      .field('body_type', 'car')
       .end((err, res) => {
         expect(res).to.be.an('object');
         expect(res.status).to.equal(422);
@@ -446,7 +435,7 @@ describe('car routes', () => {
       .field('price', '3000000')
       .field('manufacturer', 'honda')
       .field('model', 'accord')
-      .field('bodyType', 'car')
+      .field('body_type', 'car')
       .end((err, res) => {
         expect(res).to.be.an('object');
         expect(res.status).to.equal(422);
@@ -464,7 +453,7 @@ describe('car routes', () => {
       .field('price', '')
       .field('manufacturer', 'honda')
       .field('model', 'accord')
-      .field('bodyType', 'car')
+      .field('body_type', 'car')
       .end((err, res) => {
         expect(res).to.be.an('object');
         expect(res.status).to.equal(422);
@@ -482,7 +471,7 @@ describe('car routes', () => {
       .field('price', '3000000')
       .field('manufacturer', '')
       .field('model', 'accord')
-      .field('bodyType', 'car')
+      .field('body_type', 'car')
       .end((err, res) => {
         expect(res).to.be.an('object');
         expect(res.status).to.equal(422);
@@ -500,7 +489,7 @@ describe('car routes', () => {
       .field('price', '3000000')
       .field('manufacturer', 'honda')
       .field('model', '')
-      .field('bodyType', 'car')
+      .field('body_type', 'car')
       .end((err, res) => {
         expect(res).to.be.an('object');
         expect(res.status).to.equal(422);
@@ -514,11 +503,11 @@ describe('car routes', () => {
       .set('Authorization', adminUserToken)
       .set('Content-Type', 'application/x-www-form-urlencoded')
       .attach('image_url', fs.readFileSync('test/assets/auromart7.jpg'), 'auromart7.jpg')
-      .field('state', 'new')
+      .field('state', 'new ')
       .field('price', '3000000')
       .field('manufacturer', 'honda')
       .field('model', 'accord')
-      .field('bodyType', '')
+      .field('body_type', '')
       .end((err, res) => {
         expect(res).to.be.an('object');
         expect(res.status).to.equal(422);
@@ -536,7 +525,7 @@ describe('car routes', () => {
       .field('price', '3000000')
       .field('manufacturer', 'honda')
       .field('model', 'accord')
-      .field('bodyType', 'jam')
+      .field('body_type', 'jam')
       .end((err, res) => {
         expect(res).to.be.an('object');
         expect(res.status).to.equal(422);
@@ -553,7 +542,7 @@ describe('car routes', () => {
       .field('price', '3000000')
       .field('manufacturer', 'honda')
       .field('model', 'accord')
-      .field('bodyType', 'jam')
+      .field('body_type', 'jam')
       .end((err, res) => {
         expect(res).to.be.an('object');
         expect(res.status).to.equal(401);
@@ -647,8 +636,8 @@ describe('car routes', () => {
       .post('/api/v1/order')
       .set('Authorization', adminUserToken)
       .send({
-        carId: '6',
-        priceOffered: '30000000'
+        car_id: '6   ',
+        price_offered: '30000000   '
       })
       .end((err, res) => {
         if (err)done();
@@ -663,8 +652,8 @@ describe('car routes', () => {
       .post('/api/v1/order')
       .set('Authorization', adminUserToken)
       .send({
-        carId: '305',
-        priceOffered: '30000000'
+        car_id: '305',
+        price_offered: '30000000'
       })
       .end((err, res) => {
         if (err)done();
@@ -679,8 +668,8 @@ describe('car routes', () => {
       .post('/api/v1/order')
       .set('Authorization', adminUserToken)
       .send({
-        carId: '',
-        priceOffered: '30000000'
+        car_id: '',
+        price_offered: '30000000'
       })
       .end((err, res) => {
         if (err)done();
@@ -695,8 +684,8 @@ describe('car routes', () => {
       .post('/api/v1/order')
       .set('Authorization', adminUserToken)
       .send({
-        carId: '305',
-        priceOffered: ''
+        car_id: '305',
+        price_offered: ''
       })
       .end((err, res) => {
         if (err)done();
@@ -711,7 +700,7 @@ describe('car routes', () => {
       .patch('/api/v1/order/26/price')
       .set('Authorization', adminUserToken)
       .send({
-        newOffer: '40000000',
+        new_offer: '40000000',
       })
       .end((err, res) => {
         if (err)done();
@@ -726,7 +715,7 @@ describe('car routes', () => {
       .post('/api/v1/flag')
       .set('Authorization', adminUserToken)
       .send({
-        carId: '6',
+        car_id: '6',
         reason: 'bad tyres',
         description: 'really bad tyres',
       })
@@ -743,7 +732,7 @@ describe('car routes', () => {
       .post('/api/v1/flag')
       .set('Authorization', adminUserToken)
       .send({
-        carId: '700',
+        car_id: '700',
         reason: 'bad tyres',
         description: 'really bad tyres',
       })
@@ -760,7 +749,7 @@ describe('car routes', () => {
       .post('/api/v1/flag')
       .set('Authorization', adminUserToken)
       .send({
-        carId: '',
+        car_id: '',
         reason: 'bad tyres',
         description: 'really bad tyres',
       })
@@ -777,7 +766,7 @@ describe('car routes', () => {
       .post('/api/v1/flag')
       .set('Authorization', adminUserToken)
       .send({
-        carId: '6',
+        car_id: '6',
         reason: '',
         description: 'really bad tyres',
       })
@@ -794,7 +783,7 @@ describe('car routes', () => {
       .post('/api/v1/flag')
       .set('Authorization', adminUserToken)
       .send({
-        carId: '6',
+        car_id: '6',
         reason: 'bad tyres',
         description: '',
       })
@@ -808,10 +797,10 @@ describe('car routes', () => {
 
   it('should throw error if price is not specified', (done) => {
     chai.request(app)
-      .patch('/api/v1/order/500/price')
+      .patch('/api/v1/order/5000/price')
       .set('Authorization', adminUserToken)
       .send({
-        newOffer: '40000000',
+        new_offer: '40000000',
       })
       .end((err, res) => {
         if (err)done();
@@ -860,7 +849,7 @@ describe('car routes', () => {
   it('should get all available cars', (done) => {
     chai.request(app)
       .get('/api/v1/car?status=available')
-      .set('Authorization', adminUserToken)
+      .set('Authorization', aToken)
       .end((err, res) => {
         if (err)done();
         expect(res.body).to.be.a('object');

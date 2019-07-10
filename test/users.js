@@ -7,21 +7,30 @@ function generateValidToken(userObject) {
 
 const users = {
   admin: {
-    id: 1,
-    firstname: 'dolapo',
-    lastname: 'adeleye',
+    id: 7,
+    first_name: 'Murray',
+    last_name: 'Kohler',
     address: '239, ikoroduroad',
-    email: 'dolapo@gmail.com',
-    password: 'suppersecurepassword',
+    email: 'Sean.Hane@yahoo.com',
+    password: 'dolapo2018@@',
     is_admin: 't'
   },
   validUser: {
-    id: 2,
-    firstname: 'ayomide',
-    lastname: 'adeleye',
+    id: 6,
+    first_name: 'Gail',
+    last_name: 'Heathcote',
+    address: '234567, gdfcvcsyh',
+    email: 'Darrell1@gmail.com',
+    password: 'dolapo2018@@',
+    is_admin: 'f',
+  },
+
+  invalidUser: {
+    id: 10000,
+    first_name: 'ayomide',
+    last_name: 'adeleye',
     address: '234567, gdfcvcsyh',
     email: 'amadi@aol.com',
-    password: 'pixel2user',
     is_admin: 'f',
   },
 };
@@ -30,5 +39,4 @@ const users = {
 export {
   generateValidToken,
   users,
-}
-;
+};

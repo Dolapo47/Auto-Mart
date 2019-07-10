@@ -1,6 +1,7 @@
 import express from 'express';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
+import winston from 'winston';
 import '@babel/polyfill';
 import swaggerUi from 'swagger-ui-express';
 import cors from 'cors';
@@ -9,6 +10,7 @@ import user from './routes/user';
 import vehicle from './routes/vehicle';
 import order from './routes/order';
 import flag from './routes/flag';
+import { errorMessage } from './helper/validations/responseMessages';
 
 
 const app = express();
@@ -65,17 +67,12 @@ app.all('*', (req, res) => res.status(404).json({
 }));
 
 app.use((err, req, res) => {
-  if (err) {
-    return res.status(500).json({
-      status: 500,
-      error: 'internal server error'
-    });
-  }
+  if (err) return errorMessage(res, 500, 'internal server error');
 });
 
 
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+  winston.info(`Server is running on port ${port}`);
 });
 
 export default app;
