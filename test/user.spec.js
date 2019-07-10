@@ -856,9 +856,10 @@ describe('car routes', () => {
   it('should get all available cars', (done) => {
     chai.request(app)
       .get('/api/v1/car?status=available')
-      .set('Authorization', adminUserToken)
+      .set('Authorization', aToken)
       .end((err, res) => {
         if (err)done();
+        console.log(res.body, err);
         expect(res.body).to.be.a('object');
         expect(res.status).to.equal(200);
         done();
