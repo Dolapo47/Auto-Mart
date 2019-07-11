@@ -31,6 +31,8 @@ class carController {
     const { email } = req.user;
     const { status } = req.body;
 
+    if (typeof (car_id) !== 'number') return errorMessage(res, 422, 'car id should be a number');
+
     try {
       const findCar = await DB.query('SELECT * FROM cars WHERE id=$1 AND owner_email=$2;', [car_id, email]);
       if (findCar.rowCount < 1) {
@@ -54,6 +56,7 @@ class carController {
     const { email } = req.user;
     const { price } = req.body;
     const Formatted_price = parseFloat(price).toFixed(2);
+    if (typeof (car_id) !== 'number') return errorMessage(res, 422, 'car id should be a number');
 
     try {
       const findCar = await DB.query('SELECT * FROM cars WHERE id=$1 AND owner_email=$2;', [car_id, email]);
