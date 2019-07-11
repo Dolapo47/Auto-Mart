@@ -32,7 +32,8 @@ class orderController {
     const { order_id } = req.params;
     const { new_offer } = req.body;
     const { id } = req.user;
-    if (typeof (car_id) !== 'number') return errorMessage(res, 422, 'order id should be a number');
+    const regex = /^\d+$/;
+    if (regex.test(order_id) === false) return errorMessage(res, 422, 'order id should be a number');
     try {
       const checkUserOrder = await DB.query('SELECT * FROM orders WHERE buyer_id=$1 AND id=$2;', [id, order_id]);
       if (checkUserOrder.rowCount <= 0) {

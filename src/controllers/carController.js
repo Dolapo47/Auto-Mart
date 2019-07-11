@@ -30,8 +30,9 @@ class carController {
     const { car_id } = req.params;
     const { email } = req.user;
     const { status } = req.body;
+    const regex = /^\d+$/;
 
-    if (typeof (car_id) !== 'number') return errorMessage(res, 422, 'car id should be a number');
+    if (regex.test(car_id) === false) return errorMessage(res, 422, 'car id should be a number');
 
     try {
       const findCar = await DB.query('SELECT * FROM cars WHERE id=$1 AND owner_email=$2;', [car_id, email]);
@@ -56,7 +57,8 @@ class carController {
     const { email } = req.user;
     const { price } = req.body;
     const Formatted_price = parseFloat(price).toFixed(2);
-    if (typeof (car_id) !== 'number') return errorMessage(res, 422, 'car id should be a number');
+    const regex = /^\d+$/;
+    if (regex.test(car_id) === false) return errorMessage(res, 422, 'car id should be a number');
 
     try {
       const findCar = await DB.query('SELECT * FROM cars WHERE id=$1 AND owner_email=$2;', [car_id, email]);
