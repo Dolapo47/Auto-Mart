@@ -36,12 +36,12 @@ paths:
         required: true
         type: string
         description: ''
-      - name: firstname
+      - name: first_name
         in: formData
         required: true
         type: string
         description: ''
-      - name: lastname
+      - name: last_name
         in: formData
         required: true
         type: string
@@ -51,7 +51,7 @@ paths:
         required: true
         type: string
         description: ''
-      - name: adminSecret
+      - name: address
         in: formData
         required: true
         type: string
@@ -161,7 +161,7 @@ paths:
         required: true
         type: string
         description: ''
-      - name: bodyType
+      - name: body_type
         in: formData
         required: true
         type: string
@@ -171,13 +171,13 @@ paths:
           description: ''
           headers: {}
       security: []
-  /car/11/status:
+  /car/35/status:
     patch:
       description: 'TODO: Add Description'
       summary: update car status
       tags:
       - car routes
-      operationId: Car11StatusPatch
+      operationId: Car35StatusPatch
       deprecated: false
       produces:
       - application/json
@@ -204,13 +204,13 @@ paths:
           description: ''
           headers: {}
       security: []
-  /car/11/price:
+  /car/35/price:
     patch:
       description: 'TODO: Add Description'
       summary: update car price
       tags:
       - car routes
-      operationId: Car11PricePatch
+      operationId: Car35PricePatch
       deprecated: false
       produces:
       - application/json
@@ -238,13 +238,13 @@ paths:
           description: ''
           headers: {}
       security: []
-  /car/11:
+  /car/4:
     delete:
       description: 'TODO: Add Description'
       summary: delete car ad
       tags:
       - car routes
-      operationId: Car11Delete
+      operationId: Car4Delete
       deprecated: false
       produces:
       - application/json
@@ -264,7 +264,6 @@ paths:
           description: ''
           headers: {}
       security: []
-  /car/4:
     get:
       description: 'TODO: Add Description'
       summary: http://localhost:3000/api/v1/car/4
@@ -308,13 +307,13 @@ paths:
         required: true
         type: string
         description: ''
-      - name: carId
+      - name: car_id
         in: formData
         required: true
         type: integer
         format: int32
         description: ''
-      - name: priceOffered
+      - name: price_offered
         in: formData
         required: true
         type: integer
@@ -348,7 +347,7 @@ paths:
         required: true
         type: string
         description: ''
-      - name: newOffer
+      - name: new_offer
         in: formData
         required: true
         type: integer
@@ -382,7 +381,7 @@ paths:
         required: true
         type: string
         description: ''
-      - name: carId
+      - name: car_id
         in: formData
         required: true
         type: integer
