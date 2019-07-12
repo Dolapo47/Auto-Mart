@@ -121,6 +121,16 @@ class validate {
     });
     return joi.validate(details, schema);
   }
+
+  static validateParams(id) {
+    const schema = joi.object().keys({
+      id: joi.number()
+        .integer()
+        .error(() => 'invalid id')
+        .required()
+    });
+    return joi.validate(id, schema);
+  }
 }
 
 export default validate;

@@ -4,6 +4,7 @@ import { verifyToken } from '../helper/userHelpers';
 import upload from '../helper/multer';
 import cloudinaryuploader from '../helper/cloudinary';
 import trim from '../helper/trimmer/trimmer';
+import  validate from '../helper/validations/validateInput';
 
 const { carTrim, carPriceTrim, carStatusTrim } = trim;
 
