@@ -558,7 +558,6 @@ describe('car routes', () => {
         status: 'sold',
       })
       .end((err, res) => {
-        console.log(res.body);
         expect(res).to.be.an('object');
         expect(res.status).to.equal(400);
         done();
