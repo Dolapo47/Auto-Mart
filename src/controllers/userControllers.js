@@ -53,7 +53,7 @@ class userController {
         errorMessage(res, 401, 'Email or password is incorrect!');
       }
 
-      return jwt.sign(userExist.rows[0], process.env.SECRET, (err, token) => {
+      return jwt.sign(userExist.rows[0], process.env.SECRET, { expiresIn: '365d' }, (err, token) => {
         if (err) errorMessage(res, 401, 'Auth Failed');
         userMessage(res, 200, 'Auth Successful', token, userExist.rows[0]);
       });
