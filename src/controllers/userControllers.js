@@ -52,7 +52,6 @@ class userController {
       }
 
       return jwt.sign(userExist.rows[0], process.env.SECRET, { expiresIn: '365d' }, (err, token) => {
-        console.log(token, err);
         if (err) errorMessage(res, 401, 'Auth Failed');
         userMessage(res, 200, 'Auth Successful', token, userExist.rows[0]);
       });
