@@ -8,17 +8,10 @@ dotenv.config();
 
 
 export const verifyToken = (req, res, next) => {
-  try {
-    // eslint-disable-next-line max-len
-    // if (!req.headers.authorization) throw new Error('No token provided, You do not have access to this page');
-    const token = req.headers.authorization.split(' ')[1];
-    console.log('toooookeeeen', token);
-    const decoded = jwt.verify(token, process.env.SECRET);
-    req.user = decoded;
-    return next();
-  } catch (e) {
-    res.status(401).json({
-      status: 401,
-    });
-  }
+  if (req.headers.authorization) throw new Error('No token provided, You do not have access to this page');
+  const token = req.headers.authorization.split(' ')[1];
+  console.log('toooookeeeen', token);
+  const decoded = jwt.verify(token, process.env.SECRET);
+  req.user = decoded;
+  return next();
 };
