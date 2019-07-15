@@ -20,6 +20,7 @@ class carController {
       retrieveCarMessage(res, 201, 'Vehicle created', newCar.rows[0]);
     } catch (errors) {
       console.log(errors);
+      console.log(errors);
       return errorMessage(res, 400, 'Unable to create car');
     }
   }

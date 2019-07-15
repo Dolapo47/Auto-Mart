@@ -12,7 +12,6 @@ export const verifyToken = (req, res, next) => {
   if (req.headers.authorization) res.status(401).send({ status: 401, error: 'You must be logged in to use this route' });
   console.log('token', token);
   const decoded = jwt.verify(token, process.env.SECRET);
-  console.log('decoded', decoded);
   req.user = decoded;
   return next();
 };
