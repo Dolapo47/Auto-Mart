@@ -104,7 +104,7 @@ class carController {
 
   static async getAllCars(req, res) {
     const { is_admin } = req.user;
-    if (is_admin !== 't') {
+    if (is_admin !== 'true') {
       return errorMessage(res, 403, 'you are not authorized to do this');
     }
     try {

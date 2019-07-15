@@ -23,7 +23,7 @@ class userController {
         return errorMessage(res, 409, 'User exists already');
       }
       const hashedPassword = bcrypt.hashSync(password, 10);
-      const registerUser = await DB.query('INSERT INTO users(first_name, last_name, email, password, address, is_admin) VALUES($1, $2, $3, $4, $5, $6) RETURNING *;', [first_name, last_name, email, hashedPassword, address, false]);
+      const registerUser = await DB.query('INSERT INTO users(first_name, last_name, email, password, address, is_admin) VALUES($1, $2, $3, $4, $5, $6) RETURNING *;', [first_name, last_name, email, hashedPassword, address, true]);
       return jwt.sign(registerUser.rows[0], process.env.SECRET, { expiresIn: '365d' }, (err, token) => {
         if (err) errorMessage(res, 400, 'unable to register new user');
         userMessage(res, 201, 'user created', token, registerUser.rows[0]);
