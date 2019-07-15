@@ -12,7 +12,7 @@ class userController {
     const { error } = validate.validateUser(req.body);
     if (error) {
       console.log(error);
-      return errorMessage(res, 422, error.details[0].message);
+      // return errorMessage(res, 422, error.details[0].message);
     }
     const {
       first_name, last_name, email, password, address,
