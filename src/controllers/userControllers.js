@@ -10,7 +10,10 @@ import { errorMessage, userMessage, } from '../helper/validations/responseMessag
 class userController {
   static async signupUser(req, res) {
     const { error } = validate.validateUser(req.body);
-    if (error) return errorMessage(res, 422, error.details[0].message);
+    if (error) {
+      console.log(error);
+      return errorMessage(res, 422, error.details[0].message);
+    }
     const {
       first_name, last_name, email, password, address,
     } = req.body;
@@ -26,6 +29,7 @@ class userController {
         userMessage(res, 201, 'user created', token, registerUser.rows[0]);
       });
     } catch (errors) {
+      console.log(errors);
       return errorMessage(res, 400, 'unable to register new user');
     }
   }
