@@ -9,11 +9,11 @@ import { errorMessage, userMessage, } from '../helper/validations/responseMessag
 
 class userController {
   static async signupUser(req, res) {
-    const { error } = validate.validateUser(req.body);
-    if (error) {
-      console.log(error);
-      return errorMessage(res, 422, error.details[0].message);
-    }
+    // const { error } = validate.validateUser(req.body);
+    // if (error) {
+    //   console.log(error);
+    //   return errorMessage(res, 422, error.details[0].message);
+    // }
     const {
       first_name, last_name, email, password, address,
     } = req.body;
