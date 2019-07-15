@@ -30,7 +30,6 @@ class userController {
         userMessage(res, 201, 'user created', token, registerUser.rows[0]);
       });
     } catch (errors) {
-      console.log(errors);
       return errorMessage(res, 400, 'unable to register new user');
     }
   }
