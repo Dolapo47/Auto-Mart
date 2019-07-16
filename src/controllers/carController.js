@@ -7,7 +7,10 @@ import validate from '../helper/validations/validateInput';
 class carController {
   static async createCar(req, res) {
     const { error } = validate.validateCarInput(req.body);
-    if (error) return errorMessage(res, 422, error.details[0].message);
+    if (error) {
+      console.log(req.body);
+      return errorMessage(res, 422, error.details[0].message);
+    }
     const { id, email } = req.user;
     const {
       manufacturer, model, state, price, body_type, image_url,
@@ -87,7 +90,7 @@ class carController {
   static async deleteCar(req, res) {
     const { is_admin } = req.user;
     const { car_id } = req.params;
-    if (is_admin !== 't') {
+    if (is_admin !== 'true') {
       return errorMessage(res, 403, 'you are not authorized to do this');
     }
     try {
@@ -104,7 +107,7 @@ class carController {
 
   static async getAllCars(req, res) {
     const { is_admin } = req.user;
-    if (is_admin !== 't') {
+    if (is_admin !== 'true') {
       return errorMessage(res, 403, 'you are not authorized to do this');
     }
     try {
