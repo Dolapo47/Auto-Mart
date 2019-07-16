@@ -64,6 +64,10 @@ class validate {
       tinted_windows: joi,
       ac: joi,
       doors: joi,
+      token: joi,
+      Authorization: joi,
+      status: joi,
+      year: joi,
     });
     return joi.validate(details, schema);
   }
