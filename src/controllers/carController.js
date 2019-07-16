@@ -30,15 +30,18 @@ class carController {
   }
 
   static async updateStatus(req, res) {
-    // const { error } = validate.validateUpdateStatus(req.body);
-    // if (error) return errorMessage(res, 422, error.details[0].message);
+    const { error } = validate.validateUpdateStatus(req.body);
+    if (error) {
+      console.log(error);
+      return errorMessage(res, 422, error.details[0].message);
+    }
 
     const { car_id } = req.params;
     const { email } = req.user;
     const { status } = req.body;
     const regex = /^\d+$/;
 
-    // if (regex.test(car_id) === false) return errorMessage(res, 422, 'car id should be a number');
+    if (regex.test(car_id) === false) return errorMessage(res, 422, 'car id should be a number');
 
     try {
       const findCar = await DB.query('SELECT * FROM cars WHERE id=$1 AND owner_email=$2;', [car_id, email]);
@@ -56,15 +59,17 @@ class carController {
   }
 
   static async updatePrice(req, res) {
-    // const { error } = validate.validateUpdatePrice(req.body);
-    // if (error) return errorMessage(res, 422, error.details[0].message);
-
+    const { error } = validate.validateUpdatePrice(req.body);
+    if (error) {
+      console.log(error);
+      return errorMessage(res, 422, error.details[0].message);
+    }
     const { car_id } = req.params;
     const { email } = req.user;
     const { price } = req.body;
     const Formatted_price = parseFloat(price).toFixed(2);
     const regex = /^\d+$/;
-    // if (regex.test(car_id) === false) return errorMessage(res, 422, 'car id should be a number');
+    if (regex.test(car_id) === false) return errorMessage(res, 422, 'car id should be a number');
 
     try {
       const findCar = await DB.query('SELECT * FROM cars WHERE id=$1 AND owner_email=$2;', [car_id, email]);
@@ -101,7 +106,7 @@ class carController {
         return errorMessage(res, 404, 'car not found');
       }
       await DB.query('DELETE FROM cars WHERE id = $1;', [car_id]);
-      return retrieveCarMessage(res, 200, 'Car Ad was successfully deleted');
+      return retrieveCarMessage(res, 200, 'Car Ad was successfully deleted', car_id);
     } catch (error) {
       return errorMessage(res, 400, 'Unable to delete car');
     }
