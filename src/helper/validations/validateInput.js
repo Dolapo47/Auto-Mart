@@ -40,7 +40,7 @@ class validate {
         .trim()
         .required()
         .error(() => 'state can only be new or used'),
-      price: joi.string().trim().required()
+      price: joi.string().required()
         .error(() => 'only numbers allowed'),
       manufacturer: joi.string().regex(/^[A-Za-z]+$/).trim()
         .required(),
@@ -73,7 +73,6 @@ class validate {
       status: joi.string()
         .insensitive()
         .valid('available', 'sold')
-        .trim()
         .required()
     });
     return joi.validate(details, schema);
@@ -83,7 +82,6 @@ class validate {
     const schema = joi.object().keys({
       car_id: joi.string()
         .regex(/^[0-9]+$/)
-        .trim()
         .required(),
       price_offered: joi.string()
         .regex(/^\d*(\.\d{2})?$/)
@@ -99,7 +97,6 @@ class validate {
       new_offer: joi.string()
         .regex(/^\d*(\.\d{2})?$/)
         .regex(/^[0-9]*[1-9][0-9]*$/)
-        .trim()
         .required(),
       order_id: joi.string(),
     });
@@ -110,7 +107,6 @@ class validate {
     const schema = joi.object().keys({
       car_id: joi.string()
         .regex(/^[0-9]+$/)
-        .trim()
         .required(),
       reason: joi.string()
         .trim()
