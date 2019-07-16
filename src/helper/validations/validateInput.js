@@ -37,10 +37,9 @@ class validate {
   static validateCarInput(details) {
     const schema = joi.object().keys({
       state: joi.string().insensitive().valid('new', 'used').regex(/^[0-9]+$/)
-        .trim()
         .required()
         .error(() => 'state can only be new or used'),
-      price: joi.string().trim().required()
+      price: joi.string().required()
         .error(() => 'only numbers allowed'),
       manufacturer: joi.string().regex(/^[A-Za-z]+$/).trim()
         .required(),
@@ -49,7 +48,6 @@ class validate {
         .error(() => 'only alphanumeric characters allowed'),
       body_type: joi.string().insensitive()
         .valid('car', 'van', 'truck', 'trailer')
-        .trim()
         .required()
         .error(() => 'body type can be car, van, truck, trailer'),
       image_url: joi.required(),
@@ -62,7 +60,6 @@ class validate {
       price: joi.string()
         .regex(/^\d*(\.\d{2})?$/)
         .regex(/^[0-9]*[1-9][0-9]*$/)
-        .trim()
         .required(),
     });
     return joi.validate(details, schema);
@@ -83,12 +80,10 @@ class validate {
     const schema = joi.object().keys({
       car_id: joi.string()
         .regex(/^[0-9]+$/)
-        .trim()
         .required(),
       price_offered: joi.string()
         .regex(/^\d*(\.\d{2})?$/)
         .regex(/^[0-9]*[1-9][0-9]*$/)
-        .trim()
         .required(),
     });
     return joi.validate(details, schema);
@@ -99,7 +94,6 @@ class validate {
       new_offer: joi.string()
         .regex(/^\d*(\.\d{2})?$/)
         .regex(/^[0-9]*[1-9][0-9]*$/)
-        .trim()
         .required(),
       order_id: joi.string(),
     });
@@ -110,7 +104,6 @@ class validate {
     const schema = joi.object().keys({
       car_id: joi.string()
         .regex(/^[0-9]+$/)
-        .trim()
         .required(),
       reason: joi.string()
         .trim()
