@@ -12,6 +12,8 @@ export const verifyToken = (req, res, next) => {
   if (token) {
     if (token.startsWith('Bearer ')) {
       token = token.slice(7, token.length);
+      const decoded = jwt.verify(token, secretKey);
+      req.user = decoded;
     } else {
       const decoded = jwt.verify(token, secretKey);
       req.user = decoded;
