@@ -15,7 +15,7 @@ router.get('/car', verifyToken, carController.filteredAvailableCar);
 router.get('/car', verifyToken, carController.availableCars);
 router.get('/car', verifyToken, carController.getAllCars);
 router.get('/car/:car_id', verifyToken, carController.getOneCar);
-router.post('/car', verifyToken, upload.array('image_url', 2), cloudinaryuploader, carTrim, carController.createCar);
+router.post('/car', verifyToken, upload.array('img_url', 2), cloudinaryuploader, carTrim, carController.createCar);
 router.patch('/car/:car_id/status', verifyToken, carStatusTrim, carController.updateStatus);
 router.patch('/car/:car_id/price', verifyToken, carPriceTrim, carController.updatePrice);
 router.delete('/car/:car_id', verifyToken, carController.deleteCar);
