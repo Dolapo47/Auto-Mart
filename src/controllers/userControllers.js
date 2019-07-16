@@ -53,6 +53,7 @@ class userController {
         userMessage(res, 200, 'Auth Successful', token, userExist.rows[0]);
       });
     } catch (errors) {
+      console.log(errors);
       errorMessage(res, 400, 'Auth Failed');
     }
   }
