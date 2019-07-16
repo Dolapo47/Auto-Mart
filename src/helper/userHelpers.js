@@ -8,17 +8,21 @@ const secretKey = process.env.SECRET;
 
 
 export const verifyToken = (req, res, next) => {
-  let token = req.header.authorization;
-  if (token) {
-    if (token.startsWith('Bearer ')) {
-      token = token.slice(7, token.length);
+  try {
+    let token = req.header.authorization;
+    if (token) {
+      if (token.startsWith('Bearer ')) {
+        token = token.slice(7, token.length);
+      }
+      const decoded = jwt.verify(token, secretKey);
+      req.user = decoded;
+      return next();
     }
-    const decoded = jwt.verify(token, secretKey);
-    req.user = decoded;
-    return next();
+    return res.status(401).json({
+      status: 401,
+      error: 'Please provide a valid token',
+    });
+  } catch (e) {
+    console.log(e);
   }
-  return res.status(401).json({
-    status: 401,
-    error: 'Please provide a valid token',
-  });
 };
