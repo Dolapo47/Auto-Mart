@@ -74,7 +74,7 @@ class validate {
 
   static validateUpdatePrice(details) {
     const schema = joi.object().keys({
-      price: joi.string()
+      price: joi.number()
         .regex(/^\d*(\.\d{2})?$/)
         .regex(/^[0-9]*[1-9][0-9]*$/)
         .required(),
@@ -88,7 +88,9 @@ class validate {
         .insensitive()
         .valid('available', 'sold')
         .trim()
-        .required()
+        .required(),
+      token: joi,
+      Authorization: joi,
     });
     return joi.validate(details, schema);
   }
