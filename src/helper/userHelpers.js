@@ -18,6 +18,7 @@ export const verifyToken = (req, res, next) => {
     }
     const decoded = jwt.verify(token, secretKey);
     req.user = decoded;
+    next();
   } else {
     return res.status(401).json({
       status: 401,
