@@ -56,6 +56,14 @@ class validate {
       color: joi.string(),
       description: joi.string(),
       transmission_type: joi.string(),
+      img_url: joi.string(),
+      dvd_player: joi.string(),
+      fm_radio: joi.string(),
+      air_bag: joi.string(),
+      arm_rest: joi.string(),
+      tinted_windows: joi.string(),
+      ac: joi.string(),
+      doors: joi.string(),
     });
     return joi.validate(details, schema);
   }
