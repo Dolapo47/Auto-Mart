@@ -26,8 +26,8 @@ class carController {
   }
 
   static async updateStatus(req, res) {
-    const { error } = validate.validateUpdateStatus(req.body);
-    if (error) return errorMessage(res, 422, error.details[0].message);
+    // const { error } = validate.validateUpdateStatus(req.body);
+    // if (error) return errorMessage(res, 422, error.details[0].message);
 
     const { car_id } = req.params;
     const { email } = req.user;
@@ -52,8 +52,8 @@ class carController {
   }
 
   static async updatePrice(req, res) {
-    const { error } = validate.validateUpdatePrice(req.body);
-    if (error) return errorMessage(res, 422, error.details[0].message);
+    // const { error } = validate.validateUpdatePrice(req.body);
+    // if (error) return errorMessage(res, 422, error.details[0].message);
 
     const { car_id } = req.params;
     const { email } = req.user;

@@ -6,8 +6,8 @@ import DB from '../db/index';
 
 class orderController {
   static async createOrder(req, res) {
-    const { error } = validate.validateOrderInput(req.body);
-    if (error) return errorMessage(res, 422, error.details[0].message);
+    // const { error } = validate.validateOrderInput(req.body);
+    // if (error) return errorMessage(res, 422, error.details[0].message);
     const { id } = req.user;
     const { car_id, price_offered } = req.body;
     const price = Number(price_offered).toFixed(2);
