@@ -12,7 +12,6 @@ class carController {
       console.log(error);
       return errorMessage(res, 422, error.details[0].message);
     }
-    const img = 'http://res.cloudinary.com/dolapo/image/upload/v1563270605/tni2saqewiv5l5ljnsvj.jpg';
     const { id, email } = req.user;
     const {
       manufacturer, model, state, price, body_type, image_url
@@ -22,7 +21,7 @@ class carController {
     const created_on = new Date().toLocaleString();
     const status = 'available';
     try {
-      const newCar = await DB.query('INSERT INTO cars(owner_id, owner_email, created_on, state, status, price, manufacturer, model, body_type, img_url, flagged) VALUES($1, $2, $3, $4, $5, $6, $7, $8 , $9, $10, $11) RETURNING *;', [id, email, created_on, state, status, Formatted_price, manufacturer, model, body_type, img, false]);
+      const newCar = await DB.query('INSERT INTO cars(owner_id, owner_email, created_on, state, status, price, manufacturer, model, body_type, img_url, flagged) VALUES($1, $2, $3, $4, $5, $6, $7, $8 , $9, $10, $11) RETURNING *;', [id, email, created_on, state, status, Formatted_price, manufacturer, model, body_type, image_url, false]);
       return retrieveCarMessage(res, 201, 'Vehicle created', newCar.rows[0]);
     } catch (errors) {
       console.log(errors);
