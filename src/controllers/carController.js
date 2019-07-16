@@ -14,15 +14,14 @@ class carController {
     }
     const { id, email } = req.user;
     const {
-      manufacturer, model, state, price, body_type, img_url
+      manufacturer, model, state, price, body_type, image_url
     } = req.body;
-    console.log(req.body, req.file);
     const Formatted_price = parseFloat(price).toFixed(2);
     // console.log(parseFloat(Formatted_price));
     const created_on = new Date().toLocaleString();
     const status = 'available';
     try {
-      const newCar = await DB.query('INSERT INTO cars(owner_id, owner_email, created_on, state, status, price, manufacturer, model, body_type, img_url, flagged) VALUES($1, $2, $3, $4, $5, $6, $7, $8 , $9, $10, $11) RETURNING *;', [id, email, created_on, state, status, Formatted_price, manufacturer, model, body_type, img_url, false]);
+      const newCar = await DB.query('INSERT INTO cars(owner_id, owner_email, created_on, state, status, price, manufacturer, model, body_type, img_url, flagged) VALUES($1, $2, $3, $4, $5, $6, $7, $8 , $9, $10, $11) RETURNING *;', [id, email, created_on, state, status, Formatted_price, manufacturer, model, body_type, image_url, false]);
       return retrieveCarMessage(res, 201, 'Vehicle created succesfuly', newCar.rows[0]);
     } catch (errors) {
       console.log(errors);

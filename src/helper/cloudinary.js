@@ -4,7 +4,8 @@ import cloudinary from './cloudinarySetup';
 const cloudinaryUpload = async (req, res, next) => {
   try {
     await cloudinary.v2.uploader.upload(req.files[0].path, (error, result) => {
-      req.body.img_url = result.url;
+      console.log('ffhfhgfjg', req.files);
+      req.body.image_url = result.url;
     });
   } catch (err) {
     return err;
