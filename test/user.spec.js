@@ -653,7 +653,7 @@ describe('car routes', () => {
       .post('/api/v1/order')
       .set('Authorization', adminUserToken)
       .send({
-        car_id: '305',
+        car_id: '3050',
         price_offered: '30000000'
       })
       .end((err, res) => {

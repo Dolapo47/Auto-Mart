@@ -49,6 +49,7 @@ class userController {
       }
 
       return jwt.sign(userExist.rows[0], process.env.SECRET, (err, token) => {
+        console.log(token);
         if (err) errorMessage(res, 401, 'Auth Failed');
         userMessage(res, 200, 'Auth Successful', token, userExist.rows[0]);
       });
