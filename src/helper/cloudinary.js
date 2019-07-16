@@ -1,17 +1,17 @@
-import '@babel/polyfill';
-import cloudinary from './cloudinarySetup';
+// import '@babel/polyfill';
+// import cloudinary from './cloudinarySetup';
 
-const cloudinaryUpload = async (req, res, next) => {
-  try {
-    await cloudinary.v2.uploader.upload(req.files[0].path, (error, result) => {
-      console.log('ffhfhgfjg', req.files);
-      req.body.image_url = result.url;
-    });
-  } catch (err) {
-    return err;
-  }
+// const cloudinaryUpload = async (req, res, next) => {
+//   try {
+//     await cloudinary.v2.uploader.upload(req.files[0].path, (error, result) => {
+//       console.log('ffhfhgfjg', req.files);
+//       req.body.image_url = result.url;
+//     });
+//   } catch (err) {
+//     return err;
+//   }
 
-  return next();
-};
+//   return next();
+// };
 
-export default cloudinaryUpload;
+// export default cloudinaryUpload;
