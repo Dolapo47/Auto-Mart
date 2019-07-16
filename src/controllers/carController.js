@@ -59,10 +59,10 @@ class carController {
   }
 
   static async updatePrice(req, res) {
-    const { error } = validate.validateUpdatePrice(req.body);
-    if (error) {
-      console.log(error);
-      return errorMessage(res, 422, error.details[0].message);
+    // const { error } = validate.validateUpdatePrice(req.body);
+    // if (error) {
+    //   console.log(error);
+    //   return errorMessage(res, 422, error.details[0].message);
     }
     const { car_id } = req.params;
     const { email } = req.user;
