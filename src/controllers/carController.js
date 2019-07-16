@@ -6,6 +6,7 @@ import validate from '../helper/validations/validateInput';
 
 class carController {
   static async createCar(req, res) {
+    console.log('top', req.body);
     const { error } = validate.validateCarInput(req.body);
     if (error) {
       console.log(error);
