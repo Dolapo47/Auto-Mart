@@ -9,15 +9,13 @@ import { errorMessage, userMessage, } from '../helper/validations/responseMessag
 
 class userController {
   static async signupUser(req, res) {
-    const { error } = validate.validateUser(req.body);
-    if (error) return errorMessage(res, 422, error.details[0].message);
-    console.log('hwejwehejhe',error);
+    // const { error } = validate.validateUser(req.body);
+    // if (error) return errorMessage(res, 422, error.details[0].message);
     const {
       first_name, last_name, email, password, address,
     } = req.body;
     try {
       const existingUser = await DB.query('SELECT * from users WHERE email=$1;', [email]);
-      console.log('ehewjdhjds', existingUser.rows);
       if (existingUser.rowCount) {
         return errorMessage(res, 409, 'User exists already');
       }
@@ -28,15 +26,14 @@ class userController {
         userMessage(res, 201, 'user created', token, registerUser.rows[0]);
       });
     } catch (errors) {
-      console.log('errors', errors);
       return errorMessage(res, 400, 'unable to register new user');
     }
   }
 
 
   static async loginUser(req, res) {
-    const { error } = validate.validateLogin(req.body);
-    if (error) return errorMessage(res, 422, error.details[0].message);
+    // const { error } = validate.validateLogin(req.body);
+    // if (error) return errorMessage(res, 422, error.details[0].message);
 
     const { email, password } = req.body;
 
