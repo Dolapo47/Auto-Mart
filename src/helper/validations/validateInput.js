@@ -52,7 +52,6 @@ class validate {
         .trim()
         .required()
         .error(() => 'body type can be car, van, truck, trailer'),
-      image_url: joi.required(),
     });
     return joi.validate(details, schema);
   }

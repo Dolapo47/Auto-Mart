@@ -6,16 +6,16 @@ import validate from '../helper/validations/validateInput';
 
 class carController {
   static async createCar(req, res) {
-    console.log('top', req.body);
+    // console.log('top', req.body);
     const { error } = validate.validateCarInput(req.body);
     if (error) {
-      console.log(error);
       return errorMessage(res, 422, error.details[0].message);
     }
     const { id, email } = req.user;
     const {
-      manufacturer, model, state, price, body_type, image_url
+      manufacturer, model, state, price, body_type,
     } = req.body;
+    const image_url = 'http://res.cloudinary.com/dolapo/image/upload/v1561711826/f454mfl9t6b45okul8wf.jpg';
     const Formatted_price = parseFloat(price).toFixed(2);
     // console.log(parseFloat(Formatted_price));
     const created_on = new Date().toLocaleString();
