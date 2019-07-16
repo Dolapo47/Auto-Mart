@@ -18,6 +18,7 @@ class carController {
     const status = 'available';
     try {
       const newCar = await DB.query('INSERT INTO cars(owner_id, owner_email, created_on, state, status, price, manufacturer, model, body_type, img_url, flagged) VALUES($1, $2, $3, $4, $5, $6, $7, $8 , $9, $10, $11) RETURNING *;', [id, email, created_on, state, status, Formatted_price, manufacturer, model, body_type, image, false]);
+      console.log(newCar.rows[0]);
       retrieveCarMessage(res, 201, 'Vehicle created', newCar.rows[0]);
     } catch (errors) {
       return errorMessage(res, 400, 'Unable to create car');
