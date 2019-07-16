@@ -6,12 +6,13 @@ import validate from '../helper/validations/validateInput';
 
 class carController {
   static async createCar(req, res) {
-    // const { error } = validate.validateCarInput(req.body);
-    // if (error) return errorMessage(res, 422, error.details[0].message);
+    const { error } = validate.validateCarInput(req.body);
+    if (error) return errorMessage(res, 422, error.details[0].message);
     const { id, email } = req.user;
     const {
       manufacturer, model, state, price, body_type, image_url,
     } = req.body;
+    console.log(req.body);
     const Formatted_price = parseFloat(price).toFixed(2);
     const created_on = new Date().toLocaleString();
     const status = 'available';
