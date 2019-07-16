@@ -67,7 +67,6 @@ app.all('*', (req, res) => res.status(404).json({
 }));
 
 app.use((err, req, res) => {
-  console.log(err);
   if (err) return errorMessage(res, 500, 'internal server error');
 });
 

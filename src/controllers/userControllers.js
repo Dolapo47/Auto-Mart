@@ -9,31 +9,34 @@ import { errorMessage, userMessage, } from '../helper/validations/responseMessag
 
 class userController {
   static async signupUser(req, res) {
-    // const { error } = validate.validateUser(req.body);
-    // if (error) return errorMessage(res, 422, error.details[0].message);
+    const { error } = validate.validateUser(req.body);
+    if (error) return errorMessage(res, 422, error.details[0].message);
+    console.log('hwejwehejhe',error);
     const {
       first_name, last_name, email, password, address,
     } = req.body;
     try {
       const existingUser = await DB.query('SELECT * from users WHERE email=$1;', [email]);
+      console.log('ehewjdhjds', existingUser.rows);
       if (existingUser.rowCount) {
         return errorMessage(res, 409, 'User exists already');
       }
       const hashedPassword = bcrypt.hashSync(password, 10);
-      const registerUser = await DB.query('INSERT INTO users(first_name, last_name, email, password, address, is_admin) VALUES($1, $2, $3, $4, $5, $6) RETURNING *;', [first_name, last_name, email, hashedPassword, address, false]);
-      return jwt.sign(registerUser.rows[0], {}, process.env.SECRET, (err, token) => {
+      const registerUser = await DB.query('INSERT INTO users(first_name, last_name, email, password, address, is_admin) VALUES($1, $2, $3, $4, $5, $6) RETURNING *;', [first_name, last_name, email, hashedPassword, address, 'f']);
+      return jwt.sign(registerUser.rows[0], process.env.SECRET, (err, token) => {
         if (err) errorMessage(res, 400, 'unable to register new user');
         userMessage(res, 201, 'user created', token, registerUser.rows[0]);
       });
     } catch (errors) {
+      console.log('errors', errors);
       return errorMessage(res, 400, 'unable to register new user');
     }
   }
 
 
   static async loginUser(req, res) {
-    // const { error } = validate.validateLogin(req.body);
-    // if (error) return errorMessage(res, 422, error.details[0].message);
+    const { error } = validate.validateLogin(req.body);
+    if (error) return errorMessage(res, 422, error.details[0].message);
 
     const { email, password } = req.body;
 
