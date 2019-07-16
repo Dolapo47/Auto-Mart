@@ -12,11 +12,12 @@ class carController {
     const {
       manufacturer, model, state, price, body_type, image_url,
     } = req.body;
+    const image = 'http://res.cloudinary.com/dolapo/image/upload/v1561705556/zew5btwnvjukwghllabw.jpg';
     const Formatted_price = parseFloat(price).toFixed(2);
     const created_on = new Date().toLocaleString();
     const status = 'available';
     try {
-      const newCar = await DB.query('INSERT INTO cars(owner_id, owner_email, created_on, state, status, price, manufacturer, model, body_type, image_url, flagged) VALUES($1, $2, $3, $4, $5, $6, $7, $8 , $9, $10, $11) RETURNING *;', [id, email, created_on, state, status, Formatted_price, manufacturer, model, body_type, image_url, false]);
+      const newCar = await DB.query('INSERT INTO cars(owner_id, owner_email, created_on, state, status, price, manufacturer, model, body_type, img_url, flagged) VALUES($1, $2, $3, $4, $5, $6, $7, $8 , $9, $10, $11) RETURNING *;', [id, email, created_on, state, status, Formatted_price, manufacturer, model, body_type, image, false]);
       retrieveCarMessage(res, 201, 'Vehicle created', newCar.rows[0]);
     } catch (errors) {
       return errorMessage(res, 400, 'Unable to create car');
