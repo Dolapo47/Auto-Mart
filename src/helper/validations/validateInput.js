@@ -39,8 +39,7 @@ class validate {
       state: joi.string().insensitive().valid('new', 'used').regex(/^[0-9]+$/)
         .required()
         .error(() => 'state can only be new or used'),
-      price: joi.string().required()
-        .error(() => 'only numbers allowed'),
+      price: joi.string(),
       manufacturer: joi.string().regex(/^[A-Za-z]+$/).trim()
         .required(),
       model: joi.string().regex(/^[a-zA-Z0-9]*$/).trim()
