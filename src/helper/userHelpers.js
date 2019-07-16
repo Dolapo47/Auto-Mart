@@ -1,17 +1,17 @@
 /* eslint-disable import/prefer-default-export */
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import { errorMessage } from './validations/responseMessages';
 
 
 dotenv.config();
-// const secretKey = process.env.SECRET;
+const secretKey = process.env.SECRET;
 
 
 export const verifyToken = (req, res, next) => {
-  if (!req.body.token) errorMessage(res, 401, 'Auth Failed');
-  const auth = req.body.token;
-  const decoded = jwt.verify(auth, process.env.SECRET);
+  const token = req.headers.authorization.split(' ')[1];
+  console.log(token);
+  if (!token) res.status(401).send({ status: 401, error: 'You must be logged in to use this route' });
+  const decoded = jwt.verify(token, secretKey);
   req.user = decoded;
   return next();
 };
