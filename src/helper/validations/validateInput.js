@@ -49,7 +49,13 @@ class validate {
         .valid('car', 'van', 'truck', 'trailer')
         .required()
         .error(() => 'body type can be car, van, truck, trailer'),
-      image_url: joi.required(),
+      image_url: joi.string(),
+      fuel_type: joi.string(),
+      fuel_cap: joi.number(),
+      mileage: joi.number(),
+      color: joi.string(),
+      description: joi.string(),
+      transmission_type: joi.string(),
     });
     return joi.validate(details, schema);
   }
