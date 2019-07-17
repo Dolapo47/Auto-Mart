@@ -388,6 +388,9 @@ describe('Can authorize user to the app', () => {
   });
 });
 
+describe('car routes', () => {
+
+
   it('should throw error if state empty', (done) => {
     chai.request(app)
       .post('/api/v1/car')
