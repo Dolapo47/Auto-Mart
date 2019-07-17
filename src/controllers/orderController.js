@@ -36,6 +36,7 @@ class orderController {
     const { order_id } = req.params;
     const { new_offer } = req.body;
     const { id } = req.user;
+    const price = Number(new_offer).toFixed(2);
     const regex = /^\d+$/;
     if (regex.test(order_id) === false) return errorMessage(res, 422, 'order id should be a number');
     try {
@@ -43,7 +44,7 @@ class orderController {
       if (checkUserOrder.rowCount <= 0) {
         return errorMessage(res, 404, 'order not found');
       }
-      const updateOrderPrice = await DB.query('UPDATE orders SET new_price_offered=$1 WHERE id=$2 RETURNING *;', [new_offer, checkUserOrder.rows[0].id]);
+      const updateOrderPrice = await DB.query('UPDATE orders SET new_price_offered=$1 WHERE id=$2 RETURNING *;', [price, checkUserOrder.rows[0].id]);
       res.status(200).json({
         status: 200,
         message: 'success',
