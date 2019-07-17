@@ -34,7 +34,7 @@ class orderController {
       return errorMessage(res, 422, error.details[0].message);
     }
     const { order_id } = req.params;
-    const { new_price_offered } = req.body;
+    const { new_offer } = req.body;
     const { id } = req.user;
     const regex = /^\d+$/;
     if (regex.test(order_id) === false) return errorMessage(res, 422, 'order id should be a number');
@@ -43,7 +43,7 @@ class orderController {
       if (checkUserOrder.rowCount <= 0) {
         return errorMessage(res, 404, 'order not found');
       }
-      const updateOrderPrice = await DB.query('UPDATE orders SET amount_offered=$1 WHERE id=$2 RETURNING *;', [new_price_offered, checkUserOrder.rows[0].id]);
+      const updateOrderPrice = await DB.query('UPDATE orders SET new_price_offered=$1 WHERE id=$2 RETURNING *;', [new_offer, checkUserOrder.rows[0].id]);
       return retrieveCarMessage(res, 200, 'success', updateOrderPrice.rows[0]);
     } catch (errors) {
       return errorMessage(res, 400, 'unable to update order');
