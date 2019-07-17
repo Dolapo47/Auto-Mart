@@ -29,7 +29,10 @@ class orderController {
 
   static async updateOrder(req, res) {
     const { error } = validate.validatePatchOrder(req.body);
-    if (error) return errorMessage(res, 422, error.details[0].message);
+    if (error) {
+      console.log(error);
+      return errorMessage(res, 422, error.details[0].message);
+    }
     const { order_id } = req.params;
     const { new_offer } = req.body;
     const { id } = req.user;

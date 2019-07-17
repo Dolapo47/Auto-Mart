@@ -110,7 +110,7 @@ class validate {
 
   static validatePatchOrder(details) {
     const schema = joi.object().keys({
-      new_offer: joi.string()
+      new_offer: joi.number()
         .regex(/^\d*(\.\d{2})?$/)
         .regex(/^[0-9]*[1-9][0-9]*$/)
         .required(),
