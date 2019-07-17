@@ -19,7 +19,7 @@ class orderController {
       }
       const created_On = new Date().toLocaleDateString();
 
-      const makeOrder = await DB.query('INSERT into orders(car_id, buyer_id, created_on ,amount_offered, status) VALUES($1, $2, $3, $4, $5) RETURNING * ;', [car_id, id, created_On, price, status]);
+      const makeOrder = await DB.query('INSERT into orders(car_id, buyer_id, created_on ,new_price_offered, status) VALUES($1, $2, $3, $4, $5) RETURNING * ;', [car_id, id, created_On, price, status]);
       return retrieveCarMessage(res, 201, 'order created', makeOrder.rows[0]);
     } catch (errors) {
       console.log(errors);
