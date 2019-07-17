@@ -92,7 +92,7 @@ class carController {
   static async deleteCar(req, res) {
     const { is_admin } = req.user;
     const { car_id } = req.params;
-    if (is_admin !== 'true') {
+    if (is_admin !== 't') {
       return errorMessage(res, 403, 'you are not authorized to do this');
     }
     try {
@@ -109,7 +109,7 @@ class carController {
 
   static async getAllCars(req, res) {
     const { is_admin } = req.user;
-    if (is_admin !== 'true') {
+    if (is_admin !== 't') {
       return errorMessage(res, 403, 'you are not authorized to do this');
     }
     try {

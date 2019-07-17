@@ -37,8 +37,7 @@ class validate {
   static validateCarInput(details) {
     const schema = joi.object().keys({
       state: joi.string().insensitive().valid('new', 'used').regex(/^[0-9]+$/)
-        .required()
-        .error(() => 'state can only be new or used'),
+        .required(),
       price: joi.number(),
       manufacturer: joi.string().regex(/^[A-Za-z]+$/).trim()
         .required(),
