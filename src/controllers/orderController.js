@@ -53,6 +53,7 @@ class orderController {
         }
       });
     } catch (errors) {
+      console.log(errors);
       return errorMessage(res, 400, 'unable to update order');
     }
   }
