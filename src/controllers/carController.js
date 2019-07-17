@@ -88,8 +88,10 @@ class carController {
     try {
       const getCar = await DB.query('SELECT * FROM cars WHERE id=$1;', [car_id]);
       if (getCar.rowCount === 0) return errorMessage(res, 404, 'Car not found');
+      console.log(req.body);
       return retrieveCarMessage(res, 200, 'vehicle successfully retrieved', getCar.rows[0]);
     } catch (error) {
+      console.log('catch', error);
       return errorMessage(res, 400, 'Unable to retrieve car');
     }
   }
