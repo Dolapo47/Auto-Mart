@@ -77,7 +77,7 @@ class validate {
       price: joi.number(),
       token: joi,
       Authorization: joi,
-      amount: joi.number,
+      amount: joi.number()
     });
     return joi.validate(details, schema);
   }
@@ -87,6 +87,7 @@ class validate {
       status: joi.string()
         .insensitive()
         .valid('available', 'sold')
+        .required()
         .trim(),
       token: joi,
       Authorization: joi,

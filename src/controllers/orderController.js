@@ -6,8 +6,8 @@ import DB from '../db/index';
 
 class orderController {
   static async createOrder(req, res) {
-    // const { error } = validate.validateOrderInput(req.body);
-    // if (error) return errorMessage(res, 422, error.details[0].message);
+    const { error } = validate.validateOrderInput(req.body);
+    if (error) return errorMessage(res, 422, error.details[0].message);
     const { id } = req.user;
     const { car_id, price_offered } = req.body;
     const price = Number(price_offered).toFixed(2);
@@ -22,6 +22,7 @@ class orderController {
       const makeOrder = await DB.query('INSERT into orders(car_id, buyer_id, created_on ,new_price_offered, status) VALUES($1, $2, $3, $4, $5) RETURNING * ;', [car_id, id, created_On, price, status]);
       return retrieveCarMessage(res, 201, 'order created', makeOrder.rows[0]);
     } catch (errors) {
+      console.log(errors);
       return errorMessage(res, 400, 'unable to create order');
     }
   }
