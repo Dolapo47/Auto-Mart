@@ -63,7 +63,7 @@ class carController {
     if (error) {
       console.log(error);
       return errorMessage(res, 422, error.details[0].message);
-    // }
+    }
     const { car_id } = req.params;
     const { email } = req.user;
     const { price } = req.body;
