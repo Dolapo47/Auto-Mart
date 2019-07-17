@@ -49,7 +49,7 @@ class orderController {
         status: 200,
         message: 'success',
         data: {
-          new_price_offered: new_offer,
+          new_price_offer: new_offer,
         }
       });
     } catch (errors) {
