@@ -110,11 +110,12 @@ class validate {
 
   static validatePatchOrder(details) {
     const schema = joi.object().keys({
-      new_price_offered: joi.string(),
+      new_offer: joi.string(),
       order_id: joi.string(),
       token: joi,
       Authorization: joi,
       price: joi,
+      amount: joi.string(),
     });
     return joi.validate(details, schema);
   }
