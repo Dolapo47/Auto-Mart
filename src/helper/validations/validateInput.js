@@ -114,7 +114,8 @@ class validate {
       order_id: joi.string(),
       token: joi,
       Authorization: joi,
-      price: joi
+      price: joi,
+      new_price_offered: joi,
     });
     return joi.validate(details, schema);
   }
