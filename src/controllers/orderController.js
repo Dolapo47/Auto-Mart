@@ -50,10 +50,8 @@ class orderController {
         message: 'success',
         data: {
           new_price_offered: new_offer,
-          car: updateOrderPrice.rows[0],
         }
-      })
-      return retrieveCarMessage(res, 200, 'success', updateOrderPrice.rows[0]);
+      });
     } catch (errors) {
       return errorMessage(res, 400, 'unable to update order');
     }
