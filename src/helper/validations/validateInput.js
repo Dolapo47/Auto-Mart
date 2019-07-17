@@ -76,6 +76,8 @@ class validate {
     const schema = joi.object().keys({
       price: joi.number()
         .required(),
+      token: joi,
+      Authorization: joi,
     });
     return joi.validate(details, schema);
   }
