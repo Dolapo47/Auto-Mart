@@ -1,12 +1,6 @@
 import express from 'express';
 import carController from '../controllers/carController';
 import { verifyToken } from '../helper/userHelpers';
-import upload from '../helper/multer';
-import cloudinaryuploader from '../helper/cloudinary';
-import trim from '../helper/trimmer/trimmer';
-import  validate from '../helper/validations/validateInput';
-
-const { carTrim, carPriceTrim, carStatusTrim } = trim;
 
 const router = express.Router();
 

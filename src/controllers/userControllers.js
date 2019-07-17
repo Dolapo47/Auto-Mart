@@ -9,9 +9,9 @@ import { errorMessage, userMessage, } from '../helper/validations/responseMessag
 
 class userController {
   static async signupUser(req, res) {
-    // const { error } = validate.validateUser(req.body);
-    // if (error) return errorMessage(res, 422, error.details[0].message);
-    // console.log(error);
+    const { error } = validate.validateUser(req.body);
+    if (error) return errorMessage(res, 422, error.details[0].message);
+    console.log(error);
     const {
       first_name, last_name, email, password, address,
     } = req.body;
@@ -33,8 +33,8 @@ class userController {
 
 
   static async loginUser(req, res) {
-    // const { error } = validate.validateLogin(req.body);
-    // if (error) return errorMessage(res, 422, error.details[0].message);
+    const { error } = validate.validateLogin(req.body);
+    if (error) return errorMessage(res, 422, error.details[0].message);
 
     const { email, password } = req.body;
 
