@@ -388,26 +388,6 @@ describe('Can authorize user to the app', () => {
   });
 });
 
-describe('car routes', () => {
-  // it('should create new car', (done) => {
-  //   chai.request(app)
-  //     .post('/api/v1/car')
-  //     .set('Authorization', aToken)
-  //     .set('Content-Type', 'application/x-www-form-urlencoded')
-  //     .attach('image_url', fs.readFileSync('test/assets/auromart7.jpg'), 'auromart7.jpg')
-  //     .field('state', 'new')
-  //     .field('price', '3000000')
-  //     .field('manufacturer', 'honda')
-  //     .field('model', 'accord')
-  //     .field('body_type', 'car')
-  //     .end((err, res) => {
-  //       console.log(res.body, err);
-  //       expect(res).to.be.an('object');
-  //       expect(res.status).to.equal(201);
-  //       done();
-  //     });
-  // });
-
   it('should throw error if state empty', (done) => {
     chai.request(app)
       .post('/api/v1/car')
