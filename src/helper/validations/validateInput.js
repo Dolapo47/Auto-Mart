@@ -115,7 +115,7 @@ class validate {
       token: joi,
       Authorization: joi,
       price: joi,
-      amount: joi.string(),
+      amount: joi.number(),
     });
     return joi.validate(details, schema);
   }
