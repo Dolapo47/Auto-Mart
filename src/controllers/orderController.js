@@ -44,16 +44,12 @@ class orderController {
         return errorMessage(res, 404, 'order not found');
       }
       const updateOrderPrice = await DB.query('UPDATE orders SET new_price_offered=$1 WHERE id=$2 RETURNING *;', [new_offer, checkUserOrder.rows[0].id]);
-      console.log(updateOrderPrice.rows[0]);
       res.status(200).json({
         status: 200,
         message: 'success',
-        data: {
-          new_price_offered: updateOrderPrice.rows[0].new_offer,
-        }
+        data: updateOrderPrice.rows[0]
       });
     } catch (errors) {
-      console.log(errors);
       return errorMessage(res, 400, 'unable to update order');
     }
   }
