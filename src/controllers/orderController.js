@@ -45,6 +45,14 @@ class orderController {
       }
       const updateOrderPrice = await DB.query('UPDATE orders SET new_price_offered=$1 WHERE id=$2 RETURNING *;', [new_offer, checkUserOrder.rows[0].id]);
       console.log(updateOrderPrice.rows[0]);
+      res.status(200).json({
+        status: 200,
+        message: 'success',
+        data: {
+          new_price_offered: new_offer,
+          car: updateOrderPrice.rows[0],
+        }
+      })
       return retrieveCarMessage(res, 200, 'success', updateOrderPrice.rows[0]);
     } catch (errors) {
       return errorMessage(res, 400, 'unable to update order');
