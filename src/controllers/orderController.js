@@ -22,7 +22,6 @@ class orderController {
       const makeOrder = await DB.query('INSERT into orders(car_id, buyer_id, created_on ,new_price_offered, status) VALUES($1, $2, $3, $4, $5) RETURNING * ;', [car_id, id, created_On, price, status]);
       return retrieveCarMessage(res, 201, 'order created', makeOrder.rows[0]);
     } catch (errors) {
-      console.log(errors);
       return errorMessage(res, 400, 'unable to create order');
     }
   }
@@ -44,6 +43,7 @@ class orderController {
         return errorMessage(res, 404, 'order not found');
       }
       const updateOrderPrice = await DB.query('UPDATE orders SET new_price_offered=$1 WHERE id=$2 RETURNING *;', [new_offer, checkUserOrder.rows[0].id]);
+      console.log(updateOrderPrice.rows[0]);
       return retrieveCarMessage(res, 200, 'success', updateOrderPrice.rows[0]);
     } catch (errors) {
       return errorMessage(res, 400, 'unable to update order');

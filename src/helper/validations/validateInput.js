@@ -74,10 +74,10 @@ class validate {
 
   static validateUpdatePrice(details) {
     const schema = joi.object().keys({
-      price: joi.number()
-        .required(),
+      price: joi.number(),
       token: joi,
       Authorization: joi,
+      amount: joi.number,
     });
     return joi.validate(details, schema);
   }
@@ -87,8 +87,7 @@ class validate {
       status: joi.string()
         .insensitive()
         .valid('available', 'sold')
-        .trim()
-        .required(),
+        .trim(),
       token: joi,
       Authorization: joi,
     });

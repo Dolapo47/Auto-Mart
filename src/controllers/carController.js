@@ -8,7 +8,6 @@ class carController {
   static async createCar(req, res) {
     const { error } = validate.validateCarInput(req.body);
     if (error) {
-      console.log(error);
       errorMessage(res, 422, error.details[0].message);
     }
     const { id, email } = req.user;
@@ -21,10 +20,8 @@ class carController {
     const status = 'available';
     try {
       const newCar = await DB.query('INSERT INTO cars(owner, owner_email, created_on, state, status, price, manufacturer, model, body_type, img_url, flagged) VALUES($1, $2, $3, $4, $5, $6, $7, $8 , $9, $10, $11) RETURNING *;', [id, email, created_on, state, status, Formatted_price, manufacturer, model, body_type, image, false]);
-      console.log(newCar.rows[0]);
       retrieveCarMessage(res, 201, 'Vehicle created', newCar.rows[0]);
     } catch (errors) {
-      console.log(errors);
       return errorMessage(res, 400, 'Unable to create car');
     }
   }
@@ -32,7 +29,6 @@ class carController {
   static async updateStatus(req, res) {
     const { error } = validate.validateUpdateStatus(req.body);
     if (error) {
-      console.log(error);
       return errorMessage(res, 422, error.details[0].message);
     }
 
@@ -61,7 +57,6 @@ class carController {
   static async updatePrice(req, res) {
     const { error } = validate.validateUpdatePrice(req.body);
     if (error) {
-      console.log(error);
       return errorMessage(res, 422, error.details[0].message);
     }
     const { car_id } = req.params;
@@ -88,10 +83,8 @@ class carController {
     try {
       const getCar = await DB.query('SELECT * FROM cars WHERE id=$1;', [car_id]);
       if (getCar.rowCount === 0) return errorMessage(res, 404, 'Car not found');
-      console.log(req.body);
       return retrieveCarMessage(res, 200, 'vehicle successfully retrieved', getCar.rows[0]);
     } catch (error) {
-      console.log('catch', error);
       return errorMessage(res, 400, 'Unable to retrieve car');
     }
   }
