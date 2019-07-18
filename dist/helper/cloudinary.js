@@ -28,7 +28,8 @@ function () {
             _context.prev = 0;
             _context.next = 3;
             return _cloudinarySetup["default"].v2.uploader.upload(req.files[0].path, function (error, result) {
-              req.body.imageUrl = result.url;
+              console.log('ffhfhgfjg', req.files);
+              req.body.image_url = result.url;
             });
 
           case 3:
@@ -38,7 +39,7 @@ function () {
           case 5:
             _context.prev = 5;
             _context.t0 = _context["catch"](0);
-            console.log(_context.t0);
+            return _context.abrupt("return", _context.t0);
 
           case 8:
             return _context.abrupt("return", next());

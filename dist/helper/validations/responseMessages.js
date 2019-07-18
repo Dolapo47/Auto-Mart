@@ -3,25 +3,25 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.retrieveCarMessage = exports.userMessage = exports.responseMessage = void 0;
+exports.retrieveCarMessage = exports.userMessage = exports.errorMessage = void 0;
 
-var responseMessage = function responseMessage(res, statusCode, message) {
+var errorMessage = function errorMessage(res, statusCode, message) {
   res.status(statusCode).json({
     status: statusCode,
     error: message
   });
 };
 
-exports.responseMessage = responseMessage;
+exports.errorMessage = errorMessage;
 
 var userMessage = function userMessage(res, statusCode, message, token, user) {
   res.status(statusCode).json({
     status: statusCode,
     success: message,
-    data: [{
+    data: {
       token: token,
       user: user
-    }]
+    }
   });
 };
 

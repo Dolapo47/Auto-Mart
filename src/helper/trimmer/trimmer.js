@@ -53,13 +53,11 @@ class trimmer {
     } = req.body;
 
     if (state) state = state.trim();
-    if (price) price = price.trim();
     if (manufacturer) manufacturer = manufacturer.trim();
     if (model) model = model.trim();
     if (body_type) body_type = body_type.trim();
 
     req.body.state = state;
-    req.body.price = price;
     req.body.manufacturer = manufacturer;
     req.body.model = model;
     req.body.body_type = body_type;
@@ -80,41 +78,17 @@ class trimmer {
   }
 
   static async carPriceTrim(req, res, next) {
-    let {
-      price,
-    } = req.body;
 
-    if (price) price = price.trim();
-
-    req.body.price = price;
 
     return next();
   }
 
   static async orderTrim(req, res, next) {
-    let {
-      car_id, price_offered,
-    } = req.body;
-
-    if (car_id) car_id = car_id.trim();
-    if (price_offered) price_offered = price_offered.trim();
-
-    req.body.car_id = car_id;
-    req.body.price_offered = price_offered;
 
     return next();
   }
 
   static async updateOrderTrim(req, res, next) {
-    let {
-      order_id, new_offer,
-    } = req.body;
-
-    if (order_id) order_id = order_id.trim();
-    if (new_offer) new_offer = new_offer.trim();
-
-    req.body.order_id = order_id;
-    req.body.new_offer = new_offer;
 
     return next();
   }

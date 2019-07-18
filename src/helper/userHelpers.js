@@ -8,9 +8,21 @@ const secretKey = process.env.SECRET;
 
 
 export const verifyToken = (req, res, next) => {
-  const token = req.headers.authorization;
-  if (!token) res.status(401).send({ status: 401, error: 'You must be logged in to use this route' });
-  const decoded = jwt.verify(token, secretKey);
-  req.user = decoded;
-  return next();
+  let token = req.headers.authorization;
+  if (token) {
+    if (token.startsWith('Bearer ')) {
+      token = token.slice(7, token.length);
+    }
+    if (token.split(' ')[1] === 'undefined') {
+      token = req.header.authorization;
+    }
+    const decoded = jwt.verify(token, secretKey);
+    req.user = decoded;
+    next();
+  } else {
+    return res.status(401).json({
+      status: 401,
+      error: 'Please provide a valid token'
+    });
+  }
 };

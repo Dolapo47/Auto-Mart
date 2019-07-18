@@ -11,9 +11,7 @@ var _jsonwebtoken = _interopRequireDefault(require("jsonwebtoken"));
 
 var _index = _interopRequireDefault(require("../db/index"));
 
-var _validateRegeisterInput = _interopRequireDefault(require("../helper/validations/validateRegeisterInput"));
-
-var _validateLogin2 = _interopRequireDefault(require("../helper/validations/validateLogin"));
+var _validateInput = _interopRequireDefault(require("../helper/validations/validateInput"));
 
 var _responseMessages = require("../helper/validations/responseMessages");
 
@@ -42,74 +40,52 @@ function () {
       var _signupUser = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee(req, res) {
-        var _validateRegisterInpu, errors, isValid, _req$body, firstname, lastname, email, password, address, adminSecret, isAdmin, existingUser, hashedPassword, registerUser;
+        var _req$body, first_name, last_name, email, password, address, existingUser, hashedPassword, registerUser;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _validateRegisterInpu = (0, _validateRegeisterInput["default"])(req.body), errors = _validateRegisterInpu.errors, isValid = _validateRegisterInpu.isValid;
-
-                if (isValid) {
-                  _context.next = 3;
-                  break;
-                }
-
-                return _context.abrupt("return", (0, _responseMessages.responseMessage)(res, 400, errors));
-
-              case 3:
-                _req$body = req.body, firstname = _req$body.firstname, lastname = _req$body.lastname, email = _req$body.email, password = _req$body.password, address = _req$body.address, adminSecret = _req$body.adminSecret;
-                isAdmin = adminSecret === process.env.ADMIN_SECRET ? 't' : 'f';
-                _context.prev = 5;
-                _context.next = 8;
+                // const { error } = validate.validateUser(req.body);
+                // if (error) return errorMessage(res, 422, error.details[0].message);
+                _req$body = req.body, first_name = _req$body.first_name, last_name = _req$body.last_name, email = _req$body.email, password = _req$body.password, address = _req$body.address;
+                _context.prev = 1;
+                _context.next = 4;
                 return _index["default"].query('SELECT * from users WHERE email=$1;', [email]);
 
-              case 8:
+              case 4:
                 existingUser = _context.sent;
 
                 if (!existingUser.rowCount) {
-                  _context.next = 11;
+                  _context.next = 7;
                   break;
                 }
 
-                return _context.abrupt("return", res.status(409).send({
-                  status: 409,
-                  error: 'User exist already'
-                }));
+                return _context.abrupt("return", (0, _responseMessages.errorMessage)(res, 409, 'User exists already'));
 
-              case 11:
+              case 7:
                 hashedPassword = _bcryptjs["default"].hashSync(password, 10);
-                _context.next = 14;
-                return _index["default"].query('INSERT INTO users(firstname, lastname, email, password, address, is_admin) VALUES($1, $2, $3, $4, $5, $6) RETURNING *;', [firstname, lastname, email, hashedPassword, address, isAdmin]);
+                _context.next = 10;
+                return _index["default"].query('INSERT INTO users(first_name, last_name, email, password, address, is_admin) VALUES($1, $2, $3, $4, $5, $6) RETURNING *;', [first_name, last_name, email, hashedPassword, address, false]);
 
-              case 14:
+              case 10:
                 registerUser = _context.sent;
                 return _context.abrupt("return", _jsonwebtoken["default"].sign(registerUser.rows[0], process.env.SECRET, function (err, token) {
-                  if (err) res.status(400).send({
-                    error: err.message
-                  });
-                  res.status(201).send({
-                    status: 201,
-                    data: {
-                      token: token,
-                      user: registerUser[0]
-                    }
-                  });
+                  if (err) (0, _responseMessages.errorMessage)(res, 400, 'unable to register new user');
+                  (0, _responseMessages.userMessage)(res, 201, 'user created', token, registerUser.rows[0]);
                 }));
 
-              case 18:
-                _context.prev = 18;
-                _context.t0 = _context["catch"](5);
-                return _context.abrupt("return", res.status(400).send({
-                  error: _context.t0.message
-                }));
+              case 14:
+                _context.prev = 14;
+                _context.t0 = _context["catch"](1);
+                return _context.abrupt("return", (0, _responseMessages.errorMessage)(res, 400, 'unable to register new user'));
 
-              case 21:
+              case 17:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[5, 18]]);
+        }, _callee, null, [[1, 14]]);
       }));
 
       function signupUser(_x, _x2) {
@@ -124,64 +100,48 @@ function () {
       var _loginUser = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee2(req, res) {
-        var _validateLogin, errors, isValid, _req$body2, email, password, userExist, comparePasswords;
+        var _req$body2, email, password, userExist, comparePasswords;
 
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                _validateLogin = (0, _validateLogin2["default"])(req.body), errors = _validateLogin.errors, isValid = _validateLogin.isValid;
-
-                if (isValid) {
-                  _context2.next = 3;
-                  break;
-                }
-
-                return _context2.abrupt("return", (0, _responseMessages.responseMessage)(res, 400, errors));
-
-              case 3:
+                // const { error } = validate.validateLogin(req.body);
+                // if (error) return errorMessage(res, 422, error.details[0].message);
                 _req$body2 = req.body, email = _req$body2.email, password = _req$body2.password;
-                _context2.prev = 4;
-                _context2.next = 7;
+                _context2.prev = 1;
+                _context2.next = 4;
                 return _index["default"].query('SELECT * FROM users WHERE email=$1;', [email]);
 
-              case 7:
+              case 4:
                 userExist = _context2.sent;
 
-                if (userExist.rowCount <= 0) {
-                  (0, _responseMessages.responseMessage)(res, 404, 'User does not exist!');
+                if (userExist.rowCount === 0) {
+                  (0, _responseMessages.errorMessage)(res, 404, 'User does not exist!');
                 }
 
                 comparePasswords = _bcryptjs["default"].compareSync(password, userExist.rows[0].password);
 
                 if (!comparePasswords) {
-                  (0, _responseMessages.responseMessage)(res, 401, 'Email or password is incorrect!');
+                  (0, _responseMessages.errorMessage)(res, 401, 'Email or password is incorrect!');
                 }
 
                 return _context2.abrupt("return", _jsonwebtoken["default"].sign(userExist.rows[0], process.env.SECRET, function (err, token) {
-                  if (err) (0, _responseMessages.responseMessage)(res, 401, 'Auth Failed');
-                  res.status(200).send({
-                    status: 'success',
-                    data: {
-                      token: token,
-                      user: userExist.rows[0]
-                    }
-                  });
+                  if (err) (0, _responseMessages.errorMessage)(res, 401, 'Auth Failed');
+                  (0, _responseMessages.userMessage)(res, 200, 'Auth Successful', token, userExist.rows[0]);
                 }));
+
+              case 11:
+                _context2.prev = 11;
+                _context2.t0 = _context2["catch"](1);
+                (0, _responseMessages.errorMessage)(res, 400, 'Auth Failed');
 
               case 14:
-                _context2.prev = 14;
-                _context2.t0 = _context2["catch"](4);
-                return _context2.abrupt("return", res.status(500).send({
-                  error: _context2.t0.message
-                }));
-
-              case 17:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, null, [[4, 14]]);
+        }, _callee2, null, [[1, 11]]);
       }));
 
       function loginUser(_x3, _x4) {

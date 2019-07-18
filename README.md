@@ -20,6 +20,9 @@ These instructions will get you a copy of the project up and running on your loc
 ## Testing
 run 'npm test' on the terminal
 
+### Documentation
+- API documentation https://pacific-eyrie-25629.herokuapp.com/api-docs
+
 ## How to get a copy on local machine
 #### Clone Repository
 

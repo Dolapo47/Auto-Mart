@@ -7,16 +7,19 @@ import validate from '../helper/validations/validateInput';
 class carController {
   static async createCar(req, res) {
     const { error } = validate.validateCarInput(req.body);
-    if (error) return errorMessage(res, 422, error.details[0].message);
+    if (error) {
+      errorMessage(res, 422, error.details[0].message);
+    }
     const { id, email } = req.user;
     const {
-      manufacturer, model, state, price, body_type, image_url,
+      manufacturer, model, state, price, body_type,
     } = req.body;
+    const image = 'http://res.cloudinary.com/dolapo/image/upload/v1561705556/zew5btwnvjukwghllabw.jpg';
     const Formatted_price = parseFloat(price).toFixed(2);
     const created_on = new Date().toLocaleString();
     const status = 'available';
     try {
-      const newCar = await DB.query('INSERT INTO cars(owner_id, owner_email, created_on, state, status, price, manufacturer, model, body_type, image_url, flagged) VALUES($1, $2, $3, $4, $5, $6, $7, $8 , $9, $10, $11) RETURNING *;', [id, email, created_on, state, status, Formatted_price, manufacturer, model, body_type, image_url, false]);
+      const newCar = await DB.query('INSERT INTO cars(owner, owner_email, created_on, state, status, price, manufacturer, model, body_type, img_url, flagged) VALUES($1, $2, $3, $4, $5, $6, $7, $8 , $9, $10, $11) RETURNING *;', [id, email, created_on, state, status, Formatted_price, manufacturer, model, body_type, image, false]);
       retrieveCarMessage(res, 201, 'Vehicle created', newCar.rows[0]);
     } catch (errors) {
       return errorMessage(res, 400, 'Unable to create car');
@@ -25,11 +28,16 @@ class carController {
 
   static async updateStatus(req, res) {
     const { error } = validate.validateUpdateStatus(req.body);
-    if (error) return errorMessage(res, 422, error.details[0].message);
+    if (error) {
+      return errorMessage(res, 422, error.details[0].message);
+    }
 
     const { car_id } = req.params;
     const { email } = req.user;
     const { status } = req.body;
+    const regex = /^\d+$/;
+
+    if (regex.test(car_id) === false) return errorMessage(res, 422, 'car id should be a number');
 
     try {
       const findCar = await DB.query('SELECT * FROM cars WHERE id=$1 AND owner_email=$2;', [car_id, email]);
@@ -48,12 +56,15 @@ class carController {
 
   static async updatePrice(req, res) {
     const { error } = validate.validateUpdatePrice(req.body);
-    if (error) return errorMessage(res, 422, error.details[0].message);
-
+    if (error) {
+      return errorMessage(res, 422, error.details[0].message);
+    }
     const { car_id } = req.params;
     const { email } = req.user;
     const { price } = req.body;
     const Formatted_price = parseFloat(price).toFixed(2);
+    const regex = /^\d+$/;
+    if (regex.test(car_id) === false) return errorMessage(res, 422, 'car id should be a number');
 
     try {
       const findCar = await DB.query('SELECT * FROM cars WHERE id=$1 AND owner_email=$2;', [car_id, email]);
@@ -90,7 +101,7 @@ class carController {
         return errorMessage(res, 404, 'car not found');
       }
       await DB.query('DELETE FROM cars WHERE id = $1;', [car_id]);
-      return retrieveCarMessage(res, 200, 'Car Ad was successfully deleted');
+      return retrieveCarMessage(res, 200, 'Car Ad was successfully deleted', car_id);
     } catch (error) {
       return errorMessage(res, 400, 'Unable to delete car');
     }
