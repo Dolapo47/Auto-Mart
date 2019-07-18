@@ -11,7 +11,6 @@ class userController {
   static async signupUser(req, res) {
     const { error } = validate.validateUser(req.body);
     if (error) return errorMessage(res, 422, error.details[0].message);
-    console.log(error);
     const {
       first_name, last_name, email, password, address,
     } = req.body;
